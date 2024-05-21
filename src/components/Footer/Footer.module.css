@@ -1,0 +1,36 @@
+.footer {
+  background-color: #b5e7a0;
+  color: hsl(180, 5%, 25%);
+  font-size: medium;
+  bottom: 0;
+}
+.listing {
+  font-weight: 500;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+.listing li span {
+  font-weight: 700;
+}
+.listing li {
+  padding-top: 1rem;
+}
+.bold-footer-text {
+  font-size: large;
+  font-weight: 700;
+}
+.hr {
+  height: 2px;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  background-color: hsl(180, 5%, 25%);
+  width: 100%;
+}
+.subfooter {
+  background-color: #95dd77;
+  color: hsl(180, 5%, 25%);
+  font-size: medium;
+  padding: 0.5rem;
+  font-weight: 500;
+}
