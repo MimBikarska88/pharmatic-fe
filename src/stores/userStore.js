@@ -11,5 +11,5 @@ const initialStore = {
 };
 export const useUserStore = createStore((set) => ({
   ...initialStore,
-  setRole: (newRole) => set((state) => ({ role: newRole })),
+  setRole: (newRole) => set((newRole) => ({ role: newRole })),
 }));

@@ -61,29 +61,19 @@ export const mapNavigation = () => {
           {navItem.title}
         </Nav.Link>
       ));
+    case roleType.customer:
+      return CustomerNavigation.map((navItem) => (
+        <Nav.Link className="link-dark" href={"/"}>
+          {navItem.title}
+        </Nav.Link>
+      ));
     case roleType.guest:
       return GuestUserNavigation.map((navItem) => (
         <Nav.Link className="link-dark" href={"/"}>
           {navItem.title}
         </Nav.Link>
       ));
+    default:
+      <></>;
   }
 };
-
-/**
-<Nav.Link className="link-dark" href="#">
-            Home
-          </Nav.Link>
-          <Nav.Link className="link-dark" href="#">
-            About us
-          </Nav.Link>
-          <Nav.Link className="link-dark" href="#">
-            Shop
-          </Nav.Link>
-          <Nav.Link className="link-dark" href="#">
-            Login
-          </Nav.Link>
-          <Nav.Link className="link-dark" href="#">
-            Register
-          </Nav.Link>
-*/
