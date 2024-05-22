@@ -2,14 +2,16 @@ import "./App.css";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import PharmaDirectives from "./components/PharmaDirectives/PharmaDirectives";
-import { Fragment } from "react";
+import { BrowserRouter } from "react-router-dom";
 
 const App = () => {
   return (
     <>
-      <Header />
-      <PharmaDirectives />
-      <Footer />
+      <BrowserRouter>
+        <Header />
+        <PharmaDirectives />
+        <Footer />
+      </BrowserRouter>
     </>
   );
 };
