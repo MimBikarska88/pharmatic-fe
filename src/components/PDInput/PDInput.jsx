@@ -14,7 +14,7 @@ const PDInput = ({
 }) => {
   return (
     <>
-      <div className={className} style={styles}>
+      <div className={`${className}`} style={styles}>
         <label for={label}>
           <span className="text"></span>
           {label}
@@ -32,9 +32,9 @@ const PDInput = ({
           value={inputContent}
           className={isValid ? styles["valid"] : styles["invalid"]}
         ></input>
-        <div className="messages">
-          <span>{errorMessage}</span>
-        </div>
+        <span className="py-2">
+          <small>{errorMessage}</small>
+        </span>
       </div>
     </>
   );

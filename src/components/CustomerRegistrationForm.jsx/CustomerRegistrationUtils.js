@@ -5,61 +5,105 @@ import { useUserStore } from "../../stores/userStore";
 import { useValidationStore } from "../../stores/validationStore";
 
 export const checkFirstTabFields = () => {};
+
 export const isFieldValid = (fieldName, value) => {
   const setRegisterError = useErrorStore.getState().setRegisterError;
+  const setRegisterFieldValidity =
+    useValidationStore.getState().setRegisterFieldValidity;
   if (fieldName === "firstName") {
-    if (!value) {
-      setRegisterError("firstName", "First Name is mandatory.");
-    }
-    return !(!value || value.trim() === "" || value.length > 50);
+    const isValid = value && value.trim() !== "" && value.length <= 50;
+    console.log(isValid);
+    setRegisterFieldValidity("firstName", isValid);
+
+    !isValid
+      ? setRegisterError("firstName", "Required with max length of 50 symbols.")
+      : setRegisterError("firstName", "");
   }
   if (fieldName === "surname") {
-    return !(!value || value.trim() === "" || value.length > 50);
+    const isValid = value && value.trim() !== "" && value.length <= 50;
+    setRegisterFieldValidity("surname", isValid);
+    !isValid
+      ? setRegisterError("surname", "Required with max length of 50 symbols.")
+      : setRegisterError("surname", "");
   }
   if (fieldName === "lastName") {
-    return !(!value || value.trim() === "" || value.length > 50);
+    const isValid = value && value.trim() !== "" && value.length <= 50;
+    setRegisterFieldValidity("lastName", isValid);
+    !isValid
+      ? setRegisterError("lastName", "Required with max length of 50 symbols.")
+      : setRegisterError("surname", "");
   }
-  if (fieldName === "firstName") {
-    return !(!value || value.trim() === "" || value.length > 50);
-  }
+
   if (fieldName === "birthDate") {
     if (!value || value.trim() === "") {
-      return false;
-    }
+      setRegisterError("birthDate", "Birth date is mandatory.");
+      setRegisterFieldValidity("birthDate", false);
+    } else {
+      const date = new Date(value);
+      const currentDate = new Date();
 
-    const date = new Date(value);
-    const currentDate = new Date();
+      if (date > currentDate) {
+        setRegisterFieldValidity("birthDate", false);
+        setRegisterError("birthDate", "Birth date cannot be future date.");
+        return;
+      }
+      const minimumYear = new Date().getFullYear() - 18;
 
-    if (date > currentDate) {
-      return false;
+      if (date.getFullYear() > minimumYear) {
+        setRegisterFieldValidity("birthDate", false);
+        setRegisterError("birthDate", "Must be at least 18.");
+      } else {
+        setRegisterFieldValidity("birthDate", true);
+        setRegisterFieldValidity("birthDate", "");
+      }
     }
-    const minimumYear = new Date().getFullYear() - 18;
-
-    if (date.getFullYear() > minimumYear) {
-      return false;
-    }
-    return true;
   }
   if (fieldName === "email") {
     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-    return emailRegex.test(value);
+    const isValid = emailRegex.test(value);
+    setRegisterFieldValidity("email", isValid);
+    if (!isValid) {
+      setRegisterError("email", "Wrong email format");
+    } else {
+      setRegisterError("email", "");
+    }
   }
   if (fieldName === "phoneNumber") {
     if (!value) return true;
     const phoneRegex = /^\+[1-9]{3}[0-9]{6,15}$/;
-    return phoneRegex.test(value);
+    const isValid = phoneRegex.test(value);
+    setRegisterFieldValidity(isValid);
+    if (!isValid) {
+      setRegisterError("phoneNumber", "Wrong phone number format.");
+    } else {
+      setRegisterError("phoneNumber", "");
+    }
   }
   if (fieldName === "password") {
     const passwordRegex =
       /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})/;
-    return passwordRegex.test(value);
+    const isValid = passwordRegex.test(value);
+    setRegisterFieldValidity("password", isValid);
+    if (!isValid) {
+      setRegisterError("password", "Password is too weak.");
+    } else {
+      setRegisterError("password", "");
+    }
   }
   if (fieldName === "confirmPassword") {
     const password = useUserStore.getState().Customer.password;
     const isValidPassword = useValidationStore.getState().Customer.password;
-    if (!password || !isValidPassword) {
-      return true;
+    if (password && isValidPassword) {
+      const match = value === password;
+      setRegisterFieldValidity("confirmPassword", match);
+      if (match) {
+        setRegisterError("confirmPassword", "");
+      } else {
+        setRegisterError("confirmPassword", "Passwords don't match.");
+      }
+    } else {
+      setRegisterError("confirmPassword", "");
+      setRegisterFieldValidity("confirmPassword", true);
     }
-    return value === password;
   }
 };

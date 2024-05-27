@@ -29,46 +29,40 @@ const CustomerRegistrationFormFields = ({ activeTab }) => {
             <div className="d-flex flex-direction-row w-50 justify-content-evenly">
               <div className="flex-col pr-3">
                 <PDInput
+                  className={"p-1"}
                   label={"First Name"}
                   required={true}
                   value={Customer.firstName}
                   isValid={Register.firstName}
-                  errorMessage={RegisterErrors.firstName}
                   onChangeFunc={(e) => {
                     setCustomerUserField("firstName", e.target.value);
-                    setRegisterFieldValidity(
-                      "firstName",
-                      isFieldValid("firstName", e.target.value)
-                    );
+                    isFieldValid("firstName", e.target.value);
                   }}
                 ></PDInput>
                 <PDInput
+                  className={"p-1"}
                   label={"Surname"}
                   required={true}
                   value={Customer.surname}
                   isValid={Register.surname}
                   onChangeFunc={(e) => {
                     setCustomerUserField("surname", e.target.value);
-                    setRegisterFieldValidity(
-                      "surname",
-                      isFieldValid("firstName", e.target.value)
-                    );
+                    isFieldValid("firstName", e.target.value);
                   }}
                 ></PDInput>
                 <PDInput
+                  className={"p-1"}
                   label={"Last Name"}
                   required={true}
                   value={Customer.lastName}
                   isValid={Register.lastName}
                   onChangeFunc={(e) => {
                     setCustomerUserField("lastName", e.target.value);
-                    setRegisterFieldValidity(
-                      "lastName",
-                      isFieldValid("lastName", e.target.value)
-                    );
+                    isFieldValid("lastName", e.target.value);
                   }}
                 ></PDInput>
                 <PDInput
+                  className={"p-1"}
                   label={"Birth Date"}
                   required={true}
                   type={"date"}
@@ -76,15 +70,13 @@ const CustomerRegistrationFormFields = ({ activeTab }) => {
                   value={Customer.birthDate}
                   onChangeFunc={(e) => {
                     setCustomerUserField("birthDate", e.target.value);
-                    setRegisterFieldValidity(
-                      "birthDate",
-                      isFieldValid("birthDate", e.target.value)
-                    );
+                    isFieldValid("birthDate", e.target.value);
                   }}
                 ></PDInput>
               </div>
-              <div className="flex-col">
+              <div className="flex-col-6">
                 <PDInput
+                  className={"p-1"}
                   label={"Email"}
                   maxLength={150}
                   isValid={Register.email}
@@ -93,26 +85,22 @@ const CustomerRegistrationFormFields = ({ activeTab }) => {
                   value={Customer.email}
                   onChangeFunc={(e) => {
                     setCustomerUserField("email", e.target.value);
-                    setRegisterFieldValidity(
-                      "email",
-                      isFieldValid("email", e.target.value)
-                    );
+                    isFieldValid("email", e.target.value);
                   }}
                 ></PDInput>
                 <PDInput
+                  className={"p-1"}
                   isValid={Register.phoneNumber}
                   label={"Phone Number"}
                   required={true}
                   value={Customer.phoneNumber}
                   onChangeFunc={(e) => {
                     setCustomerUserField("phoneNumber", e.target.value);
-                    setRegisterFieldValidity(
-                      "phoneNumber",
-                      isFieldValid("phoneNumber", e.target.value)
-                    );
+                    isFieldValid("phoneNumber", e.target.value);
                   }}
                 ></PDInput>
                 <PDInput
+                  className={"p-1"}
                   label={"Password"}
                   required={true}
                   isValid={Register.password}
@@ -120,13 +108,11 @@ const CustomerRegistrationFormFields = ({ activeTab }) => {
                   type={"password"}
                   onChangeFunc={(e) => {
                     setCustomerUserField("password", e.target.value);
-                    setRegisterFieldValidity(
-                      "password",
-                      isFieldValid("password", e.target.value)
-                    );
+                    isFieldValid("password", e.target.value);
                   }}
                 ></PDInput>
                 <PDInput
+                  className={"p-1"}
                   isValid={Register.confirmPassword}
                   label={"Confirm password"}
                   value={Customer.confirmPassword}
@@ -134,10 +120,7 @@ const CustomerRegistrationFormFields = ({ activeTab }) => {
                   required={true}
                   onChangeFunc={(e) => {
                     setCustomerUserField("password", e.target.value);
-                    setRegisterFieldValidity(
-                      "password",
-                      isFieldValid("password", e.target.value)
-                    );
+                    isFieldValid("password", e.target.value);
                   }}
                 ></PDInput>
               </div>
