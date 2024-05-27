@@ -1,0 +1,5 @@
+.tabs .nav-link,
+.tabs .nav-link .nav-active {
+  color: black;
+  font-weight: 500;
+}

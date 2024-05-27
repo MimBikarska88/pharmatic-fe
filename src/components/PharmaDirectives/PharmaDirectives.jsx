@@ -1,13 +1,26 @@
-import Container from "react-bootstrap/esm/Container";
 import styles from "./PharmaDirectives.module.css";
 import { Route, Routes } from "react-router";
+import Register from "../../pages/Register/Register";
+import { roleType } from "../../utils/roleTypes";
 const PharmaDirectives = () => {
   return (
-    <Container className={styles.directive}>
+    <div className={`container ${styles.directive}`}>
       <Routes>
-        <Route path="home" element={<h3>Home</h3>}></Route>
+        <Route path="/" element={<h3>Home</h3>}></Route>
+        <Route
+          path="/register/customer"
+          element={<Register roleType={roleType.customer}></Register>}
+        ></Route>
+        <Route
+          path="/register/sole-proprietor"
+          element={<Register roleType={roleType.soleProprietor}></Register>}
+        ></Route>
+        <Route
+          path="/register/organization"
+          element={<Register roleType={roleType.organization}></Register>}
+        ></Route>
       </Routes>
-    </Container>
+    </div>
   );
 };
 export default PharmaDirectives;

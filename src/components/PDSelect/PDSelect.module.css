@@ -1,0 +1,7 @@
+select {
+  padding: 0.3rem;
+  display: block;
+  border: 2px solid rgba(176, 175, 175, 0.945);
+  border-radius: 6px;
+  transition: 0.1s linear;
+}

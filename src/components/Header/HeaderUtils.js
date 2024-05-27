@@ -45,33 +45,33 @@ export const mapNavigation = () => {
   switch (role) {
     case roleType.admin:
       return AdminNavigation.map((navItem) => (
-        <Nav.Link className="link-dark" href={"/"}>
+        <li className="link-dark m-3" href={"/"}>
           {navItem.title}
-        </Nav.Link>
+        </li>
       ));
     case roleType.organization:
       return OrganizationNavigation.map((navItem) => (
-        <Nav.Link className="link-dark" href={"/"}>
+        <li className="link-dark m-3" href={"/"}>
           {navItem.title}
-        </Nav.Link>
+        </li>
       ));
     case roleType.soleProprietor:
       return SoleProprietorNavigation.map((navItem) => (
-        <Nav.Link className="link-dark" href={"/"}>
+        <li className="link-dark m-3" href={"/"}>
           {navItem.title}
-        </Nav.Link>
+        </li>
       ));
     case roleType.customer:
       return CustomerNavigation.map((navItem) => (
-        <Nav.Link className="link-dark" href={"/"}>
+        <li className="link-dark m-3" href={"/"}>
           {navItem.title}
-        </Nav.Link>
+        </li>
       ));
     case roleType.guest:
       return GuestUserNavigation.map((navItem) => (
-        <Nav.Link className="link-dark" href={"/"}>
+        <li className="link-dark m-3" href={"/"}>
           {navItem.title}
-        </Nav.Link>
+        </li>
       ));
     default:
       <></>;

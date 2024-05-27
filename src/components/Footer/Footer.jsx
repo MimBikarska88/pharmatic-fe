@@ -17,13 +17,13 @@ const Footer = () => {
               <div>
                 <ul className={`${styles.listing}`}>
                   <li>
-                    Vendors Service Line: <span>+358 993 058</span>
+                    Vendors Service Line: <strong>+358 993 058</strong>
                   </li>
                   <li>
-                    Customer Service Line <span>+358 006 304</span>
+                    Customer Service Line <strong>+358 006 304</strong>
                   </li>
                   <li>
-                    Email: <span>pharmatic@info.com</span>
+                    Email: <strong>pharmatic@info.com</strong>
                   </li>
                 </ul>
               </div>
