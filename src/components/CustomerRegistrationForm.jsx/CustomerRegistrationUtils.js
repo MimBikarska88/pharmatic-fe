@@ -6,6 +6,19 @@ import { useValidationStore } from "../../stores/validationStore";
 
 export const checkFirstTabFields = () => {};
 
+export const checkAllFirstTabFieldsValid = () => {
+  const Register = useValidationStore.getState().Register;
+  return ![
+    Register.firstName,
+    Register.lastName,
+    Register.surname,
+    Register.phoneNumber,
+    Register.email,
+    Register.password,
+    Register.birthDate,
+    Register.confirmPassword,
+  ].some((x) => x === false);
+};
 export const isFieldValid = (fieldName, value) => {
   const setRegisterError = useErrorStore.getState().setRegisterError;
   const setRegisterFieldValidity =
