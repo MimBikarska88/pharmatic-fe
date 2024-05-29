@@ -25,8 +25,6 @@ export const isFieldValid = (fieldName, value) => {
     useValidationStore.getState().setRegisterFieldValidity;
   if (fieldName === "firstName") {
     const isValid = value?.trim().length <= 50 && value?.trim().length > 0;
-    console.log(value.length);
-    console.log(isValid);
     setRegisterFieldValidity("firstName", isValid);
 
     !isValid
@@ -34,14 +32,14 @@ export const isFieldValid = (fieldName, value) => {
       : setRegisterError("firstName", "");
   }
   if (fieldName === "surname") {
-    const isValid = value?.length <= 50;
+    const isValid = value?.trim().length <= 50 && value?.trim().length > 0;
     setRegisterFieldValidity("surname", isValid);
     !isValid
       ? setRegisterError("surname", "Required with max length of 50 symbols.")
       : setRegisterError("surname", "");
   }
   if (fieldName === "lastName") {
-    const isValid = value?.length <= 50;
+    const isValid = value?.trim().length <= 50 && value?.trim().length > 0;
     setRegisterFieldValidity("lastName", isValid);
     !isValid
       ? setRegisterError("lastName", "Required with max length of 50 symbols.")
@@ -49,7 +47,7 @@ export const isFieldValid = (fieldName, value) => {
   }
 
   if (fieldName === "birthDate") {
-    if (value?.trim() === "") {
+    if (!value) {
       setRegisterError("birthDate", "Birth date is mandatory.");
       setRegisterFieldValidity("birthDate", false);
     } else {
@@ -68,7 +66,7 @@ export const isFieldValid = (fieldName, value) => {
         setRegisterError("birthDate", "Must be at least 18.");
       } else {
         setRegisterFieldValidity("birthDate", true);
-        setRegisterFieldValidity("birthDate", "");
+        setRegisterError("birthDate", "");
       }
     }
   }

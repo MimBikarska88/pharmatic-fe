@@ -10,8 +10,8 @@ const CustomerRegistrationNav = ({ activeTab, setActiveTab }) => {
                 onClick={() => setActiveTab(_index)}
                 className={
                   _index === Number(activeTab)
-                    ? "nav-link active dark-link"
-                    : "nav-link dark-link"
+                    ? "nav-link active selected-tab"
+                    : "nav-link "
                 }
               >
                 {item}

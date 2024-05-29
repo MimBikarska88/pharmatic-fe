@@ -1,9 +1,10 @@
 input {
-  padding: 0.3rem;
+  padding: 0.4rem;
   display: block;
   border: 2px solid rgba(176, 175, 175, 0.945);
   border-radius: 6px;
   transition: 0.1s linear;
+  outline: 7px solid transparent;
 }
 .valid:focus {
   outline: 7px solid #b7f29e;

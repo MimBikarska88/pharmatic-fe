@@ -7,6 +7,7 @@ const PDInput = ({
   className,
   onChangeFunc,
   errorMessage,
+  id,
   isDisabled = false,
   isValid = true,
   isReadOnly = false,
@@ -14,8 +15,8 @@ const PDInput = ({
 }) => {
   return (
     <>
-      <div className={`${className}`} style={styles}>
-        <label for={label}>
+      <div className={`${className} ${styles["input-field"]}`} style={styles}>
+        <label htmlFor={label}>
           <span className="text"></span>
           {label}
           {required && <span>*</span>}
@@ -23,8 +24,8 @@ const PDInput = ({
         <input
           readOnly={isReadOnly}
           onChange={onChangeFunc}
-          id={label}
-          type={type ? type : "text"}
+          id={id}
+          type={type}
           maxLength={maxLength}
           disabled={isDisabled}
           isReadOnly={isReadOnly}
@@ -32,7 +33,7 @@ const PDInput = ({
           value={inputContent}
           className={isValid ? styles["valid"] : styles["invalid"]}
         ></input>
-        <span className="py-2">
+        <span>
           <small>{errorMessage}</small>
         </span>
       </div>

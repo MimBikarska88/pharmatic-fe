@@ -5,7 +5,8 @@ import { useValidationStore } from "../../stores/validationStore";
 import { roleType } from "../../utils/roleTypes";
 import { isFieldValid } from "./CustomerRegistrationUtils";
 import { useErrorStore } from "../../stores/errorStore";
-
+import CustomerAddress from "./CustomerFormComponents/CustomerAddress";
+import styles from "./CustomerRegistrationForm.module.css";
 const CustomerRegistrationFormFields = ({ activeTab }) => {
   const Customer = useUserStore((state) => state.Customer);
   const Register = useValidationStore((state) => state.Register);
@@ -27,10 +28,12 @@ const CustomerRegistrationFormFields = ({ activeTab }) => {
         {Number(activeTab) === 0 && (
           <>
             <div className="d-flex flex-direction-row w-50 justify-content-evenly">
-              <div className="flex-col pr-3">
+              <div className="flex-col">
                 <PDInput
-                  className={"p-1"}
                   label={"First Name"}
+                  type="text"
+                  className={`${styles["input-field"]}`}
+                  errorMessage={RegisterErrors.firstName}
                   required={true}
                   value={Customer.firstName}
                   isValid={Register.firstName}
@@ -40,10 +43,12 @@ const CustomerRegistrationFormFields = ({ activeTab }) => {
                   }}
                 ></PDInput>
                 <PDInput
-                  className={"p-1"}
                   label={"Surname"}
+                  errorMessage={RegisterErrors.surname}
+                  className={`${styles["input-field"]}`}
                   required={true}
                   value={Customer.surname}
+                  type="text"
                   isValid={Register.surname}
                   onChangeFunc={(e) => {
                     setCustomerUserField("surname", e.target.value);
@@ -51,9 +56,11 @@ const CustomerRegistrationFormFields = ({ activeTab }) => {
                   }}
                 ></PDInput>
                 <PDInput
-                  className={"p-1"}
                   label={"Last Name"}
+                  type={"text"}
+                  errorMessage={RegisterErrors.lastName}
                   required={true}
+                  className={`${styles["input-field"]}`}
                   value={Customer.lastName}
                   isValid={Register.lastName}
                   onChangeFunc={(e) => {
@@ -62,10 +69,11 @@ const CustomerRegistrationFormFields = ({ activeTab }) => {
                   }}
                 ></PDInput>
                 <PDInput
-                  className={"p-1"}
                   label={"Birth Date"}
                   required={true}
+                  errorMessage={RegisterErrors.birthDate}
                   type={"date"}
+                  className={`${styles["input-field"]}`}
                   isValid={Register.birthDate}
                   value={Customer.birthDate}
                   onChangeFunc={(e) => {
@@ -74,11 +82,12 @@ const CustomerRegistrationFormFields = ({ activeTab }) => {
                   }}
                 ></PDInput>
               </div>
-              <div className="flex-col-6">
+              <div className="flex-col">
                 <PDInput
-                  className={"p-1"}
                   label={"Email"}
                   maxLength={150}
+                  className={`${styles["input-field"]}`}
+                  errorMessage={RegisterErrors.email}
                   isValid={Register.email}
                   required={true}
                   type={"email"}
@@ -89,9 +98,11 @@ const CustomerRegistrationFormFields = ({ activeTab }) => {
                   }}
                 ></PDInput>
                 <PDInput
-                  className={"p-1"}
+                  className={`${styles["input-field"]}`}
+                  errorMessage={RegisterErrors.phoneNumber}
                   isValid={Register.phoneNumber}
                   label={"Phone Number"}
+                  type="text"
                   required={true}
                   value={Customer.phoneNumber}
                   onChangeFunc={(e) => {
@@ -100,9 +111,10 @@ const CustomerRegistrationFormFields = ({ activeTab }) => {
                   }}
                 ></PDInput>
                 <PDInput
-                  className={"p-1"}
                   label={"Password"}
                   required={true}
+                  errorMessage={RegisterErrors.password}
+                  className={`${styles["input-field"]}`}
                   isValid={Register.password}
                   value={Customer.password}
                   type={"password"}
@@ -112,8 +124,9 @@ const CustomerRegistrationFormFields = ({ activeTab }) => {
                   }}
                 ></PDInput>
                 <PDInput
-                  className={"p-1"}
                   isValid={Register.confirmPassword}
+                  className={`${styles["input-field"]}`}
+                  errorMessage={RegisterErrors.confirmPassword}
                   label={"Confirm password"}
                   value={Customer.confirmPassword}
                   type={"password"}
@@ -125,6 +138,11 @@ const CustomerRegistrationFormFields = ({ activeTab }) => {
                 ></PDInput>
               </div>
             </div>
+          </>
+        )}
+        {Number(activeTab) === 1 && (
+          <>
+            <CustomerAddress />
           </>
         )}
       </form>
