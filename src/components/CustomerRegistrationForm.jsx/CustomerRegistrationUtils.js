@@ -24,7 +24,8 @@ export const isFieldValid = (fieldName, value) => {
   const setRegisterFieldValidity =
     useValidationStore.getState().setRegisterFieldValidity;
   if (fieldName === "firstName") {
-    const isValid = value?.length <= 50;
+    const isValid = value?.trim().length <= 50 && value?.trim().length > 0;
+    console.log(value.length);
     console.log(isValid);
     setRegisterFieldValidity("firstName", isValid);
 
