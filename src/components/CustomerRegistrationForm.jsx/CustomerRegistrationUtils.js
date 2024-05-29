@@ -82,7 +82,7 @@ export const isFieldValid = (fieldName, value) => {
     if (!value) return true;
     const phoneRegex = /^\+[1-9]{3}[0-9]{6,15}$/;
     const isValid = phoneRegex.test(value);
-    setRegisterFieldValidity(isValid);
+    setRegisterFieldValidity("phoneNumber", isValid);
     !isValid
       ? setRegisterError("phoneNumber", "Wrong phone number format.")
       : setRegisterError("phoneNumber", "");
