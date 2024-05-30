@@ -2,7 +2,7 @@ import styles from "./PDInput.module.css";
 const PDInput = ({
   type,
   label,
-  inputContent,
+  value,
   maxLength,
   className,
   onChangeFunc,
@@ -30,7 +30,7 @@ const PDInput = ({
           disabled={isDisabled}
           isReadOnly={isReadOnly}
           required={required}
-          value={inputContent}
+          value={value}
           className={isValid ? styles["valid"] : styles["invalid"]}
         ></input>
         <span>

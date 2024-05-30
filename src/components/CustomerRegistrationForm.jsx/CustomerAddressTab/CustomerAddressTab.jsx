@@ -7,9 +7,9 @@ import PDInput from "../../PDInput/PDInput";
 
 import { useUserStore } from "../../../stores/userStore";
 
-import styles from "./CustomerAddress.module.css";
+import styles from "./CustomerAddressTab.module.css";
 import { useEffect, useState } from "react";
-const CustomerAddress = () => {
+const CustomerAddressTab = () => {
   const Customer = useUserStore((state) => state.Customer);
   const [position, setPosition] = useState([51.505, -0.09]);
   const setAddress = useUserStore((state) => state.setAddress);
@@ -23,10 +23,10 @@ const CustomerAddress = () => {
       const address = data.address;
       setAddress({
         country: address?.country || "",
-        zipcode: address?.postcode || "",
+        postcode: address?.postcode || "",
         city: address?.city || address?.town || address?.village || "",
         street: address?.road || "",
-        detailedAddress: address?.display_name,
+        detailedAddress: data?.display_name,
       });
     } catch (error) {
       console.error("Error fetching address:", error);
@@ -43,15 +43,9 @@ const CustomerAddress = () => {
 
     return position === null ? null : <Marker position={position}></Marker>;
   };
-
   useEffect(() => {
     fetchAddress(position[0], position[1]);
   }, [position]);
-
-  useEffect(() => {
-    console.log(Customer);
-  }, [Customer]);
-
   return (
     <>
       <MapContainer center={[51.505, -0.09]} zoom={10} scrollWheelZoom={true}>
@@ -61,34 +55,40 @@ const CustomerAddress = () => {
         />
         <LocationMarker />
       </MapContainer>
-      <div className="d-flex flex-row">
-        <PDInput
-          className={styles["input-field"]}
-          label={"Country"}
-          type="text"
-          value={Customer.country}
-        />
-        <PDInput
-          className={styles["input-field"]}
-          label={"City"}
-          type="text"
-          value={Customer.city}
-        />
-        <PDInput
-          className={styles["input-field"]}
-          label={"ZIP Code"}
-          type="text"
-          value={Customer.zipcode}
-        />
-        <PDInput
-          className={styles["input-field"]}
-          label={"Address"}
-          type="text"
-          value={Customer.detailedAddress}
-        />
+      <div className="container-fluid">
+        {" "}
+        <div className="d-flex flex-row">
+          <PDInput
+            className={styles["input-field-address"]}
+            label={"Country"}
+            type="text"
+            isReadOnly={true}
+            value={Customer.country}
+          />
+          <PDInput
+            className={styles["input-field-address"]}
+            label={"City"}
+            isReadOnly={true}
+            type="text"
+            value={Customer.city}
+          />
+          <PDInput
+            className={styles["input-field-address"]}
+            label={"Postcode"}
+            isReadOnly={true}
+            type="text"
+            value={Customer.postcode}
+          />
+          <PDInput
+            className={styles["input-field-address"]}
+            label={"Address"}
+            isReadOnly={true}
+            type="text"
+            value={Customer.detailedAddress}
+          />
+        </div>
       </div>
-      <div>{Customer.detailedAddress}</div>
     </>
   );
 };
-export default CustomerAddress;
+export default CustomerAddressTab;

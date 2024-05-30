@@ -1,0 +1,6 @@
+.input-field-address {
+  padding: 0.5rem;
+}
+.detailed-address input[type="text"] {
+  width: 60rem;
+}

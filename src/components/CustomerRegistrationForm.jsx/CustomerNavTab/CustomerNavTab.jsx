@@ -1,5 +1,5 @@
-import styles from "./CustomerRegistrationForm.module.css";
-const CustomerRegistrationNav = ({ activeTab, setActiveTab }) => {
+import styles from "./CustomerNavTab.module.css";
+const CustomerNavTab = ({ activeTab, setActiveTab }) => {
   return (
     <>
       <ul className={`nav nav-tabs m-3 w-75 ${styles.tabs}`} role="tablist">
@@ -23,4 +23,4 @@ const CustomerRegistrationNav = ({ activeTab, setActiveTab }) => {
     </>
   );
 };
-export default CustomerRegistrationNav;
+export default CustomerNavTab;

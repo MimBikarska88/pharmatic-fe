@@ -44,9 +44,9 @@ export const useUserStore = create((set) => ({
       Customer: {
         ...state.Customer,
         country: data.country,
-        zipCode: data.zipCode,
+        postcode: data.postcode,
         city: data.city,
-        detailedAddress: data.detaileAddress,
+        detailedAddress: data.detailedAddress,
       },
     })),
 }));

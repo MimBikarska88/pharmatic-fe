@@ -1,0 +1,9 @@
+.input-field {
+  height: 120px;
+  width: 300px;
+}
+.input-field input[type="password"],
+.input-field input[type="email"],
+.input-field input[type="text"] {
+  width: 280px;
+}

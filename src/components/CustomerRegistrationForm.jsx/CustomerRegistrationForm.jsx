@@ -1,10 +1,7 @@
 import { useState } from "react";
-import CustomerRegistrationNav from "./CustomerRegistrationNav";
-import CustomerRegistrationFormFields from "./CustomerRegistrationFormFields";
-import {
-  checkAllFirstTabFieldsValid,
-  checkFirstTabFields,
-} from "./CustomerRegistrationUtils";
+import CustomerNavTab from "./CustomerNavTab/CustomerNavTab";
+import { checkAllFirstTabFieldsValid } from "./CustomerRegistrationUtils";
+import CustomerTabForm from "./CustomerTabForm/CustomerTabForm";
 const CustomerRegistrationForm = ({}) => {
   const [activeTab, setActiveTab] = useState("0");
   const selectTab = (index) => {
@@ -17,8 +14,8 @@ const CustomerRegistrationForm = ({}) => {
   };
   return (
     <>
-      <CustomerRegistrationNav activeTab={activeTab} setActiveTab={selectTab} />
-      <CustomerRegistrationFormFields activeTab={activeTab} />
+      <CustomerNavTab activeTab={activeTab} setActiveTab={selectTab} />
+      <CustomerTabForm activeTab={activeTab} />
     </>
   );
 };
