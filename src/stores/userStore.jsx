@@ -13,6 +13,11 @@ const initialStore = {
     phoneNumber: "",
     password: "",
     confirmPassword: "",
+    detailedAddress: "",
+    country: "",
+    city: "",
+    zipCode: "",
+    street: "",
   },
   SoleProprietor: {},
   Organization: {},
@@ -31,6 +36,17 @@ export const useUserStore = create((set) => ({
       Customer: {
         ...state.Customer,
         [`${fieldName}`]: fieldValue,
+      },
+    })),
+  setAddress: (data) =>
+    set((state) => ({
+      ...state,
+      Customer: {
+        ...state.Customer,
+        country: data.country,
+        zipCode: data.zipCode,
+        city: data.city,
+        detailedAddress: data.detaileAddress,
       },
     })),
 }));

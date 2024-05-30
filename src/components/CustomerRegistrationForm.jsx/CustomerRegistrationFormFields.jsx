@@ -12,9 +12,6 @@ const CustomerRegistrationFormFields = ({ activeTab }) => {
   const Register = useValidationStore((state) => state.Register);
   const setRole = useUserStore((state) => state.setRole);
   const RegisterErrors = useErrorStore((state) => state.RegisterErrors);
-  const setRegisterFieldValidity = useValidationStore(
-    (state) => state.setRegisterFieldValidity
-  );
   const setCustomerUserField = useUserStore(
     (state) => state.setCustomerUserField
   );
@@ -24,7 +21,7 @@ const CustomerRegistrationFormFields = ({ activeTab }) => {
   }, []);
   return (
     <div className="container-fluid p-3">
-      <form className="form w-100">
+      <div className="form w-100">
         {Number(activeTab) === 0 && (
           <>
             <div className="d-flex flex-direction-row w-50 justify-content-evenly">
@@ -145,7 +142,7 @@ const CustomerRegistrationFormFields = ({ activeTab }) => {
             <CustomerAddress />
           </>
         )}
-      </form>
+      </div>
     </div>
   );
 };
