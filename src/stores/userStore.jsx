@@ -38,15 +38,15 @@ export const useUserStore = create((set) => ({
         [`${fieldName}`]: fieldValue,
       },
     })),
-  setAddress: (data) =>
+  setAddress: (country, city, postcode, detailedAddress) =>
     set((state) => ({
       ...state,
       Customer: {
         ...state.Customer,
-        country: data.country,
-        postcode: data.postcode,
-        city: data.city,
-        detailedAddress: data.detailedAddress,
+        country: country,
+        postcode: postcode,
+        city: city,
+        detailedAddress: detailedAddress,
       },
     })),
 }));

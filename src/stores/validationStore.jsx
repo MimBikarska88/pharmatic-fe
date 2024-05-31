@@ -11,6 +11,10 @@ const initialStore = {
     phoneNumber: true,
     password: true,
     confirmPassword: true,
+    detailedAddress: true,
+    country: true,
+    postcode: true,
+    city: true,
   },
 };
 export const useValidationStore = create((set) => ({
@@ -21,6 +25,28 @@ export const useValidationStore = create((set) => ({
       Register: {
         ...state.Register,
         [`${fieldName}`]: fieldValue,
+      },
+    })),
+  setAddressIncorrectFormat: () =>
+    set((state) => ({
+      ...state,
+      Register: {
+        ...state.Register,
+        detailedAddress: false,
+        country: false,
+        postcode: false,
+        city: false,
+      },
+    })),
+  setAddressCorrectFormat: () =>
+    set((state) => ({
+      ...state,
+      Register: {
+        ...state.Register,
+        detailedAddress: true,
+        country: true,
+        postcode: true,
+        city: true,
       },
     })),
 }));

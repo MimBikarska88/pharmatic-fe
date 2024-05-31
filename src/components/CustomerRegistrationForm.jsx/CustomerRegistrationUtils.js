@@ -111,3 +111,16 @@ export const isFieldValid = (fieldName, value) => {
     }
   }
 };
+
+export const checkAllSecondTabFields = () => {
+  const { country, detailedAddress, postcode, city } =
+    useUserStore.getState().Customer;
+  const setAddressIncorrectFormat =
+    useValidationStore.getState().setAddressWrong;
+  const setAddressCorrectFormat =
+    useValidationStore.getState().setAddressCorrectFormat;
+
+  return [country, detailedAddress, postcode, city].some(
+    (field) => !field || field.length === 0
+  );
+};

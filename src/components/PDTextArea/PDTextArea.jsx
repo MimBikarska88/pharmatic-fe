@@ -1,5 +1,5 @@
-import styles from "./PDInput.module.css";
-const PDInput = ({
+import styles from "./PDTextArea.module.css";
+const PDTextArea = ({
   type,
   label,
   value,
@@ -7,6 +7,8 @@ const PDInput = ({
   className,
   onChangeFunc,
   errorMessage,
+  rows,
+  cols,
   id,
   isDisabled = false,
   isValid = true,
@@ -21,18 +23,20 @@ const PDInput = ({
           {label}
           {required && <span>*</span>}
         </label>
-        <input
+        <textarea
           readOnly={isReadOnly}
           onChange={onChangeFunc}
           id={id}
           type={type}
+          rows={rows}
+          cols={cols}
           maxLength={maxLength}
           disabled={isDisabled}
           isReadOnly={isReadOnly}
           required={required}
           value={value}
           className={isValid ? styles["valid"] : styles["invalid"]}
-        ></input>
+        ></textarea>
         <span>
           <small>{errorMessage}</small>
         </span>
@@ -40,4 +44,4 @@ const PDInput = ({
     </>
   );
 };
-export default PDInput;
+export default PDTextArea;
