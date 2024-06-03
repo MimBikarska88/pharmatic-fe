@@ -1,0 +1,31 @@
+input {
+  padding: 0.4rem;
+  display: block;
+  border: 2px solid rgba(176, 175, 175, 0.945);
+  border-radius: 6px;
+  transition: 0.1s linear;
+  outline: 7px solid transparent;
+}
+input::file-selector-button {
+  font-weight: bold;
+  border: none;
+  background-color: transparent;
+}
+.valid:focus {
+  outline: 7px solid #b7f29e;
+  border: 2px solid #74ab5d;
+}
+.invalid {
+  outline: 7px solid #efa3a3;
+  border: 2px solid #ba2e2e;
+}
+label {
+  margin-bottom: 0.6rem;
+  margin-top: 0.6rem;
+  display: block;
+  font-weight: 600;
+}
+
+span {
+  color: red;
+}
