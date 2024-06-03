@@ -4,15 +4,18 @@ import Footer from "./components/Footer/Footer";
 import PharmaDirectives from "./components/PharmaDirectives/PharmaDirectives";
 import { BrowserRouter } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { QueryClientProvider } from "react-query";
 
 const App = () => {
   return (
     <>
-      <BrowserRouter>
-        <Header />
-        <PharmaDirectives />
-        <Footer />
-      </BrowserRouter>
+      <QueryClientProvider>
+        <BrowserRouter>
+          <Header />
+          <PharmaDirectives />
+          <Footer />
+        </BrowserRouter>
+      </QueryClientProvider>
     </>
   );
 };

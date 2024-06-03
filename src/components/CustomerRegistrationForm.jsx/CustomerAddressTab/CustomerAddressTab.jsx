@@ -8,15 +8,18 @@ import PDInput from "../../PDInput/PDInput";
 import PDTextArea from "../../PDTextArea/PDTextArea";
 
 import { useUserStore } from "../../../stores/userStore";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 import styles from "./CustomerAddressTab.module.css";
 import marker from "../../../static/img/icons/marker.png";
+
 import { checkAllSecondTabFields } from "../CustomerRegistrationUtils";
 import { useValidationStore } from "../../../stores/validationStore";
-import { useErrorStore } from "../../../stores/errorStore";
+
+import useGetMapLocationQuery from "../../../queries/GetMapLocationQuery/useGetMapLocationQuery";
 
 const CustomerAddressTab = () => {
+  console.log("here customer address tab");
   const Customer = useUserStore((state) => state.Customer);
   const Register = useValidationStore((state) => state.Register);
   const setAddress = useUserStore((state) => state.setAddress);
@@ -24,6 +27,8 @@ const CustomerAddressTab = () => {
     useValidationStore.getState().setAddressCorrectFormat;
   const setAddressIncorrectFormat =
     useValidationStore.getState().setAddressIncorrectFormat;
+
+  const getMapLocationQuery = useGetMapLocationQuery();
 
   const INITIAL_COORDINATES = [51.505, -0.09];
   const [position, setPosition] = useState(INITIAL_COORDINATES);
@@ -35,26 +40,40 @@ const CustomerAddressTab = () => {
     iconSize: [35, 45],
   });
 
-  const fetchAddress = async (lat, lng) => {
-    try {
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`
-      );
-      const data = await response.json();
-
-      const address = data.address;
-      const country = address?.country || "";
-      const postcode = address?.postcode || "";
-      const city = address?.city || address?.town || address?.village || "";
-      const detailedAddress = data?.display_name || "";
-      setAddress(country, city, postcode, detailedAddress);
-    } catch (error) {
-      console.error("Error fetching address:", error);
-    }
-  };
   useEffect(() => {
-    fetchAddress(position[0], position[1]);
-  }, [position]);
+    // changes fields from valid to invalid
+    if (checkAllSecondTabFields()) {
+      setAddressIncorrectFormat();
+    } else {
+      setAddressCorrectFormat();
+    }
+  }, [
+    Customer.detailedAddress,
+    Customer.country,
+    Customer.postcode,
+    Customer.city,
+  ]);
+
+  const handleSuccessMapLocation = (res) => {
+    const address = res.data.address;
+    const country = address?.country || "";
+    const postcode = address?.postcode || "";
+    const city = address?.city || address?.town || address?.village || "";
+    const detailedAddress = res.data?.display_name || "";
+    setAddress(country, city, postcode, detailedAddress);
+  };
+
+  const { isLoading, isError } = getMapLocationQuery(
+    position,
+    handleSuccessMapLocation
+  );
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (isError) {
+    return <div>Something happened, please try reloading.</div>;
+  }
 
   const LocationMarker = () => {
     const map = useMapEvents({
@@ -71,19 +90,6 @@ const CustomerAddressTab = () => {
     );
   };
 
-  useEffect(() => {
-    // changes fields from valid to invalid
-    if (checkAllSecondTabFields()) {
-      setAddressIncorrectFormat();
-    } else {
-      setAddressCorrectFormat();
-    }
-  }, [
-    Customer.detailedAddress,
-    Customer.country,
-    Customer.postcode,
-    Customer.city,
-  ]);
   return (
     <>
       <div>
