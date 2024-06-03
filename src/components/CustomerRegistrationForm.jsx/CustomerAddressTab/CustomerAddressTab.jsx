@@ -20,6 +20,7 @@ import useGetMapLocationQuery from "../../../queries/GetMapLocationQuery/useGetM
 
 const CustomerAddressTab = () => {
   console.log("here customer address tab");
+
   const Customer = useUserStore((state) => state.Customer);
   const Register = useValidationStore((state) => state.Register);
   const setAddress = useUserStore((state) => state.setAddress);
@@ -27,8 +28,6 @@ const CustomerAddressTab = () => {
     useValidationStore.getState().setAddressCorrectFormat;
   const setAddressIncorrectFormat =
     useValidationStore.getState().setAddressIncorrectFormat;
-
-  const getMapLocationQuery = useGetMapLocationQuery();
 
   const INITIAL_COORDINATES = [51.505, -0.09];
   const [position, setPosition] = useState(INITIAL_COORDINATES);
@@ -41,8 +40,10 @@ const CustomerAddressTab = () => {
   });
 
   useEffect(() => {
-    // changes fields from valid to invalid
-    if (checkAllSecondTabFields()) {
+    if (position === INITIAL_COORDINATES) {
+      return;
+    }
+    if (!checkAllSecondTabFields()) {
       setAddressIncorrectFormat();
     } else {
       setAddressCorrectFormat();
@@ -54,23 +55,17 @@ const CustomerAddressTab = () => {
     Customer.city,
   ]);
 
-  const handleSuccessMapLocation = (res) => {
-    const address = res.data.address;
-    const country = address?.country || "";
-    const postcode = address?.postcode || "";
-    const city = address?.city || address?.town || address?.village || "";
-    const detailedAddress = res.data?.display_name || "";
-    setAddress(country, city, postcode, detailedAddress);
-  };
+  const { isError } = useGetMapLocationQuery(position, {
+    onSuccess: (res) => {
+      const address = res.data.address;
+      const country = address?.country || "";
+      const postcode = address?.postcode || "";
+      const city = address?.city || address?.town || address?.village || "";
+      const detailedAddress = res.data?.display_name || "";
+      setAddress(country, city, postcode, detailedAddress);
+    },
+  });
 
-  const { isLoading, isError } = getMapLocationQuery(
-    position,
-    handleSuccessMapLocation
-  );
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
   if (isError) {
     return <div>Something happened, please try reloading.</div>;
   }

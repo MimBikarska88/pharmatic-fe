@@ -120,7 +120,7 @@ export const checkAllSecondTabFields = () => {
   const setAddressCorrectFormat =
     useValidationStore.getState().setAddressCorrectFormat;
 
-  return [country, detailedAddress, postcode, city].some(
+  return ![country, detailedAddress, postcode, city].some(
     (field) => !field || field.length === 0
   );
 };

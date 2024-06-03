@@ -1,8 +1,9 @@
 import { useQuery } from "react-query";
 import http from "../http";
 
-function useGetMapLocationQuery(position, onSuccess) {
+function useGetMapLocationQuery(position, options = {}) {
   return useQuery({
+    ...options,
     queryKey: ["location", position],
     queryFn: () => {
       const lat = position[0];
@@ -12,7 +13,6 @@ function useGetMapLocationQuery(position, onSuccess) {
       );
     },
     enabled: !!position,
-    onSuccess: onSuccess,
   });
 }
 
