@@ -1,31 +1,46 @@
+div .table-wrapper {
+  min-width: 580px;
+  overflow-x: auto;
+}
 table {
   width: 100%;
+  table-layout: fixed;
+  min-width: 760px;
+  overflow-x: scroll;
 }
-
+tbody tr {
+  border-bottom: 2px solid rgb(223, 221, 221);
+}
 table,
 th,
 td {
-  border-color: 2px solid rgb(83, 80, 80);
   border-collapse: collapse;
 }
 thead {
   background-color: #e1ffd4;
 }
 thead th {
-  text-align: center;
+  text-align: left;
   font-size: large;
 }
 th {
-  padding: 10px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
+  max-width: 150px;
+  min-width: 80px;
 }
 td {
   padding: 10px;
+  max-width: 100px;
 }
 .new td {
-  padding-left: 10px;
-  width: fit-content;
-  margin: auto;
+  padding: 10px;
 }
 tfoot td {
   border-spacing: 0;
+}
+.row-button {
+  margin: 15px;
 }

@@ -1,54 +1,80 @@
 import { Fragment } from "react";
 import styles from "./PDEditableTable.module.css";
 import PDInput from "../PDInput/PDInput";
+import PDButton from "../PDButton/PDButton";
+import { TableRowType } from "../../utils/tableRowTypes";
 export const PDEditableTable = ({
-  className,
   thead = [[]],
   tbody = [[]],
-  colspan = {
-    Stay: 2,
-  },
+  mapRowData = () => {},
+  onAddRowClick = () => {},
+  onRemoveSelected = () => {},
+  onRowSelect = () => {},
   hasPagination = false,
+  isEdit = false,
 }) => {
   return (
-    <Fragment className={className}>
-      <table className={styles}>
-        <thead>
-          {thead.map((row) => (
-            <tr>
-              {row.map((cell) => (
-                <th colspan={colspan[`${cell}`]}>{cell}</th>
+    <div className={styles}>
+      <div className="table-wrapper">
+        <table>
+          <thead>
+            {thead.map((row) => (
+              <tr>
+                {row.map((cell) => (
+                  <th>{cell}</th>
+                ))}
+                {isEdit && <th style={{ width: "40px" }}></th>}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {tbody.map((row) => {
+              return (
+                <>
+                  <tr>
+                    {row.map((cell) => (
+                      <td>{cell}</td>
+                    ))}
+                    {isEdit && row.type !== TableRowType.Readonly && (
+                      <td style={{ width: "20px" }}>
+                        <PDInput type={"checkbox"} />
+                      </td>
+                    )}
+                  </tr>
+                </>
+              );
+            })}
+          </tbody>
+          {isEdit && (
+            <tfoot>
+              {thead.map((row) => (
+                <tr>
+                  {row.map((cell) => (
+                    <td>
+                      <PDInput placeholder={cell} />
+                    </td>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {tbody.map((row) => (
-            <tr>
-              {row.map((cell) => (
-                <td>{cell}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td>
-              <PDInput />
-            </td>
-            <td>
-              <PDInput />
-            </td>
-            <td>
-              <PDInput />
-            </td>
-            <td>
-              <PDInput />
-            </td>
-          </tr>
-        </tfoot>
-      </table>
-    </Fragment>
+            </tfoot>
+          )}
+        </table>
+        {isEdit && (
+          <div className="d-flex flex-row-reverse">
+            <PDButton
+              color={"green"}
+              classname={styles["row-button"]}
+              value={"Add Row"}
+            ></PDButton>
+            <PDButton
+              color={"red"}
+              classname={styles["row-button"]}
+              value={"Remove Selected"}
+            ></PDButton>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 export default PDEditableTable;

@@ -1,0 +1,25 @@
+.pd-button {
+  padding: 10px;
+  border-radius: 3px;
+  transition: 0.4s;
+  background-color: transparent;
+  font-weight: 500;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+}
+.green {
+  color: #73bb55;
+  border: 2px solid #73bb55;
+}
+.green:hover {
+  color: white;
+  background-color: #73bb55;
+}
+.red {
+  color: #a42323;
+  border: 2px solid #a42323;
+}
+.red:hover {
+  color: white;
+  background-color: #a42323;
+}

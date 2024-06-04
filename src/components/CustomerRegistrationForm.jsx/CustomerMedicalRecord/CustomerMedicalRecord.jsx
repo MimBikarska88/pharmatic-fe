@@ -26,7 +26,15 @@ const CustomerMedicalRecord = () => {
         </div>
         <div className="d-flex flex-row">
           <PDEditableTable
-            thead={[["Intervention Type", "Medical Facility", "Stay"]]}
+            isEdit={true}
+            thead={[
+              [
+                "Intervention Type",
+                "Medical Facility",
+                "Admission Date",
+                "Leave Date",
+              ],
+            ]}
             tbody={testData.map((el) => Object.values(el))}
           />
         </div>

@@ -8,6 +8,7 @@ const PDInput = ({
   onChangeFunc,
   errorMessage,
   id,
+  placeholder,
   isDisabled = false,
   isValid = true,
   isReadOnly = false,
@@ -26,6 +27,7 @@ const PDInput = ({
           onChange={onChangeFunc}
           id={id}
           type={type}
+          placeholder={placeholder}
           maxLength={maxLength}
           disabled={isDisabled}
           isReadOnly={isReadOnly}

@@ -9,7 +9,6 @@ const CustomerNavTab = ({ activeTab, setActiveTab }) => {
           "Past Medical History",
           "Medications",
           "Allergies",
-          "Imminuzations",
         ].map((item, _index) => (
           <li key={_index} className="nav-item link-dark" role="presentation">
             <button
