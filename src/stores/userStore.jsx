@@ -18,7 +18,7 @@ const initialStore = {
     city: "",
     zipCode: "",
     street: "",
-    medicalInterventions: [],
+    medicalRecord: [],
   },
   SoleProprietor: {},
   Organization: {},
