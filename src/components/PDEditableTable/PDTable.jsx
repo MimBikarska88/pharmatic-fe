@@ -4,10 +4,14 @@ import PDTableFooter from "./PDTableFooter";
 import PDTableHeader from "./PDTableHeader";
 import PDCell from "./PDCell";
 import PDTableBody from "./PDTableBody";
-
+import styles from "./PDTable.module.css";
 const PDTable = (props) => {
   const { children } = props;
-  return <table {...props}>{children}</table>;
+  return (
+    <table style={styles} {...props}>
+      {children}
+    </table>
+  );
 };
 PDTable.Header = PDTableHeader;
 PDTable.Footer = PDTableFooter;

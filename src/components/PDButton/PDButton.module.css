@@ -23,3 +23,11 @@
   color: white;
   background-color: #a42323;
 }
+.purple {
+  color: #8162b6;
+  border: 2px solid #8162b6;
+}
+.purple:hover {
+  color: white;
+  background-color: #8162b6;
+}

@@ -18,7 +18,7 @@ const initialStore = {
     city: "",
     zipCode: "",
     street: "",
-    medicalRecord: [],
+    medicalRecords: [],
   },
   SoleProprietor: {},
   Organization: {},
@@ -50,4 +50,33 @@ export const useUserStore = create((set) => ({
         detailedAddress: detailedAddress,
       },
     })),
+  addRowToUserMedicalRecord: (rowData) =>
+    set((state) => ({
+      ...state,
+      Customer: {
+        ...state.Customer,
+        medicalRecords: [...state.Customer.medicalRecords, rowData],
+      },
+    })),
+  deleteUserMedicalRecords: (rows) =>
+    set((state) => {
+      let remainingRecords = state.Customer.medicalRecords;
+      rows.forEach((row) => {
+        remainingRecords = remainingRecords.filter(
+          (rec) =>
+            rec.medicalFacility !== row.medicalFacility &&
+            rec.medicalInterventionType !== row.medicalInterventionType &&
+            rec.arrivalDate !== row.arrivalDate &&
+            rec.leaveDate !== row.leaveDate
+        );
+      });
+      console.log(remainingRecords);
+      return {
+        ...state,
+        Customer: {
+          ...state.Customer,
+          medicalRecords: remainingRecords,
+        },
+      };
+    }),
 }));
