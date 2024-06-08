@@ -1,8 +1,7 @@
 import PDButton from "../PDButton/PDButton";
 import styles from "./PDPagination.module.css";
 const PDPagination = (props) => {
-  const { pageIndex = 1, pageSize, pageCount, show = true } = props;
-  const NUMBER_OF_PAGES_TO_SHOW = 3;
+  const { page, setPage, entriesPerPage, pages, show = true } = props;
 
   if (!show) {
     return <></>;
@@ -11,9 +10,15 @@ const PDPagination = (props) => {
     <>
       <div className="d-flex flex-row align-items-baseline">
         Page
-        <input className={styles["pagination-input"]} />
-        of <input className={styles["pagination-input"]} />
-        entries <input className={styles["pagination-input"]} />
+        <input
+          className={styles["pagination-input"]}
+          value={page}
+          onChange={(e) => setPage(e.target.value)}
+        />
+        of{" "}
+        <input className={styles["pagination-input"]} readOnly value={pages} />
+        entries{" "}
+        <input className={styles["pagination-input"]} value={entriesPerPage} />
         {(() => {
           const pages = [];
           pages.push(
@@ -28,13 +33,14 @@ const PDPagination = (props) => {
               color={"purple"}
               className={styles["pagination-button"]}
               value={"<"}
+              onClick={() => setPage(page - 1)}
             ></PDButton>
           );
           pages.push(
             <PDButton
               color={"purple"}
               className={styles["pagination-button"]}
-              value={pageIndex}
+              value={page}
             ></PDButton>
           );
           pages.push(
@@ -42,6 +48,7 @@ const PDPagination = (props) => {
               color={"purple"}
               className={styles["pagination-button"]}
               value={">"}
+              onClick={() => setPage(page + 1)}
             ></PDButton>
           );
           pages.push(

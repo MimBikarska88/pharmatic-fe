@@ -9,6 +9,7 @@ import { useUserStore } from "../../../stores/userStore";
 
 import { useState } from "react";
 import { isEmptyString } from "../../../utils/basicValidation.util";
+import { usePagination } from "../../hooks/usePagination";
 
 const HEADER_COLS = [
   "Intervention Type",
@@ -16,6 +17,7 @@ const HEADER_COLS = [
   "Admission Date",
   "Leave Date",
 ];
+const INITIAL_ENTRIES_PER_PAGE = 5;
 const CustomerMedicalRecord = () => {
   const Customer = useUserStore((state) => state.Customer);
   const addRowToUserMedicalRecord =
@@ -37,11 +39,11 @@ const CustomerMedicalRecord = () => {
   });
   const [rowsToDelete, setRowsToDelete] = useState([]);
 
-  const [pagination, setPagination] = useState({
-    currentPage: 0,
-    pagesCount: 0,
-    entriesPerPage: 0,
-  });
+  const { page, setPage, displayEntries, pages } = usePagination(
+    Customer.medicalRecords,
+    INITIAL_ENTRIES_PER_PAGE
+  );
+
   const deleteRow = (e, selectedRow) => {
     if (e.target.checked) {
       setRowsToDelete((state) => [...state, selectedRow]);
@@ -125,6 +127,7 @@ const CustomerMedicalRecord = () => {
     }
     deleteUserMedicalRecords(rowsToDelete);
   };
+
   return (
     <>
       <div className="container">
@@ -158,7 +161,7 @@ const CustomerMedicalRecord = () => {
             </PDTable.Row>
           </PDTable.Header>
           <PDTable.Body>
-            {Customer?.medicalRecords.map((el) => {
+            {displayEntries.map((el) => {
               return (
                 <PDTable.Row>
                   <PDTable.Cell>{el.medicalInterventionType}</PDTable.Cell>
@@ -223,7 +226,16 @@ const CustomerMedicalRecord = () => {
             </PDTable.Row>
           </PDTable.Body>
           <PDTable.Footer>
-            <PDPagination {...pagination} />
+            {Customer.medicalRecords.length >= INITIAL_ENTRIES_PER_PAGE && (
+              <PDPagination
+                pages={pages}
+                setPage={setPage}
+                entries={Customer.medicalRecords}
+                entriesPerPage={INITIAL_ENTRIES_PER_PAGE}
+                page={page}
+                displayEntries={INITIAL_ENTRIES_PER_PAGE}
+              />
+            )}
             <PDButton
               color={"green"}
               value={"Add Row"}
