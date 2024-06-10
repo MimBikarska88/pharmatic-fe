@@ -1,8 +1,8 @@
 import { useUserStore } from "../../stores/userStore";
 import { roleType } from "../../utils/roleTypes";
 const Navigation = () => {
-  const role = useUserStore.getState().role;
-
+  const role = useUserStore((state) => state.role);
+  console.log(role);
   const navigationMap = {
     [roleType.admin]: [
       { title: "Home", link: "/" },

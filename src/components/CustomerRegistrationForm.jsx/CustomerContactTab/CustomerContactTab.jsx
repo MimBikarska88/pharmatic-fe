@@ -9,15 +9,11 @@ import styles from "./CustomerContactTab.module.css";
 const CustomerContactTab = () => {
   const Customer = useUserStore((state) => state.Customer);
   const Register = useValidationStore((state) => state.Register);
-  const setRole = useUserStore((state) => state.setRole);
   const RegisterErrors = useErrorStore((state) => state.RegisterErrors);
   const setCustomerUserField = useUserStore(
     (state) => state.setCustomerUserField
   );
 
-  useEffect(() => {
-    setRole(roleType.customer);
-  }, []);
   return (
     <div className="d-flex flex-direction-row w-50 justify-content-evenly">
       <div className="flex-col">

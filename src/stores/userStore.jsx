@@ -1,82 +1,72 @@
 import { create } from "zustand";
+import { immer } from "zustand/middleware/immer";
 import { roleType } from "../utils/roleTypes";
+import { areMedicationsTheSame } from "../utils/basicValidation.util";
 
-const initialStore = {
-  role: roleType.guest,
-
-  Admin: {},
-  Customer: {
-    firstName: "",
-    lastName: "",
-    surname: "",
-    birthDate: "",
-    phoneNumber: "",
-    password: "",
-    confirmPassword: "",
-    detailedAddress: "",
-    country: "",
-    city: "",
-    zipCode: "",
-    street: "",
-    medicalRecords: [],
-  },
-  SoleProprietor: {},
-  Organization: {},
+const customerInitialStore = {
+  firstName: "",
+  lastName: "",
+  surname: "",
+  birthDate: "",
+  phoneNumber: "",
+  password: "",
+  confirmPassword: "",
+  detailedAddress: "",
+  country: "",
+  city: "",
+  zipCode: "",
+  street: "",
+  medicalRecords: [],
+  medications: [],
+  generalPractitioner: "",
+  latestMedicalCheckup: "",
 };
-export const useUserStore = create((set) => ({
-  ...initialStore,
+export const useUserStore = create(
+  immer((set) => ({
+    role: roleType.guest,
+    Admin: {},
+    Customer: { ...customerInitialStore },
+    SoleProprietor: {},
+    Organization: {},
 
-  setRole: (newRole) =>
-    set((state) => ({
-      role: newRole,
-    })),
-
-  setCustomerUserField: (fieldName, fieldValue) =>
-    set((state) => ({
-      ...state,
-      Customer: {
-        ...state.Customer,
-        [`${fieldName}`]: fieldValue,
-      },
-    })),
-  setAddress: (country, city, postcode, detailedAddress) =>
-    set((state) => ({
-      ...state,
-      Customer: {
-        ...state.Customer,
-        country: country,
-        postcode: postcode,
-        city: city,
-        detailedAddress: detailedAddress,
-      },
-    })),
-  addRowToUserMedicalRecord: (rowData) =>
-    set((state) => ({
-      ...state,
-      Customer: {
-        ...state.Customer,
-        medicalRecords: [...state.Customer.medicalRecords, rowData],
-      },
-    })),
-  deleteUserMedicalRecords: (rows) =>
-    set((state) => {
-      let remainingRecords = state.Customer.medicalRecords;
-      rows.forEach((row) => {
-        remainingRecords = remainingRecords.filter(
-          (rec) =>
-            rec.medicalFacility !== row.medicalFacility &&
-            rec.medicalInterventionType !== row.medicalInterventionType &&
-            rec.arrivalDate !== row.arrivalDate &&
-            rec.leaveDate !== row.leaveDate
+    setCustomerInitialState: () =>
+      set((state) => {
+        state.Customer = { ...customerInitialStore };
+      }),
+    setCustomerUserField: (fieldName, fieldValue) =>
+      set((state) => {
+        state.Customer[`${fieldName}`] = fieldValue;
+      }),
+    setAddress: (country, city, postcode, detailedAddress) =>
+      set((state) => {
+        state.Customer.country = country;
+        state.Customer.city = city;
+        state.Customer.postcode = postcode;
+        state.Customer.detailedAddress = detailedAddress;
+      }),
+    addRowToUserMedicalRecord: (rowData) =>
+      set((state) => {
+        state.Customer.medicalRecords.push(rowData);
+      }),
+    addRowToCustomerMedications: (rowData) =>
+      set((state) => {
+        state.Customer.medications.push(rowData);
+      }),
+    removeRowsFromCustomerMedications: (rows) =>
+      set((state) => {
+        state.Customer.medications = state.Customer.medications.filter(
+          (row) => !row.delete
         );
-      });
-      console.log(remainingRecords);
-      return {
-        ...state,
-        Customer: {
-          ...state.Customer,
-          medicalRecords: remainingRecords,
-        },
-      };
-    }),
-}));
+      }),
+    updateMedicationDeletion: (row, value) =>
+      set((state) => {
+        const medications = state.Customer.medications;
+        const index = medications.findIndex((med) =>
+          areMedicationsTheSame(med, row)
+        );
+        if (index !== -1) {
+          state.Customer.medications[index].delete = value;
+        }
+      }),
+  }))
+);

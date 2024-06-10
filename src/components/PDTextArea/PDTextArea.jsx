@@ -3,6 +3,7 @@ const PDTextArea = ({
   type,
   label,
   value,
+  placeholder,
   maxLength,
   className,
   onChangeFunc,
@@ -28,6 +29,7 @@ const PDTextArea = ({
           onChange={onChangeFunc}
           id={id}
           type={type}
+          placeholder={placeholder}
           rows={rows}
           cols={cols}
           maxLength={maxLength}

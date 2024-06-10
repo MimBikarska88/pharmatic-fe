@@ -9,16 +9,24 @@ const PDPagination = (props) => {
   return (
     <>
       <div className="d-flex flex-row align-items-baseline">
-        Page
+        <div>Page: </div>
         <input
           className={styles["pagination-input"]}
           value={page}
           onChange={(e) => setPage(e.target.value)}
         />
-        of{" "}
-        <input className={styles["pagination-input"]} readOnly value={pages} />
-        entries{" "}
-        <input className={styles["pagination-input"]} value={entriesPerPage} />
+        <div style={{ whiteSpace: "nowrap" }}>out of</div>
+        <input
+          className={styles["pagination-input"]}
+          disabled={true}
+          value={pages}
+        />
+        <div style={{ whiteSpace: "nowrap" }}>| Entries per page: </div>
+        <input
+          className={styles["pagination-input"]}
+          value={entriesPerPage}
+          disabled={true}
+        />
         {(() => {
           const pages = [];
           pages.push(
@@ -26,6 +34,7 @@ const PDPagination = (props) => {
               color={"purple"}
               className={styles["pagination-button"]}
               value={"<<"}
+              onClick={() => setPage(1)}
             ></PDButton>
           );
           pages.push(
@@ -57,6 +66,7 @@ const PDPagination = (props) => {
               className={styles["pagination-button"]}
               style={{ marginRight: "1rem" }}
               value={">>"}
+              onClick={() => setPage(pages)}
             ></PDButton>
           );
           return pages;

@@ -22,8 +22,11 @@ const CustomerMedicalRecord = () => {
   const Customer = useUserStore((state) => state.Customer);
   const addRowToUserMedicalRecord =
     useUserStore.getState().addRowToUserMedicalRecord;
-  const deleteUserMedicalRecords =
-    useUserStore.getState().deleteUserMedicalRecords;
+  const deleteCustomerMedications =
+    useUserStore.getState().deleteCustomerMedications;
+  const setCustomerUserField = useUserStore(
+    (state) => state.setCustomerUserField
+  );
 
   const [newRow, setNewRow] = useState({
     medicalFacility: "",
@@ -125,7 +128,8 @@ const CustomerMedicalRecord = () => {
       alert("No rows to delete!");
       return;
     }
-    deleteUserMedicalRecords(rowsToDelete);
+    deleteCustomerMedications(rowsToDelete);
+    setRowsToDelete([]);
   };
 
   return (
@@ -137,11 +141,16 @@ const CustomerMedicalRecord = () => {
               label={"General Practitioner"}
               className={`${styles["input-field"]} ${styles["general-practitioner"]}`}
               type={"text"}
+              value={Customer.gereralPractitioner}
+              onChangeFunc={(e) =>
+                setCustomerUserField("generalPractitioner", e.target.value)
+              }
             />
           </div>
           <div className="flex-col auto">
             <PDFileInput
               label={"Latest Health Check-up Report"}
+              value={Customer.latestMedicalCheckup}
               className={`${styles["input-field"]}`}
             />
           </div>

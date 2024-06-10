@@ -7,6 +7,9 @@ table {
 tbody tr {
   border-bottom: 2px solid rgb(223, 221, 221);
 }
+tbody .info tr {
+  border-bottom: none !important;
+}
 table,
 th,
 td {

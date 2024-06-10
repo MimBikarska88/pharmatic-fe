@@ -1,0 +1,7 @@
+.input-field {
+  height: 120px;
+  padding: 1rem;
+}
+.input-field input[type="text"] {
+  width: 20rem;
+}
