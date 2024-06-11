@@ -1,6 +1,13 @@
 import PDButton from "../../PDButton/PDButton";
 import styles from "./CustomerNavTab.module.css";
+import { useRegisterCustomerMutation } from "../../../queries/RegisterCustomerMutation/useRegisterCustomerMutation";
+import { useUserStore } from "../../../stores/userStore";
 const CustomerNavTab = ({ activeTab, setActiveTab }) => {
+  const Customer = useUserStore((state) => state.Customer);
+  const registerCustomerMutation = useRegisterCustomerMutation();
+  const submitRegisterForm = async (e) => {
+    await registerCustomerMutation.mutate(Customer);
+  };
   return (
     <>
       <ul
@@ -28,7 +35,7 @@ const CustomerNavTab = ({ activeTab, setActiveTab }) => {
           </li>
         ))}
       </ul>
-      <PDButton value="submit" color={"green"} />
+      <PDButton value="submit" color={"green"} onClick={submitRegisterForm} />
     </>
   );
 };

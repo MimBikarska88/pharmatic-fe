@@ -40,6 +40,8 @@ export const useUserStore = create(
       }),
     setCustomerUserField: (fieldName, fieldValue) =>
       set((state) => {
+        console.log(fieldName);
+        console.log(fieldValue);
         state.Customer[`${fieldName}`] = fieldValue;
       }),
     setAddress: (country, city, postcode, detailedAddress) =>

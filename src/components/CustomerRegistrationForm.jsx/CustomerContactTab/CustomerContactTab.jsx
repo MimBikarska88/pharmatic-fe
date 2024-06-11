@@ -99,6 +99,7 @@ const CustomerContactTab = () => {
           }}
         ></PDInput>
         <PDInput
+          id="password"
           label={"Password"}
           required={true}
           errorMessage={RegisterErrors.password}
@@ -112,6 +113,7 @@ const CustomerContactTab = () => {
           }}
         ></PDInput>
         <PDInput
+          id="confirm-password"
           isValid={Register.confirmPassword}
           className={`${styles["input-field"]}`}
           errorMessage={RegisterErrors.confirmPassword}
@@ -120,8 +122,8 @@ const CustomerContactTab = () => {
           type={"password"}
           required={true}
           onChangeFunc={(e) => {
-            setCustomerUserField("password", e.target.value);
-            isFieldValid("password", e.target.value);
+            setCustomerUserField("confirmPassword", e.target.value);
+            isFieldValid("confirmPassword", e.target.value);
           }}
         ></PDInput>
       </div>
