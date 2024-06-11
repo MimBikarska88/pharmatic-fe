@@ -1,7 +1,10 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { roleType } from "../utils/roleTypes";
-import { areMedicationsTheSame } from "../utils/basicValidation.util";
+import {
+  areMedicationsTheSame,
+  areMedicalRecordsTheSame,
+} from "../utils/basicValidation.util";
 
 const customerInitialStore = {
   firstName: "",
@@ -54,11 +57,27 @@ export const useUserStore = create(
       set((state) => {
         state.Customer.medications.push(rowData);
       }),
-    removeRowsFromCustomerMedications: (rows) =>
+    removeRowsFromCustomerMedications: () =>
       set((state) => {
         state.Customer.medications = state.Customer.medications.filter(
           (row) => !row.delete
         );
+      }),
+    removeRowsFromCustomerMedicalRecords: () =>
+      set((state) => {
+        state.Customer.medicalRecords = state.Customer.medicalRecords.filter(
+          (row) => !row.delete
+        );
+      }),
+    updateMedicalRecordDeletion: (row, value) =>
+      set((state) => {
+        const medicalRecors = state.Customer.medicalRecords;
+        const index = medicalRecors.findIndex((rec) =>
+          areMedicalRecordsTheSame(rec, row)
+        );
+        if (index !== -1) {
+          state.Customer.medicalRecords[index].delete = value;
+        }
       }),
     updateMedicationDeletion: (row, value) =>
       set((state) => {

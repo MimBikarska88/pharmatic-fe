@@ -14,3 +14,11 @@ export const areMedicationsTheSame = (med1, med2) => {
     med1.roa === med2.roa
   );
 };
+export const areMedicalRecordsTheSame = (rec1, rec2) => {
+  return (
+    rec1.medicalFacility === rec2.medicalFacility &&
+    rec1.medicalInterventionType === rec2.medicalInterventionType &&
+    rec1.arrivalDate === rec2.arrivalDate &&
+    rec1.leaveDate === rec1.leaveDate
+  );
+};

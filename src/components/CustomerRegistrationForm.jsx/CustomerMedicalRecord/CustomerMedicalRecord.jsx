@@ -20,14 +20,19 @@ const HEADER_COLS = [
 const INITIAL_ENTRIES_PER_PAGE = 5;
 const CustomerMedicalRecord = () => {
   const Customer = useUserStore((state) => state.Customer);
+
   const addRowToUserMedicalRecord =
     useUserStore.getState().addRowToUserMedicalRecord;
-  const deleteCustomerMedications =
-    useUserStore.getState().deleteCustomerMedications;
+
+  const removeRowsFromCustomerMedicalRecords = useUserStore(
+    (state) => state.removeRowsFromCustomerMedicalRecords
+  );
+  const updateMedicalRecordDeletion = useUserStore(
+    (state) => state.updateMedicalRecordDeletion
+  );
   const setCustomerUserField = useUserStore(
     (state) => state.setCustomerUserField
   );
-
   const [newRow, setNewRow] = useState({
     medicalFacility: "",
     medicalInterventionType: "",
@@ -40,28 +45,11 @@ const CustomerMedicalRecord = () => {
     arrivalDate: true,
     leaveDate: true,
   });
-  const [rowsToDelete, setRowsToDelete] = useState([]);
-
   const { page, setPage, displayEntries, pages } = usePagination(
     Customer.medicalRecords,
     INITIAL_ENTRIES_PER_PAGE
   );
 
-  const deleteRow = (e, selectedRow) => {
-    if (e.target.checked) {
-      setRowsToDelete((state) => [...state, selectedRow]);
-      return;
-    }
-    const rows = rowsToDelete.filter((row) => {
-      return (
-        row.medicalInterventionType === selectedRow.medicalInterventionType &&
-        row.medicalFacility === selectedRow.medicalFacility &&
-        row.arrivalDate === selectedRow.arrivalDate &&
-        row.leaveDate === selectedRow.leaveDate
-      );
-    });
-    setRowsToDelete(rows);
-  };
   const changeNewRow = (fieldName, value) => {
     setNewRow((state) => ({
       ...state,
@@ -124,12 +112,7 @@ const CustomerMedicalRecord = () => {
   };
 
   const deleteSelectedRows = () => {
-    if (rowsToDelete.length === 0) {
-      alert("No rows to delete!");
-      return;
-    }
-    deleteCustomerMedications(rowsToDelete);
-    setRowsToDelete([]);
+    removeRowsFromCustomerMedicalRecords();
   };
 
   return (
@@ -181,7 +164,10 @@ const CustomerMedicalRecord = () => {
                     <PDTable.Cell style={{ width: "20px" }}>
                       <PDInput
                         type={"checkbox"}
-                        onChangeFunc={(e) => deleteRow(e, el)}
+                        checked={el.delete}
+                        onChangeFunc={(e) =>
+                          updateMedicalRecordDeletion(el, e.target.checked)
+                        }
                       />
                     </PDTable.Cell>
                   )}
