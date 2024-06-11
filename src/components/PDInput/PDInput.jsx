@@ -1,19 +1,16 @@
 import styles from "./PDInput.module.css";
-const PDInput = ({
-  type,
-  label,
-  value,
-  maxLength,
-  className,
-  onChangeFunc,
-  errorMessage,
-  id,
-  placeholder,
-  isDisabled = false,
-  isValid = true,
-  isReadOnly = false,
-  required = false,
-}) => {
+const PDInput = (props) => {
+  const {
+    label,
+    value,
+    className,
+    onChangeFunc,
+    errorMessage,
+    placeholder,
+    required,
+    isValid = true,
+    ...rest
+  } = props;
   return (
     <>
       <div className={`${className}`} style={styles}>
@@ -23,16 +20,10 @@ const PDInput = ({
           {required && <span>*</span>}
         </label>
         <input
-          readOnly={isReadOnly}
           onChange={onChangeFunc}
-          id={id}
-          type={type}
           placeholder={placeholder}
-          maxLength={maxLength}
-          disabled={isDisabled}
-          isReadOnly={isReadOnly}
-          required={required}
           value={value}
+          {...rest}
           className={isValid ? styles["valid"] : styles["invalid"]}
         ></input>
         <span>

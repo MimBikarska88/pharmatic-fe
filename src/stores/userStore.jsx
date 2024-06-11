@@ -20,6 +20,8 @@ const customerInitialStore = {
   medications: [],
   generalPractitioner: "",
   latestMedicalCheckup: "",
+  allergicSymptoms: "",
+  allergicTriggers: "",
 };
 export const useUserStore = create(
   immer((set) => ({

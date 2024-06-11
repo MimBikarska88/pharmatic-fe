@@ -17,7 +17,6 @@ const HEADER_COLS = [
   "Duration",
   "Indication",
   "Side Effects",
-  "Notes",
 ];
 const INITIAL_ENTRIES_PER_PAGE = 5;
 
@@ -90,16 +89,13 @@ const CustomerMedications = () => {
     });
   };
 
-  useEffect(() => {
-    console.log(Customer.medications);
-  }, [Customer.medications]);
   const deleteSelectedRows = () => {
     removeRowsFromCustomerMedications();
   };
   return (
     <>
       <div>
-        <p style={{ width: "60%" }}>
+        <p style={{ width: "70%" }}>
           <strong>
             You are not obliged to provide details but they would help when our
             vendors are reviewing medication shipments and different options for
@@ -136,8 +132,9 @@ const CustomerMedications = () => {
                     <PDTable.Cell style={{ width: "20px" }}>
                       <PDInput
                         type={"checkbox"}
+                        checked={el.delete}
                         onChangeFunc={(e) =>
-                          updateMedicationDeletion(el, e.target.value)
+                          updateMedicationDeletion(el, e.target.checked)
                         }
                       />
                     </PDTable.Cell>
@@ -152,6 +149,18 @@ const CustomerMedications = () => {
               );
             })}
           </PDTable.Body>
+          <PDTable.Footer>
+            {Customer.medications.length >= INITIAL_ENTRIES_PER_PAGE && (
+              <PDPagination
+                pages={pages}
+                setPage={setPage}
+                entries={Customer.medications}
+                entriesPerPage={INITIAL_ENTRIES_PER_PAGE}
+                page={page}
+                displayEntries={INITIAL_ENTRIES_PER_PAGE}
+              />
+            )}
+          </PDTable.Footer>
         </PDTable>
       )}
       <div className="d-flex flex-row ">

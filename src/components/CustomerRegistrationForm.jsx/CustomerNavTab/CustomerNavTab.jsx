@@ -1,8 +1,12 @@
+import PDButton from "../../PDButton/PDButton";
 import styles from "./CustomerNavTab.module.css";
 const CustomerNavTab = ({ activeTab, setActiveTab }) => {
   return (
     <>
-      <ul className={`nav nav-tabs m-3 w-75 ${styles.tabs}`} role="tablist">
+      <ul
+        className={`nav nav-tabs m-3 d-inline-flex w-75 ${styles.tabs}`}
+        role="tablist"
+      >
         {[
           "Contact",
           "Address and Occupation",
@@ -24,6 +28,7 @@ const CustomerNavTab = ({ activeTab, setActiveTab }) => {
           </li>
         ))}
       </ul>
+      <PDButton value="submit" color={"green"} />
     </>
   );
 };

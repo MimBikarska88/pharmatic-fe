@@ -6,6 +6,7 @@ import {
 } from "./CustomerRegistrationUtils";
 import CustomerTabForm from "./CustomerTabForm/CustomerTabForm";
 import { useUserStore } from "../../stores/userStore";
+import PDButton from "../PDButton/PDButton";
 const CustomerRegistrationForm = ({}) => {
   const [activeTab, setActiveTab] = useState("0");
   const selectTab = (index) => {
