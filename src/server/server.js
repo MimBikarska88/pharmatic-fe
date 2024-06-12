@@ -1,14 +1,15 @@
-const express = require("express");
+import express from "express";
+import cors from "cors";
+import PharmaticRouter from "./router/PharmaticRouter.js";
+import { configDatabase } from "./config/mongoConfig.js";
 const PORT = 8080;
 const app = express();
-const { router } = require("./router/router");
-const cors = require("cors");
-
 const start = async () => {
+  await configDatabase();
   app.use(cors());
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
-  app.use("/", router);
+  app.use("/", PharmaticRouter);
   app.listen(PORT, () => {
     console.log(`Application running on port ${PORT}`);
   });
