@@ -1,7 +1,7 @@
-import express from "express";
-import cors from "cors";
-import PharmaticRouter from "./router/PharmaticRouter.js";
-import { configDatabase } from "./config/mongoConfig.js";
+const express = require("express");
+const cors = require("cors");
+const { PharmaticRouter } = require("./router/PharmaticRouter");
+const { configDatabase } = require("./config/mongoConfig");
 const PORT = 8080;
 const app = express();
 const start = async () => {

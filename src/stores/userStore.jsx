@@ -38,12 +38,14 @@ export const useUserStore = create(
       set((state) => {
         state.Customer = { ...customerInitialStore };
       }),
+
     setCustomerUserField: (fieldName, fieldValue) =>
       set((state) => {
         console.log(fieldName);
         console.log(fieldValue);
         state.Customer[`${fieldName}`] = fieldValue;
       }),
+
     setAddress: (country, city, postcode, detailedAddress) =>
       set((state) => {
         state.Customer.country = country;
@@ -51,26 +53,31 @@ export const useUserStore = create(
         state.Customer.postcode = postcode;
         state.Customer.detailedAddress = detailedAddress;
       }),
+
     addRowToUserMedicalRecord: (rowData) =>
       set((state) => {
         state.Customer.medicalRecords.push(rowData);
       }),
+
     addRowToCustomerMedications: (rowData) =>
       set((state) => {
         state.Customer.medications.push(rowData);
       }),
+
     removeRowsFromCustomerMedications: () =>
       set((state) => {
         state.Customer.medications = state.Customer.medications.filter(
           (row) => !row.delete
         );
       }),
+
     removeRowsFromCustomerMedicalRecords: () =>
       set((state) => {
         state.Customer.medicalRecords = state.Customer.medicalRecords.filter(
           (row) => !row.delete
         );
       }),
+
     updateMedicalRecordDeletion: (row, value) =>
       set((state) => {
         const medicalRecors = state.Customer.medicalRecords;
@@ -81,6 +88,7 @@ export const useUserStore = create(
           state.Customer.medicalRecords[index].delete = value;
         }
       }),
+
     updateMedicationDeletion: (row, value) =>
       set((state) => {
         const medications = state.Customer.medications;

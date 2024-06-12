@@ -2,12 +2,32 @@ import PDButton from "../../PDButton/PDButton";
 import styles from "./CustomerNavTab.module.css";
 import { useRegisterCustomerMutation } from "../../../queries/RegisterCustomerMutation/useRegisterCustomerMutation";
 import { useUserStore } from "../../../stores/userStore";
+import { useErrorStore } from "../../../stores/errorStore";
+import { useValidationStore } from "../../../stores/validationStore";
+import { isEmptyString } from "../../../utils/basicValidation.util";
 const CustomerNavTab = ({ activeTab, setActiveTab }) => {
   const Customer = useUserStore((state) => state.Customer);
-  const registerCustomerMutation = useRegisterCustomerMutation();
-  const submitRegisterForm = async (e) => {
-    await registerCustomerMutation.mutate(Customer);
+  const setRegisterError = useErrorStore((state) => state.setRegisterError);
+
+  const setRegisterFieldValidity = useValidationStore(
+    (state) => state.setRegisterFieldValidity
+  );
+  const onError = (error) => {
+    const { errors, tabIndex } = error.response?.data;
+    setActiveTab(tabIndex);
+    Object.entries(errors).forEach((entry) => {
+      if (!isEmptyString(entry[1])) {
+        setRegisterError(entry[0], entry[1]);
+        setRegisterFieldValidity(entry[0], false);
+        if (entry[0] === "password") {
+          setRegisterFieldValidity("confirmPassword", false);
+        }
+      }
+    });
   };
+  const registerCustomerMutation = useRegisterCustomerMutation(onError);
+  const submitRegisterForm = (e) => registerCustomerMutation.mutate(Customer);
+
   return (
     <>
       <ul

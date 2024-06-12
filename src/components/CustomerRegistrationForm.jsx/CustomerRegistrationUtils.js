@@ -98,7 +98,7 @@ export const isFieldValid = (fieldName, value) => {
   }
   if (fieldName === "confirmPassword") {
     const password = useUserStore.getState().Customer.password;
-    const isValidPassword = useValidationStore.getState().Customer.password;
+    const isValidPassword = useValidationStore.getState().Register.password;
     if (password && isValidPassword) {
       const match = value === password;
       setRegisterFieldValidity("confirmPassword", match);

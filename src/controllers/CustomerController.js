@@ -1,8 +1,12 @@
+const { validateContactFields } = require("../services/CustomerService");
+
 const CustomerController = {
   register: (req, res) => {
     console.log(req.body);
-    res.status(200);
-    res.json("ok");
+    const errors = validateContactFields(req.body);
+    if (Object.keys(errors).length > 0) {
+      return res.status(400).json({ tabIndex: 0, errors });
+    }
   },
 };
-export default CustomerController;
+module.exports = { CustomerController };

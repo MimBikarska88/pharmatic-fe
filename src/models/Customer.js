@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+const { Schema, model } = require("mongoose");
 
 const MedicalRecordSchema = new Schema({
   medicalFacility: {
@@ -55,77 +55,81 @@ const MedicationSchema = new Schema({
   },
 });
 
-const CustomerSchema = new Schema({
-  firstName: {
-    type: String,
-    required: true,
+const CustomerSchema = new Schema(
+  {
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+    },
+    surname: {
+      type: String,
+      required: true,
+    },
+    birthDate: {
+      type: Date,
+      required: true,
+    },
+    phoneNumber: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    detailedAddress: {
+      type: String,
+      required: true,
+    },
+    country: {
+      type: String,
+      required: true,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    zipCode: {
+      type: String,
+      required: true,
+    },
+    street: {
+      type: String,
+      required: true,
+    },
+    medicalRecords: {
+      type: [MedicalRecordSchema],
+      default: [],
+    },
+    medications: {
+      type: [MedicationSchema],
+      default: [],
+    },
+    generalPractitioner: {
+      type: String,
+    },
+    latestMedicalCheckup: {
+      type: String, // Store the file path or URL as a string
+    },
+    allergicSymptoms: {
+      type: String,
+      required: true,
+    },
+    allergicTriggers: {
+      type: String,
+      required: true,
+    },
   },
-  lastName: {
-    type: String,
-    required: true,
-  },
-  surname: {
-    type: String,
-    required: true,
-  },
-  birthDate: {
-    type: Date,
-    required: true,
-  },
-  phoneNumber: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  confirmPassword: {
-    type: String,
-    required: true,
-  },
-  detailedAddress: {
-    type: String,
-    required: true,
-  },
-  country: {
-    type: String,
-    required: true,
-  },
-  city: {
-    type: String,
-    required: true,
-  },
-  zipCode: {
-    type: String,
-    required: true,
-  },
-  street: {
-    type: String,
-    required: true,
-  },
-  medicalRecords: {
-    type: [MedicalRecordSchema],
-    default: [],
-  },
-  medications: {
-    type: [MedicationSchema],
-    default: [],
-  },
-  generalPractitioner: {
-    type: String,
-  },
-  latestMedicalCheckup: {
-    type: String, // Store the file path or URL as a string
-  },
-  allergicSymptoms: {
-    type: String,
-    required: true,
-  },
-  allergicTriggers: {
-    type: String,
-    required: true,
-  },
-});
+  {
+    collation: {
+      locale: "en",
+      strength: 2,
+    },
+  }
+);
 const Customer = model("Customer", CustomerSchema);
 module.exports = { Customer };

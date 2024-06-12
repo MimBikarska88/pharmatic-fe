@@ -24,6 +24,7 @@ const CustomerContactTab = () => {
           errorMessage={RegisterErrors.firstName}
           required={true}
           value={Customer.firstName}
+          maxLength={50}
           isValid={Register.firstName}
           onChangeFunc={(e) => {
             setCustomerUserField("firstName", e.target.value);
@@ -40,7 +41,7 @@ const CustomerContactTab = () => {
           isValid={Register.surname}
           onChangeFunc={(e) => {
             setCustomerUserField("surname", e.target.value);
-            isFieldValid("firstName", e.target.value);
+            isFieldValid("surname", e.target.value);
           }}
         ></PDInput>
         <PDInput
