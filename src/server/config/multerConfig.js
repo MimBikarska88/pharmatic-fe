@@ -1,0 +1,19 @@
+const multer = require("multer");
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "/pharmatic/records");
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, file.fieldname + "-" + uniqueSuffix);
+  },
+});
+
+// used for user uploading their check-up
+const uploadLatestHealthCheckup = upload.fields([
+  { name: "avatar", maxCount: 1 },
+]);
+const upload = multer({ storage: storage });
+module.exports = {
+  upload,
+};

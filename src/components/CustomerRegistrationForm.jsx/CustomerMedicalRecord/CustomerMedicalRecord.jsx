@@ -7,9 +7,10 @@ import styles from "./CustomerMedicalRecord.module.css";
 
 import { useUserStore } from "../../../stores/userStore";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { isEmptyString } from "../../../utils/basicValidation.util";
 import { usePagination } from "../../hooks/usePagination";
+import { useCallback } from "react";
 
 const HEADER_COLS = [
   "Intervention Type",
@@ -49,6 +50,14 @@ const CustomerMedicalRecord = () => {
     Customer.medicalRecords,
     INITIAL_ENTRIES_PER_PAGE
   );
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      console.log(file);
+      setCustomerUserField("latestMedicalCheckup", file);
+    }
+  };
 
   const changeNewRow = (fieldName, value) => {
     setNewRow((state) => ({
@@ -115,6 +124,14 @@ const CustomerMedicalRecord = () => {
     removeRowsFromCustomerMedicalRecords();
   };
 
+  const refMedicalCheckup = useCallback((node) => {
+    if (!node) {
+      return;
+    }
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(Customer.latestMedicalCheckup);
+    node.files = dataTransfer.files;
+  }, []);
   return (
     <>
       <div className="container">
@@ -132,8 +149,10 @@ const CustomerMedicalRecord = () => {
           </div>
           <div className="flex-col auto">
             <PDFileInput
+              ref={refMedicalCheckup}
               label={"Latest Health Check-up Report"}
-              value={Customer.latestMedicalCheckup}
+              required={false}
+              onChangeFunc={handleFileChange}
               className={`${styles["input-field"]}`}
             />
           </div>

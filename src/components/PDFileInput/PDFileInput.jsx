@@ -1,44 +1,49 @@
+import React, { forwardRef } from "react";
 import styles from "./PDFileInput.module.css";
-const PDFileInput = ({
-  label,
-  value,
-  className,
-  onChangeFunc,
-  errorMessage,
-  id,
-  accept,
-  multiple = false,
-  isDisabled = false,
-  isValid = true,
-  isReadOnly = false,
-  required = false,
-}) => {
-  return (
-    <>
+const PDFileInput = forwardRef(
+  (
+    {
+      label,
+      value,
+      className,
+      onChangeFunc,
+      errorMessage,
+      id,
+      accept,
+      multiple = false,
+      isDisabled = false,
+      isValid = true,
+      isReadOnly = false,
+      required = false,
+    },
+    fileRef
+  ) => {
+    return (
       <div className={`${className}`} style={styles}>
         <label htmlFor={label}>
-          <span className="text"></span>
-          {label}
+          <span className="text" style={{ color: "black" }}>
+            {label}
+          </span>
           {required && <span>*</span>}
         </label>
         <input
+          ref={fileRef} // Attach the forwarded ref here
           readOnly={isReadOnly}
           onChange={onChangeFunc}
           id={id}
           type="file"
           accept={accept}
           disabled={isDisabled}
-          isReadOnly={isReadOnly}
           required={required}
           value={value}
           multiple={multiple}
           className={isValid ? styles["valid"] : styles["invalid"]}
-        ></input>
+        />
         <span>
           <small>{errorMessage}</small>
         </span>
       </div>
-    </>
-  );
-};
+    );
+  }
+);
 export default PDFileInput;
