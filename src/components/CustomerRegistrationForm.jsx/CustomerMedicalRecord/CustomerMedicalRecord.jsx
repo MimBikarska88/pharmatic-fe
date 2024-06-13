@@ -52,7 +52,10 @@ const CustomerMedicalRecord = () => {
   );
 
   const handleFileChange = (event) => {
-    const file = event.target.files[0];
+    if (event.target.files.length === 0) {
+      return;
+    }
+    const file = event.target?.files[0];
     if (file) {
       console.log(file);
       setCustomerUserField("latestMedicalCheckup", file);
@@ -125,7 +128,7 @@ const CustomerMedicalRecord = () => {
   };
 
   const refMedicalCheckup = useCallback((node) => {
-    if (!node) {
+    if (!node || !Customer.latestMedicalCheckup) {
       return;
     }
     const dataTransfer = new DataTransfer();

@@ -74,7 +74,6 @@ const EMPTY_DETAILED_ADDRESS = "Detailed address is required";
 const EMPTY_COUNTRY = "Country is required";
 const EMPTY_CITY = "City is required";
 const EMPTY_ZIP_CODE = "Zip code is required";
-const EMPTY_STREET = "Street is required";
 
 const validateAddressFields = (data) => {
   const Errors = {};
@@ -91,12 +90,12 @@ const validateAddressFields = (data) => {
     Errors["city"] = EMPTY_CITY;
   }
 
-  if (!data.zipCode) {
+  if (!data.postcode) {
     Errors["postcode"] = EMPTY_ZIP_CODE;
   }
 
-  if (!data.street) {
-    Errors["street"] = EMPTY_STREET;
+  if (!data.detailedAddress) {
+    Errors["detailedAddress"] = EMPTY_DETAILED_ADDRESS;
   }
 
   return Errors;

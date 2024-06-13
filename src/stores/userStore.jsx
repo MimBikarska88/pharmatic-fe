@@ -22,7 +22,7 @@ const customerInitialStore = {
   medicalRecords: [],
   medications: [],
   generalPractitioner: "",
-  latestMedicalCheckup: "",
+  latestMedicalCheckup: null,
   allergicSymptoms: "",
   allergicTriggers: "",
 };

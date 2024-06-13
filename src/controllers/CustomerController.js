@@ -13,6 +13,7 @@ const CustomerController = {
     if (Object.keys(addressErrors).length > 0) {
       return res.status(400).json({ tabIndex: 1, errors: addressErrors });
     }
+    return res.status(200).json(req.body);
   },
 };
 module.exports = { CustomerController };
