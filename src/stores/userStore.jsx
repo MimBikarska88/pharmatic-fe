@@ -17,7 +17,7 @@ const customerInitialStore = {
   detailedAddress: "",
   country: "",
   city: "",
-  zipCode: "",
+  postcode: "",
   street: "",
   medicalRecords: [],
   medications: [],

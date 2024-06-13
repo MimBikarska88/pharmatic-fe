@@ -69,6 +69,39 @@ const validateContactFields = (data) => {
   }
   return Errors;
 };
+
+const EMPTY_DETAILED_ADDRESS = "Detailed address is required";
+const EMPTY_COUNTRY = "Country is required";
+const EMPTY_CITY = "City is required";
+const EMPTY_ZIP_CODE = "Zip code is required";
+const EMPTY_STREET = "Street is required";
+
+const validateAddressFields = (data) => {
+  const Errors = {};
+
+  if (!data.detailedAddress) {
+    Errors["detailedAddress"] = EMPTY_DETAILED_ADDRESS;
+  }
+
+  if (!data.country) {
+    Errors["country"] = EMPTY_COUNTRY;
+  }
+
+  if (!data.city) {
+    Errors["city"] = EMPTY_CITY;
+  }
+
+  if (!data.zipCode) {
+    Errors["postcode"] = EMPTY_ZIP_CODE;
+  }
+
+  if (!data.street) {
+    Errors["street"] = EMPTY_STREET;
+  }
+
+  return Errors;
+};
+
 const mapToMovie = (data) => {
   const Customer = new Customer({
     firstName: data.firstName,
@@ -81,7 +114,7 @@ const mapToMovie = (data) => {
     detailedAddress: data.detailedAddress,
     country: data.country,
     city: data.city,
-    zipCode: data.zipCode,
+    postcode: data.postcode,
     street: data.street,
     medicalRecords: data.medicalRecords || [],
     medications: data.medicalRecords || [],
@@ -99,4 +132,5 @@ const create = async (data) => {
 module.exports = {
   create,
   validateContactFields,
+  validateAddressFields,
 };

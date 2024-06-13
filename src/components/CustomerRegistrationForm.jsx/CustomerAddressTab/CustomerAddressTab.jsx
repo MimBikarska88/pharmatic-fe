@@ -30,7 +30,7 @@ const CustomerAddressTab = () => {
     useValidationStore.getState().setAddressIncorrectFormat;
 
   const INITIAL_COORDINATES = [51.505, -0.09];
-  const [position, setPosition] = useState(INITIAL_COORDINATES);
+  const [position, setPosition] = useState(null);
 
   const MarkerIcon = new L.Icon({
     iconUrl: marker,
@@ -40,7 +40,7 @@ const CustomerAddressTab = () => {
   });
 
   useEffect(() => {
-    if (position === INITIAL_COORDINATES) {
+    if (!position) {
       return;
     }
     if (!checkAllSecondTabFields()) {
@@ -78,10 +78,10 @@ const CustomerAddressTab = () => {
       },
     });
 
-    return position === null ? (
-      <></>
-    ) : (
-      <Marker position={position} icon={MarkerIcon}></Marker>
+    return (
+      position !== null && (
+        <Marker position={position} icon={MarkerIcon}></Marker>
+      )
     );
   };
 

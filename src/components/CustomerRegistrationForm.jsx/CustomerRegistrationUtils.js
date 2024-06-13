@@ -43,7 +43,7 @@ export const isFieldValid = (fieldName, value) => {
     setRegisterFieldValidity("lastName", isValid);
     !isValid
       ? setRegisterError("lastName", "Required with max length of 50 symbols.")
-      : setRegisterError("surname", "");
+      : setRegisterError("lastName", "");
   }
 
   if (fieldName === "birthDate") {
