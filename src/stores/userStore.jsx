@@ -38,7 +38,10 @@ export const useUserStore = create(
       set((state) => {
         state.Customer = { ...customerInitialStore };
       }),
-
+    setRole: (role) =>
+      set((state) => {
+        state.role = role;
+      }),
     setCustomerUserField: (fieldName, fieldValue) =>
       set((state) => {
         console.log(fieldName);

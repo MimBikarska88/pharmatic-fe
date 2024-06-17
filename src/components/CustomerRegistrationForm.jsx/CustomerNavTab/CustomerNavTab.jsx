@@ -6,13 +6,16 @@ import { useErrorStore } from "../../../stores/errorStore";
 import { useValidationStore } from "../../../stores/validationStore";
 import { isEmptyString } from "../../../utils/basicValidation.util";
 import { roleType } from "../../../utils/roleTypes";
+import { useNavigate } from "react-router";
 const CustomerNavTab = ({ activeTab, setActiveTab }) => {
   const Customer = useUserStore((state) => state.Customer);
   const setRegisterError = useErrorStore((state) => state.setRegisterError);
-
+  const setRole = useUserStore((state) => state.setRole);
   const setRegisterFieldValidity = useValidationStore(
     (state) => state.setRegisterFieldValidity
   );
+  const navigate = useNavigate();
+
   const onError = (error) => {
     const { errors, tabIndex } = error.response?.data;
     setActiveTab(tabIndex);
@@ -27,9 +30,10 @@ const CustomerNavTab = ({ activeTab, setActiveTab }) => {
     });
   };
   const onSuccess = (res) => {
-    console.log(res);
     window.localStorage.setItem("token", JSON.stringify(res.data.token));
     window.localStorage.setItem("role", JSON.stringify(roleType.customer));
+    setRole(roleType.customer);
+    navigate("/");
   };
   const registerCustomerMutation = useRegisterCustomerMutation(
     onError,
