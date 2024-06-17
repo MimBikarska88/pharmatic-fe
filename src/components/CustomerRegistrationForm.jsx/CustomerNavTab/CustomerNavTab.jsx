@@ -5,6 +5,7 @@ import { useUserStore } from "../../../stores/userStore";
 import { useErrorStore } from "../../../stores/errorStore";
 import { useValidationStore } from "../../../stores/validationStore";
 import { isEmptyString } from "../../../utils/basicValidation.util";
+import { roleType } from "../../../utils/roleTypes";
 const CustomerNavTab = ({ activeTab, setActiveTab }) => {
   const Customer = useUserStore((state) => state.Customer);
   const setRegisterError = useErrorStore((state) => state.setRegisterError);
@@ -25,7 +26,15 @@ const CustomerNavTab = ({ activeTab, setActiveTab }) => {
       }
     });
   };
-  const registerCustomerMutation = useRegisterCustomerMutation(onError);
+  const onSuccess = (res) => {
+    console.log(res);
+    window.localStorage.setItem("token", JSON.stringify(res.data.token));
+    window.localStorage.setItem("role", JSON.stringify(roleType.customer));
+  };
+  const registerCustomerMutation = useRegisterCustomerMutation(
+    onError,
+    onSuccess
+  );
   const submitRegisterForm = (e) => registerCustomerMutation.mutate(Customer);
 
   return (

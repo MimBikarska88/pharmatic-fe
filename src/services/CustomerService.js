@@ -1,4 +1,5 @@
 const { Customer } = require("../models/Customer");
+const bcrypt = require("bcrypt");
 
 const MAX_LENGTH_FIRST_NAME = 50;
 const MAX_LENGTH_LAST_NAME = 50;
@@ -101,35 +102,42 @@ const validateAddressFields = (data) => {
   return Errors;
 };
 
-const mapToMovie = (data) => {
-  const Customer = new Customer({
+const checkIfEmailExists = async (email) => {
+  const existing = await Customer.findOne({ email: email });
+  return Boolean(existing);
+};
+
+const mapToCustomer = async (data) => {
+  const customer = new Customer({
     firstName: data.firstName,
     lastName: data.lastName,
-    surname: data.surname,
+    surname: data.lastName,
     birthDate: new Date(birthDate),
     phoneNumber: data.phoneNumber,
-    // must be encrypted
-    password: data.password,
+    password: await bcrypt.hash(password, 10),
     detailedAddress: data.detailedAddress,
     country: data.country,
     city: data.city,
     postcode: data.postcode,
     street: data.street,
-    medicalRecords: data.medicalRecords || [],
-    medications: data.medicalRecords || [],
+    medicalRecords: data.medicalRecords,
+    medications: data.medications,
     generalPractitioner: data.generalPractitioner,
-    // latestMedicalCheckup: data.latestMedicalCheckup,
+    latestMedicalCheckup: data.filePath,
     allergicSymptoms: data.allergicSymptoms,
-    allergicTriggers: data.allergicSymptoms,
+    allergicTriggers: data.allergicTriggers,
   });
-  return Customer;
+  return customer;
 };
 const create = async (data) => {
-  await Customer.save(data);
+  const customer = await mapToCustomer(data);
+  const saved = await Customer.save(customer);
+  return saved;
 };
 
 module.exports = {
   create,
   validateContactFields,
   validateAddressFields,
+  checkIfEmailExists,
 };
