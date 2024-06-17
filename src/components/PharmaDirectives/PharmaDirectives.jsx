@@ -1,6 +1,7 @@
 import styles from "./PharmaDirectives.module.css";
 import { Route, Routes } from "react-router";
 import Register from "../../pages/Register/Register";
+import Login from "../../pages/Login/Login";
 import { roleType } from "../../utils/roleTypes";
 const PharmaDirectives = () => {
   return (
@@ -19,6 +20,7 @@ const PharmaDirectives = () => {
           path="/register/organization"
           element={<Register roleType={roleType.organization}></Register>}
         ></Route>
+        <Route path="login" element={<Login />}></Route>
       </Routes>
     </div>
   );

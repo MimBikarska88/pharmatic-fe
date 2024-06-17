@@ -5,6 +5,8 @@ import PharmaDirectives from "./components/PharmaDirectives/PharmaDirectives";
 import { BrowserRouter } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { QueryClientProvider, QueryClient } from "react-query";
+import { useMemo } from "react";
+import { useUserStore } from "./stores/userStore";
 
 const client = new QueryClient({
   defaultOptions: {
@@ -17,6 +19,13 @@ const client = new QueryClient({
 });
 
 const App = () => {
+  const setRole = useUserStore((state) => state.setRole);
+  useMemo(() => {
+    const role = localStorage.getItem("role");
+    if (role) {
+      setRole(JSON.parse(role));
+    }
+  });
   return (
     <>
       <QueryClientProvider client={client}>

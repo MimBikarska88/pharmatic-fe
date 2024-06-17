@@ -30,7 +30,6 @@ const CustomerNavTab = ({ activeTab, setActiveTab }) => {
     });
   };
   const onSuccess = (res) => {
-    window.localStorage.setItem("token", JSON.stringify(res.data.token));
     window.localStorage.setItem("role", JSON.stringify(roleType.customer));
     setRole(roleType.customer);
     navigate("/");
