@@ -6,7 +6,7 @@ import { useErrorStore } from "../../../stores/errorStore";
 import { useValidationStore } from "../../../stores/validationStore";
 import { isEmptyString } from "../../../utils/basicValidation.util";
 import { roleType } from "../../../utils/roleTypes";
-import { useNavigate } from "react-router";
+import { json, useNavigate } from "react-router";
 const CustomerNavTab = ({ activeTab, setActiveTab }) => {
   const Customer = useUserStore((state) => state.Customer);
   const setRegisterError = useErrorStore((state) => state.setRegisterError);
@@ -38,7 +38,16 @@ const CustomerNavTab = ({ activeTab, setActiveTab }) => {
     onError,
     onSuccess
   );
-  const submitRegisterForm = (e) => registerCustomerMutation.mutate(Customer);
+  const submitRegisterForm = (e) => {
+    const json = JSON.stringify(Customer);
+    const blob = new Blob([json], {
+      type: "application/json",
+    });
+    const formData = new FormData();
+    formData.append("latestMedicalCheckup", Customer.latestMedicalCheckup);
+    formData.append("customer", json);
+    registerCustomerMutation.mutate(formData);
+  };
 
   return (
     <>
