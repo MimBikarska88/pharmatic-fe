@@ -15,7 +15,7 @@ const Navigation = () => {
       { title: "Customers", link: "/customers/all" },
       { title: "Logout", link: "/logout" },
     ],
-    [roleType.organization]: [
+    [roleType.vendor]: [
       { title: "Home", link: "/" },
       { title: "Stock", link: "/products" },
       { title: "Orders", link: "/orders/" },

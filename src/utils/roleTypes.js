@@ -1,7 +1,7 @@
 export const roleType = {
   guest: "guest",
   admin: "admin",
-  organization: "organization",
+  vendor: "vendor",
   soleProprietor: "soleProprietor",
   customer: "customer",
 };

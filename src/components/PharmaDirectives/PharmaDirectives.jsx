@@ -13,12 +13,12 @@ const PharmaDirectives = () => {
           element={<Register roleType={roleType.customer}></Register>}
         ></Route>
         <Route
-          path="/register/sole-proprietor"
+          path="/register/admin"
           element={<Register roleType={roleType.soleProprietor}></Register>}
         ></Route>
         <Route
-          path="/register/organization"
-          element={<Register roleType={roleType.organization}></Register>}
+          path="/register/vendor"
+          element={<Register roleType={roleType.vendor}></Register>}
         ></Route>
         <Route path="login" element={<Login />}></Route>
       </Routes>

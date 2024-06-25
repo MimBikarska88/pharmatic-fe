@@ -1,0 +1,14 @@
+.input-field {
+  height: 120px;
+  width: 400px;
+}
+.input-field input[type="text"] {
+  width: 380px;
+}
+.input-field-person {
+  height: 120px;
+  width: 300px;
+}
+.input-field-person input[type="text"] {
+  width: 290px;
+}

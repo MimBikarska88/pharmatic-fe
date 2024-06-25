@@ -1,0 +1,6 @@
+.input-field {
+  width: auto;
+}
+.input-field input[type="text"] {
+  width: 280px;
+}
