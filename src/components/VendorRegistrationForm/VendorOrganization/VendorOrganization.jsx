@@ -1,6 +1,11 @@
+import { useUserStore } from "../../../stores/userStore";
 import PDInput from "../../PDInput/PDInput";
 import styles from "./VendorOrganization.module.css";
 const VendorOrganization = () => {
+  const Vendor = useUserStore((state) => state.Vendor);
+  const setPrimaryPerson = useUserStore.getState().setPrimaryPerson;
+  const setSecondaryPerson = useUserStore.getState().setSecondaryPerson;
+  const setVendorField = useUserStore.getState().setVendorField;
   return (
     <>
       <h3 className="text-center mt-3">Vendor Organization</h3>
@@ -12,16 +17,21 @@ const VendorOrganization = () => {
               <PDInput
                 label="Name"
                 type="text"
+                value={Vendor.primaryPerson.name}
+                onChange={(e) => setPrimaryPerson("name", e.target.value)}
                 className={styles["input-field-person"]}
               />
               <PDInput
                 label="Job Title"
                 type="text"
+                value={Vendor.primaryPerson.jobTitle}
+                onChange={(e) => setPrimaryPerson("jobTitle", e.target.value)}
                 className={styles["input-field-person"]}
               />
               <PDInput
                 label="Phone number"
                 type="text"
+                value={(e) => setPrimaryPerson("phoneNumber", e.target.value)}
                 className={styles["input-field-person"]}
               />
             </div>
@@ -30,15 +40,23 @@ const VendorOrganization = () => {
               <PDInput
                 label="Name"
                 type="text"
+                value={Vendor.secondaryPerson.name}
+                onChange={(e) => setSecondaryPerson("name", e.target.value)}
                 className={styles["input-field-person"]}
               />
               <PDInput
                 label="Job Title"
                 type="text"
+                value={Vendor.secondaryPerson.jobTitle}
+                onChange={(e) => setSecondaryPerson("jobTitle", e.target.value)}
                 className={styles["input-field-person"]}
               />
               <PDInput
                 label="Phone number"
+                value={Vendor.secondaryPerson.phoneNumber}
+                onChange={(e) =>
+                  setSecondaryPerson("phoneNumber", e.target.value)
+                }
                 type="text"
                 className={styles["input-field-person"]}
               />
@@ -52,6 +70,8 @@ const VendorOrganization = () => {
               <PDInput
                 label="Registered vendor name"
                 type="text"
+                value={Vendor.companyName}
+                onChange={(e) => setVendorField("companyName", e.target.value)}
                 className={styles["input-field"]}
               />
             </div>
@@ -59,6 +79,8 @@ const VendorOrganization = () => {
               <PDInput
                 label="Registered vendor email"
                 type="text"
+                value={Vendor.email}
+                onChange={(e) => setVendorField("email", e.target.value)}
                 className={styles["input-field"]}
               />
             </div>

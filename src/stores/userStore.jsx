@@ -26,13 +26,43 @@ const customerInitialStore = {
   allergicSymptoms: "",
   allergicTriggers: "",
 };
+const vendorInitialStore = {
+  primaryPerson: {
+    name: "",
+    job: "",
+    title: "",
+  },
+  secondaryPerson: {
+    name: "",
+    job: "",
+    title: "",
+  },
+  companyName: "",
+  email: "",
+  manufactoringLicense: {},
+  importExportLicense: {},
+  specialAccessScheme: {},
+  clinicalTrialParticipation: {},
+  specialAuthorizationForControlledSubstances: {},
+  EORI: "",
+  EUVAT: "",
+  FDANumber: "",
+  FEINumber: "",
+  password: "",
+  confirmPassword: "",
+  detailedAddress: "",
+  country: "",
+  city: "",
+  postcode: "",
+  street: "",
+};
 export const useUserStore = create(
   immer((set) => ({
     role: roleType.guest,
     Admin: {},
     Customer: { ...customerInitialStore },
     SoleProprietor: {},
-    Organization: {},
+    Vendor: { ...vendorInitialStore },
 
     setCustomerInitialState: () =>
       set((state) => {
@@ -101,6 +131,28 @@ export const useUserStore = create(
         if (index !== -1) {
           state.Customer.medications[index].delete = value;
         }
+      }),
+
+    setVendorField: (fieldName, fieldValue) =>
+      set((state) => {
+        state.Vendor[`${fieldName}`] = fieldValue;
+      }),
+    setVendorPrimaryPerson: (fieldName, fieldValue) => {
+      set((state) => {
+        state.Vendor.primaryPerson[`${fieldName}`] = fieldValue;
+      });
+    },
+    setVendorSecondaryPerson: (fieldName, fieldValue) => {
+      set((state) => {
+        state.Vendor.secondaryPerson[`${fieldName}`] = fieldValue;
+      });
+    },
+    setVendorAddress: (country, city, postcode, detailedAddress) =>
+      set((state) => {
+        state.Vendor.country = country;
+        state.Vendor.city = city;
+        state.Vendor.postcode = postcode;
+        state.Vendor.detailedAddress = detailedAddress;
       }),
   }))
 );

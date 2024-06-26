@@ -5,20 +5,19 @@ import { useMapEvents } from "react-leaflet";
 import L from "leaflet";
 
 import PDInput from "../../PDInput/PDInput";
-import PDTextArea from "../../PDTextArea/PDTextArea";
 
 import styles from "./VendorAddress.module.css";
 import marker from "../../../static/img/icons/marker.png";
 
 import useGetMapLocationQuery from "../../../queries/GetMapLocationQuery/useGetMapLocationQuery";
+import { useUserStore } from "../../../stores/userStore";
 import { useState } from "react";
 
 const VendorAddress = () => {
-  console.log("here customer address tab");
-
   const INITIAL_COORDINATES = [51.505, -0.09];
   const [position, setPosition] = useState(null);
-
+  const Vendor = useUserStore((state) => state.Vendor);
+  const setVendorAddress = useUserStore.getState().setVendorAddress;
   const MarkerIcon = new L.Icon({
     iconUrl: marker,
     iconRetinaUrl: marker,
@@ -33,6 +32,7 @@ const VendorAddress = () => {
       const postcode = address?.postcode || "";
       const city = address?.city || address?.town || address?.village || "";
       const detailedAddress = res.data?.display_name || "";
+      setVendorAddress(country, city, postcode, detailedAddress);
     },
   });
 
@@ -70,9 +70,15 @@ const VendorAddress = () => {
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
+            <LocationMarker />
           </MapContainer>
         </div>
-        <PDInput type="text" className={styles["input-field"]} />
+        <PDInput
+          type="text"
+          value={Vendor.detailedAddress}
+          disabled={true}
+          className={styles["input-field"]}
+        />
       </div>
     </>
   );
