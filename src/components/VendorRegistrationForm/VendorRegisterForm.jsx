@@ -5,6 +5,7 @@ import VendorOrganization from "./VendorOrganization/VendorOrganization";
 import VendorLicenses from "./VendorLicenses/VendorLicenses";
 import VendorAddress from "./VendorAddress/VendorAddress";
 import VendorCredentials from "./VendorCredentials/VendorCredentials";
+import { validateVendorField } from "./VendorRegistrationUtil";
 const VendorRegisterForm = () => {
   const formType = {
     organization: "VendorOrganization",

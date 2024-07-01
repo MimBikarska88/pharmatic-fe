@@ -11,14 +11,39 @@ const initialStore = {
   password: "",
   confirmPassword: "",
 };
+const vendorInitialStore = {
+  primaryContactName: "",
+  primaryContactJobTiltle: "",
+  primaryContactPhone: "",
+
+  secondaryContactName: "",
+  secondaryContactJobTiltle: "",
+  secondaryContactPhone: "",
+
+  vendorName: "",
+  vendorEmail: "",
+
+  EORI: "",
+  EUVAT: "",
+  FDANumber: "",
+  FEINumber: "",
+  password: "",
+  confirmPassword: "",
+  detailedAddress: "",
+};
 
 export const useErrorStore = create(
   immer((set) => ({
     RegisterErrors: { ...initialStore },
+    VendorRegisterErrors: { ...vendorInitialStore },
 
     setRegisterError: (fieldName, fieldValue) =>
       set((state) => {
         state.RegisterErrors[`${fieldName}`] = fieldValue;
+      }),
+    setVendorRegisterError: (fieldName, fieldValue) =>
+      set((state) => {
+        state.VendorRegisterErrors[`${fieldName}`] = fieldValue;
       }),
   }))
 );

@@ -16,10 +16,30 @@ const initialStore = {
   postcode: true,
   city: true,
 };
+const vendorInitialStore = {
+  primaryContactName: true,
+  primaryContactJobTitle: true,
+  primaryContactPhone: true,
+
+  secondaryContactName: true,
+  secondaryContactJobTitle: true,
+  secondaryContactPhone: true,
+  companyName: true,
+  email: true,
+
+  EORI: true,
+  EUVAT: true,
+  FDANumber: true,
+  FEINumber: true,
+  password: true,
+  confirmPassword: true,
+  detailedAddress: true,
+};
 
 export const useValidationStore = create(
   immer((set) => ({
     Register: { ...initialStore },
+    RegisterVendor: { ...vendorInitialStore },
 
     setRegisterFieldValidity: (fieldName, fieldValue) =>
       set((state) => {
@@ -39,6 +59,10 @@ export const useValidationStore = create(
         state.Register.country = true;
         state.Register.postcode = true;
         state.Register.city = true;
+      }),
+    setRegisterVendorFieldValidity: (fieldName, fieldValue) =>
+      set((state) => {
+        state.RegisterVendor[`${fieldName}`] = fieldValue;
       }),
   }))
 );

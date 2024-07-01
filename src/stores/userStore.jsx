@@ -29,21 +29,22 @@ const customerInitialStore = {
 const vendorInitialStore = {
   primaryPerson: {
     name: "",
-    job: "",
-    title: "",
+    jobTitle: "",
+    phone: "",
   },
   secondaryPerson: {
     name: "",
-    job: "",
-    title: "",
+    jobTitle: "",
+    phone: "",
   },
   companyName: "",
   email: "",
-  manufactoringLicense: {},
-  importExportLicense: {},
-  specialAccessScheme: {},
-  clinicalTrialParticipation: {},
-  specialAuthorizationForControlledSubstances: {},
+  manufactoringLicense: null,
+  importExportLicense: null,
+  specialAccessScheme: null,
+  clinicalTrialParticipation: null,
+  specialAuthorizationForControlledSubstances: null,
+  residence: "",
   EORI: "",
   EUVAT: "",
   FDANumber: "",
@@ -137,12 +138,12 @@ export const useUserStore = create(
       set((state) => {
         state.Vendor[`${fieldName}`] = fieldValue;
       }),
-    setVendorPrimaryPerson: (fieldName, fieldValue) => {
+    setPrimaryContact: (fieldName, fieldValue) => {
       set((state) => {
         state.Vendor.primaryPerson[`${fieldName}`] = fieldValue;
       });
     },
-    setVendorSecondaryPerson: (fieldName, fieldValue) => {
+    setSecondaryContact: (fieldName, fieldValue) => {
       set((state) => {
         state.Vendor.secondaryPerson[`${fieldName}`] = fieldValue;
       });
