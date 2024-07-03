@@ -11,13 +11,29 @@ import marker from "../../../static/img/icons/marker.png";
 
 import useGetMapLocationQuery from "../../../queries/GetMapLocationQuery/useGetMapLocationQuery";
 import { useUserStore } from "../../../stores/userStore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useValidationStore } from "../../../stores/validationStore";
+import { validateAddress } from "../VendorRegistrationUtil";
+import { useErrorStore } from "../../../stores/errorStore";
 
 const VendorAddress = () => {
   const INITIAL_COORDINATES = [51.505, -0.09];
   const [position, setPosition] = useState(null);
   const Vendor = useUserStore((state) => state.Vendor);
   const setVendorAddress = useUserStore.getState().setVendorAddress;
+  const { detailedAddress } = useValidationStore(
+    (state) => state.RegisterVendor
+  );
+  const {
+    fullAddress = detailedAddress,
+    country,
+    postcode,
+    city,
+  } = useUserStore((state) => state.Vendor);
+  const { addressErrorMessage = detailedAddress } = useErrorStore(
+    (state) => state.VendorRegisterErrors
+  );
+
   const MarkerIcon = new L.Icon({
     iconUrl: marker,
     iconRetinaUrl: marker,
@@ -35,6 +51,13 @@ const VendorAddress = () => {
       setVendorAddress(country, city, postcode, detailedAddress);
     },
   });
+
+  useEffect(() => {
+    if (!position) {
+      return;
+    }
+    validateAddress();
+  }, [fullAddress, country, postcode, city]);
 
   if (isError) {
     return <div>Something happened, please try reloading.</div>;
@@ -75,7 +98,9 @@ const VendorAddress = () => {
         </div>
         <PDInput
           type="text"
+          isValid={detailedAddress}
           value={Vendor.detailedAddress}
+          errorMessage={addressErrorMessage}
           disabled={true}
           className={styles["input-field"]}
         />

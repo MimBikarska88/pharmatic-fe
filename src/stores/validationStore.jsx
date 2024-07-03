@@ -34,6 +34,9 @@ const vendorInitialStore = {
   password: true,
   confirmPassword: true,
   detailedAddress: true,
+  country: true,
+  city: true,
+  postcode: true,
 };
 
 export const useValidationStore = create(

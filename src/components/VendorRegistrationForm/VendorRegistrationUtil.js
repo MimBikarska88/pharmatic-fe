@@ -223,3 +223,69 @@ export const changeResidence = (fieldValue) => {
     setVendorRegisterError("FEINumber", "");
   }
 };
+
+export const validateAddress = () => {
+  const { detailedAddress, country, postcode, city } =
+    useUserStore.getState().Vendor;
+  const setRegisterVendorFieldValidity =
+    useValidationStore.getState().setRegisterVendorFieldValidity;
+  const setVendorRegisterError =
+    useErrorStore.getState().setVendorRegisterError;
+
+  if ([detailedAddress, country, postcode, city].some((val) => !val)) {
+    setRegisterVendorFieldValidity("detailedAddress", false);
+    setRegisterVendorFieldValidity("country", false);
+    setRegisterVendorFieldValidity("postcode", false);
+    setRegisterVendorFieldValidity("city", false);
+    setVendorRegisterError(
+      "detailedAddress",
+      "Please, select a valid location."
+    );
+  } else {
+    setRegisterVendorFieldValidity("detailedAddress", true);
+    setRegisterVendorFieldValidity("country", true);
+    setRegisterVendorFieldValidity("postcode", true);
+    setRegisterVendorFieldValidity("city", true);
+    setVendorRegisterError("detailedAddress", "");
+  }
+};
+
+export const validatePassword = (password) => {
+  const passwordRegex =
+    /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})/;
+
+  const setRegisterVendorFieldValidity =
+    useValidationStore.getState().setRegisterVendorFieldValidity;
+  const setVendorRegisterError =
+    useErrorStore.getState().setVendorRegisterError;
+
+  const isPasswordValid = passwordRegex.test(password);
+  if (!isPasswordValid) {
+    setRegisterVendorFieldValidity("password", false);
+    setVendorRegisterError(
+      "password",
+      "Password have letters, digits and a special symbol!"
+    );
+  } else {
+    setRegisterVendorFieldValidity("password", true);
+    setVendorRegisterError("password", "");
+  }
+};
+
+export const validateConfirmPassword = (confirmPassword) => {
+  const { password } = useUserStore.getState().Vendor;
+  const isConfirmPasswordValid = confirmPassword === password;
+  console.log(confirmPassword);
+  console.log(password);
+  const setRegisterVendorFieldValidity =
+    useValidationStore.getState().setRegisterVendorFieldValidity;
+  const setVendorRegisterError =
+    useErrorStore.getState().setVendorRegisterError;
+  if (!isConfirmPasswordValid) {
+    setRegisterVendorFieldValidity("confirmPassword", false);
+    setVendorRegisterError("confirmPassword", "Password do NOT match");
+  } else {
+    setRegisterVendorFieldValidity("confirmPassword", true);
+    setVendorRegisterError("confirmPassword", "");
+  }
+};

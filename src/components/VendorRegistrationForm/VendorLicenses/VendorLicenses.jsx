@@ -82,9 +82,6 @@ const VendorLicenses = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(Vendor);
-  }, [Vendor]);
   return (
     <>
       <h3 className="text-center mt-3">Vendor Licenses</h3>
