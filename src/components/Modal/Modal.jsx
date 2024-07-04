@@ -13,7 +13,6 @@ const Modal = () => {
   } = useModalStore((state) => state);
   return (
     <>
-      return (
       <div
         className={`modal fade ${show ? "show d-block" : ""}`}
         tabIndex="-1"
@@ -48,7 +47,6 @@ const Modal = () => {
           </div>
         </div>
       </div>
-      );
     </>
   );
 };

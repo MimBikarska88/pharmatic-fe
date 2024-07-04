@@ -55,7 +55,6 @@ const vendorInitialStore = {
   country: "",
   city: "",
   postcode: "",
-  street: "",
 };
 export const useUserStore = create(
   immer((set) => ({

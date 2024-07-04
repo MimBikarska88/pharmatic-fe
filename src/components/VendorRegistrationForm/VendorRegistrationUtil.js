@@ -275,8 +275,6 @@ export const validatePassword = (password) => {
 export const validateConfirmPassword = (confirmPassword) => {
   const { password } = useUserStore.getState().Vendor;
   const isConfirmPasswordValid = confirmPassword === password;
-  console.log(confirmPassword);
-  console.log(password);
   const setRegisterVendorFieldValidity =
     useValidationStore.getState().setRegisterVendorFieldValidity;
   const setVendorRegisterError =
