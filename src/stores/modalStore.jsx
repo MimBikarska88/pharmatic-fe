@@ -8,7 +8,7 @@ const initialStore = {
   modalText: "",
   onClose: null,
   onCancel: null,
-  showCancel: true,
+  showCancel: false,
 };
 
 export const useModalStore = create(
