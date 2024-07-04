@@ -3,6 +3,7 @@ import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import PharmaDirectives from "./components/PharmaDirectives/PharmaDirectives";
 import { BrowserRouter } from "react-router-dom";
+import Modal from "./components/Modal/Modal";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { useMemo } from "react";
@@ -31,6 +32,7 @@ const App = () => {
       <QueryClientProvider client={client}>
         <BrowserRouter>
           <Header />
+          <Modal />
           <PharmaDirectives />
           <Footer />
         </BrowserRouter>

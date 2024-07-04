@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { roleType } from "../utils/roleTypes";
 import { immer } from "zustand/middleware/immer";
 
 // each page is a nested object that contains validation states for fields
