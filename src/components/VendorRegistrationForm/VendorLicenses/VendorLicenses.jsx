@@ -16,10 +16,19 @@ const VendorLicenses = () => {
   const year = new Date().getFullYear();
   const Vendor = useUserStore((state) => state.Vendor);
   const setVendorField = useUserStore((state) => state.setVendorField);
+  const setVendorRegisterError =
+    useErrorStore.getState().setVendorRegisterError;
+  const setRegisterVendorFieldValidity =
+    useValidationStore.getState().setRegisterVendorFieldValidity;
 
-  const { EORI, EUVAT, FDANumber, FEINumber } = useErrorStore(
-    (state) => state.VendorRegisterErrors
-  );
+  const {
+    EORI,
+    EUVAT,
+    FDANumber,
+    FEINumber,
+    importExportLicense,
+    manufactoringLicense,
+  } = useErrorStore((state) => state.VendorRegisterErrors);
   const RegisterVendor = useValidationStore((state) => state.RegisterVendor);
   const refManufactoringLicense = useCallback((node) => {
     if (!node || !Vendor.manufactoringLicense) {
@@ -68,9 +77,13 @@ const VendorLicenses = () => {
     }
     const file = event.target?.files[0];
     if (file) {
-      if (fieldName === "manufacturingLicense") {
-        setVendorField("manufacturingLicense", file);
+      if (fieldName === "manufactoringLicense") {
+        setVendorRegisterError(fieldName, "");
+        setRegisterVendorFieldValidity(fieldName, true);
+        setVendorField("manufactoringLicense", file);
       } else if (fieldName === "importExportLicense") {
+        setVendorRegisterError(fieldName, "");
+        setRegisterVendorFieldValidity(fieldName, true);
         setVendorField("importExportLicense", file);
       } else if (fieldName === "specialAccessScheme") {
         setVendorField("specialAccessScheme", file);
@@ -90,40 +103,45 @@ const VendorLicenses = () => {
           <PDFileInput
             ref={refManufactoringLicense}
             required={true}
+            isValid={RegisterVendor.manufactoringLicense}
             label={`Manufactoring License (${year - 1}/${year})`}
-            onChangeFunc={(e) => handleFileChange(e, "manufacturingLicense")}
-            className="m-1"
+            onChangeFunc={(e) => handleFileChange(e, "manufactoringLicense")}
+            errorMessage={manufactoringLicense}
+            styles={{ height: "100px" }}
           />
           <PDFileInput
             onChangeFunc={(e) => handleFileChange(e, "importExportLicense")}
+            isValid={RegisterVendor.importExportLicense}
             label={`Import / Export License (${year - 1}/${year})`}
-            className="m-1"
+            styles={{ height: "100px" }}
+            errorMessage={importExportLicense}
+            required={true}
             ref={refImportExportLicense}
           />
           <PDFileInput
             ref={refSasApproval}
+            styles={{ height: "100px" }}
             onChangeFunc={(e) => handleFileChange(e, "specialAccessScheme")}
-            className="m-1"
             label={`Special Access Scheme (SAS) Approval License (${
               year - 1
             }/${year})`}
           />{" "}
           <PDFileInput
+            styles={{ height: "100px" }}
             ref={refClinicalTrial}
             onChangeFunc={(e) =>
               handleFileChange(e, "clinicalTrialParticipation")
             }
-            className="m-1"
             label={`Clinical Trial Participation Consent License (${
               year - 1
             }/${year})`}
           />
           <PDFileInput
+            styles={{ height: "100px" }}
             ref={refSpecialAuthorizationForControlledSubstances}
             onChangeFunc={(e) =>
               handleFileChange(e, "specialAuthorizationForControlledSubstances")
             }
-            className="m-1"
             label={`Special Authorization for Controlled Substances (${
               year - 1
             }/${year})`}
@@ -132,7 +150,7 @@ const VendorLicenses = () => {
         <div className="d-flex flex-column">
           <div className="d-flex">
             <PDInput
-              className="d-inline-block pl-0 pr-3 py-3"
+              className={styles["input-field"]}
               type="radio"
               label="EU"
               onChangeFunc={(e) => {
@@ -142,7 +160,7 @@ const VendorLicenses = () => {
               name="based"
             />
             <PDInput
-              className="d-inline-block p-3"
+              className={styles["input-field"]}
               type="radio"
               onChangeFunc={(e) => {
                 setVendorField("residence", ResidenceType.NON_EU);
@@ -162,7 +180,7 @@ const VendorLicenses = () => {
             isValid={RegisterVendor.EORI}
             errorMessage={EORI}
             label="EORI Number (Economic Operators Registration and Identification number)"
-            className={styles["input-field"]}
+            className={`${styles["input-field"]} `}
             onChangeFunc={(e) => setVendorLicensesField("EORI", e.target.value)}
           />
           <PDInput
@@ -178,7 +196,7 @@ const VendorLicenses = () => {
             onChangeFunc={(e) =>
               setVendorLicensesField("EUVAT", e.target.value)
             }
-            className={styles["input-field"]}
+            className={`${styles["input-field"]}  `}
           />
           <PDInput
             disabled={
@@ -192,7 +210,7 @@ const VendorLicenses = () => {
             }
             isValid={RegisterVendor.FDANumber}
             errorMessage={FDANumber}
-            className={styles["input-field"]}
+            className={`${styles["input-field"]}  `}
           />
           <PDInput
             disabled={
@@ -206,8 +224,7 @@ const VendorLicenses = () => {
             onChangeFunc={(e) =>
               setVendorLicensesField("FEINumber", e.target.value)
             }
-            className={styles["input-field"]}
-            Name={styles["input-field"]}
+            className={`${styles["input-field"]}  `}
           />
         </div>
       </div>

@@ -8,9 +8,18 @@ import VendorCredentials from "./VendorCredentials/VendorCredentials";
 import { useState } from "react";
 import { useRegisterVendorMutation } from "../../queries/useRegisterVendorMutation.jsx/useRegisterVendorMutation";
 import { useUserStore } from "../../stores/userStore";
+import { isEmptyString } from "../../utils/basicValidation.util";
+import { useValidationStore } from "../../stores/validationStore";
+import { useErrorStore } from "../../stores/errorStore";
+import { useModalStore } from "../../stores/modalStore";
 
 const VendorRegisterForm = () => {
   const Vendor = useUserStore((state) => state.Vendor);
+  const setRegisterVendorFieldValidity =
+    useValidationStore.getState().setRegisterVendorFieldValidity;
+  const setVendorRegisterError =
+    useErrorStore.getState().setVendorRegisterError;
+  const { showModal, hideModal, setModal } = useModalStore();
   const formType = {
     organization: "VendorOrganization",
     address: "VendorAddress",
@@ -33,10 +42,44 @@ const VendorRegisterForm = () => {
   };
   const [index, setIndex] = useState(0);
 
+  const onCloseModal = () => {
+    hideModal();
+    setModal({
+      modalTitle: "",
+      modalText: "",
+    });
+  };
+  const showModalIfNoResidenceIsSelected = () => {};
   const onError = (error) => {
-    const { errors, tabName } = error.response?.data;
-    setIndex(formTabs.indexOf(tabName));
-    //Object.entries(errors).forEach((entry) => {});
+    const { Errors, tabName, Existing } = error.response?.data;
+    if (Errors) {
+      setIndex(formTabs.indexOf(tabName));
+      Object.entries(Errors).forEach((entry) => {
+        if (!isEmptyString(entry[1])) {
+          setVendorRegisterError(entry[0], entry[1]);
+          setRegisterVendorFieldValidity(entry[0], false);
+          if (entry[0] === "residence") {
+            setModal({
+              modalTitle: "Error",
+              modalText: entry[1],
+              showCancel: false,
+              onClose: onCloseModal,
+            });
+            showModal();
+          }
+        }
+      });
+    }
+    if (Existing) {
+      const error = `Such vendor already exists on our system. Please, edit your information. (residence, email or company name is duplicated).`;
+      setModal({
+        modalTitle: "Vendor exists",
+        modalText: error,
+        showCancel: false,
+        onClose: onCloseModal,
+      });
+      showModal();
+    }
   };
   const onSuccess = (res) => {
     /*window.localStorage.setItem("role", JSON.stringify(roleType.customer));
@@ -62,7 +105,7 @@ const VendorRegisterForm = () => {
     );
 
     formData.append("vendor", json);
-    registerVendorMutation.mutateAsync(formData);
+    registerVendorMutation.mutate(formData);
   };
   return (
     <>

@@ -9,7 +9,7 @@ export const useRegisterVendorMutation = (onError, onSuccess) => {
           "Content-Type": "multipart/form-data",
         },
       }),
-    onError,
-    onSuccess,
+    onError: onError,
+    onSuccess: onSuccess,
   });
 };

@@ -20,13 +20,19 @@ const Modal = () => {
         aria-labelledby="exampleModalCenterTitle"
         aria-hidden={!show}
       >
-        <div className="modal-dialog modal-dialog-centered" role="document">
+        <div
+          className="modal-dialog modal-dialog-centered"
+          role="document"
+          style={{ fontSize: "large" }}
+        >
           <div className="modal-content">
             <div className="text-center modal-header">
               <h5 className="modal-title">{modalTitle}</h5>
             </div>
             <div className="modal-body">
-              <p>{modalText}</p>
+              <p>
+                <strong>{modalText}</strong>
+              </p>
             </div>
             <div className="modal-footer">
               <PDButton

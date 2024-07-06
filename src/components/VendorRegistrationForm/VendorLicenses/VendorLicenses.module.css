@@ -1,6 +1,12 @@
 .input-field {
   width: auto;
+  height: 110px;
 }
+.input-field input[type="radio"] {
+  margin-right: 1rem;
+  padding-right: 1rem;
+}
+
 .input-field input[type="text"] {
   width: 280px;
 }

@@ -153,7 +153,8 @@ export const setVendorLicensesField = (fieldName, fieldValue) => {
       }
     } else {
       setVendorRegisterError(
-        "EORI code format is: [country code] (2 letters) followed by 8 to 15 alphanumeric symbols"
+        fieldName,
+        "EORI required: [country code] and 8 to 15 alphanumeric symbols"
       );
     }
   } else if (fieldName === "EUVAT") {

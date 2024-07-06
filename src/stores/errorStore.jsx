@@ -13,16 +13,17 @@ const initialStore = {
 };
 const vendorInitialStore = {
   primaryContactName: "",
-  primaryContactJobTiltle: "",
+  primaryContactJobTitle: "",
   primaryContactPhone: "",
 
   secondaryContactName: "",
-  secondaryContactJobTiltle: "",
+  secondaryContactJobTitle: "",
   secondaryContactPhone: "",
 
-  vendorName: "",
-  vendorEmail: "",
+  companyName: "",
+  email: "",
 
+  manufacturingLicense: "",
   EORI: "",
   EUVAT: "",
   FDANumber: "",

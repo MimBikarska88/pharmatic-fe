@@ -120,10 +120,13 @@ const VendorOrganization = () => {
               <PDInput
                 label="Registered vendor name"
                 type="text"
-                isValid={RegisterVendor.vendorName}
+                isValid={RegisterVendor.companyName}
                 value={Vendor.companyName}
                 errorMessage={VendorRegisterErrors.companyName}
-                onChange={(e) => setVendorField("companyName", e.target.value)}
+                onChange={(e) => {
+                  setVendorField("companyName", e.target.value);
+                  validateVendorField("companyName", e.target.value);
+                }}
                 className={styles["input-field"]}
               />
             </div>
@@ -134,7 +137,10 @@ const VendorOrganization = () => {
                 isValid={RegisterVendor.email}
                 errorMessage={VendorRegisterErrors.email}
                 value={Vendor.email}
-                onChange={(e) => setVendorField("email", e.target.value)}
+                onChange={(e) => {
+                  setVendorField("email", e.target.value);
+                  validateVendorField("email", e.target.value);
+                }}
                 className={styles["input-field"]}
               />
             </div>

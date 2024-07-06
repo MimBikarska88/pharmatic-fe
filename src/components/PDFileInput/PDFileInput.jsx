@@ -15,6 +15,7 @@ const PDFileInput = forwardRef(
       isValid = true,
       isReadOnly = false,
       required = false,
+      styles,
     },
     fileRef
   ) => {
