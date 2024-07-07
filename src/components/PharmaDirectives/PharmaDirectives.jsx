@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router";
 import { roleType } from "../../utils/roleTypes";
 
 import Register from "../../pages/Register/Register";
-import Login from "../../pages/Login/Login";
+import BaseLogin from "../../pages/Login/BaseLogin";
 import styles from "./PharmaDirectives.module.css";
 const PharmaDirectives = () => {
   return (
@@ -22,7 +22,14 @@ const PharmaDirectives = () => {
             path="/register/vendor"
             element={<Register roleType={roleType.vendor}></Register>}
           ></Route>
-          <Route path="login" element={<Login />}></Route>
+          <Route
+            path="/login/customer"
+            element={<BaseLogin roleType={roleType.customer} />}
+          ></Route>
+          <Route
+            path="/login/vendor"
+            element={<BaseLogin roleType={roleType.vendor} />}
+          ></Route>
         </Routes>
       </div>
     </>

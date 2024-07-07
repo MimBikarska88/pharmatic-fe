@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useErrorStore } from "../../stores/errorStore";
 import { useUserStore } from "../../stores/userStore";
 import { useValidationStore } from "../../stores/validationStore";
@@ -8,6 +9,7 @@ export const validatePrimaryContactField = (fieldName, value) => {
     useValidationStore.getState().setRegisterVendorFieldValidity;
   const setVendorRegisterError =
     useErrorStore.getState().setVendorRegisterError;
+
   if (fieldName === "name") {
     const isValid = value && value.trim().length > 3 && value.length < 50;
     setRegisterVendorFieldValidity("primaryContactName", isValid);
@@ -167,7 +169,6 @@ export const setVendorLicensesField = (fieldName, fieldValue) => {
       );
     }
     const EORIfirstLetters = EORI.slice(0, 2);
-    console.log(EORI);
     if (fieldValue.startsWith(EORIfirstLetters)) {
       setRegisterVendorFieldValidity(fieldName, true);
       setVendorRegisterError(fieldName, "");

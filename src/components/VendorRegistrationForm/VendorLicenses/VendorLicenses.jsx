@@ -3,7 +3,7 @@ import PDInput from "../../PDInput/PDInput";
 import styles from "./VendorLicenses.module.css";
 
 import { useUserStore } from "../../../stores/userStore";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { ResidenceType } from "../../../utils/residenceTypes";
 import {
   changeResidence,

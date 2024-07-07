@@ -63,7 +63,14 @@ export const useUserStore = create(
     Customer: { ...customerInitialStore },
     SoleProprietor: {},
     Vendor: { ...vendorInitialStore },
-
+    resetCustomerState: () =>
+      set((state) => {
+        state.Customer = { ...customerInitialStore };
+      }),
+    resetVendorState: () =>
+      set((state) => {
+        state.Vendor = { ...vendorInitialStore };
+      }),
     setCustomerInitialState: () =>
       set((state) => {
         state.Customer = { ...customerInitialStore };
