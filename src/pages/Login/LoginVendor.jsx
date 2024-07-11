@@ -11,8 +11,14 @@ import {
 } from "./LoginUtils";
 import { useValidationStore } from "../../stores/validationStore";
 import { useErrorStore } from "../../stores/errorStore";
+import { useNavigate } from "react-router";
+import { useModalStore } from "../../stores/modalStore";
+import { roleType } from "../../utils/roleTypes";
+import useVendorLoginMutation from "../../queries/useVendorLoginMutation/useVendorLoginMutation";
+
 const LoginVendor = () => {
   const Vendor = useUserStore((state) => state.Vendor);
+  const setRole = useUserStore.getState().setRole;
   const { FDANumber, EORI } = useValidationStore(
     (state) => state.RegisterVendor
   );
@@ -20,6 +26,42 @@ const LoginVendor = () => {
     (state) => state.VendorRegisterErrors
   );
   const setVendorField = useUserStore.getState().setVendorField;
+  const { setModal, showModal, hideModal } = useModalStore();
+  const navigate = useNavigate();
+
+  const onSuccess = (res) => {
+    window.localStorage.setItem("role", JSON.stringify(roleType.vendor));
+    setRole(roleType.vendor);
+    navigate("/");
+  };
+  const onCloseModal = () => {
+    hideModal();
+    setModal({
+      modalTitle: "",
+      modalText: "",
+    });
+  };
+
+  const onError = (err) => {
+    setModal({
+      modalTitle: "Error",
+      modalText: err.response.data?.message,
+      showCancel: false,
+      onClose: onCloseModal,
+    });
+    showModal();
+  };
+  const vendorLoginMutation = useVendorLoginMutation(onError, onSuccess);
+
+  const login = () => {
+    const data = {
+      FDANumber: Vendor.FDANumber,
+      EORI: Vendor.EORI,
+      residence: Vendor.residence,
+      password: Vendor.password,
+    };
+    vendorLoginMutation.mutate(data);
+  };
   return (
     <>
       <div className="d-flex flex-collumn justify-content-center">
@@ -112,6 +154,7 @@ const LoginVendor = () => {
             <PDButton
               value={"Log In"}
               color={"purple"}
+              onClick={login}
               className={"p-2 m-2"}
               style={{ width: "120px" }}
             />

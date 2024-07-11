@@ -7,7 +7,7 @@ import styles from "./CustomerMedicalRecord.module.css";
 
 import { useUserStore } from "../../../stores/userStore";
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { isEmptyString } from "../../../utils/basicValidation.util";
 import { usePagination } from "../../hooks/usePagination";
 import { useCallback } from "react";
@@ -152,9 +152,9 @@ const CustomerMedicalRecord = () => {
           </div>
           <div className="flex-col auto">
             <PDFileInput
+              isValid={true}
               ref={refMedicalCheckup}
               label={"Latest Health Check-up Report"}
-              required={false}
               onChangeFunc={handleFileChange}
               className={`${styles["input-field"]}`}
             />

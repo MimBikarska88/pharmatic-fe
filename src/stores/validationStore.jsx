@@ -37,12 +37,22 @@ const vendorInitialStore = {
   city: true,
   postcode: true,
 };
-
+const productCreateStore = {
+  isoCertificate: true,
+  chemicalFormula: true,
+  appearance: true,
+  routeOfAdministration: true,
+  indications: true,
+  sideEffect: true,
+  currencyNonEu: true,
+  currencyEu: true,
+  pil: true,
+};
 export const useValidationStore = create(
   immer((set) => ({
     Register: { ...initialStore },
     RegisterVendor: { ...vendorInitialStore },
-
+    Product: { ...productCreateStore },
     setRegisterFieldValidity: (fieldName, fieldValue) =>
       set((state) => {
         state.Register[`${fieldName}`] = fieldValue;
@@ -65,6 +75,10 @@ export const useValidationStore = create(
     setRegisterVendorFieldValidity: (fieldName, fieldValue) =>
       set((state) => {
         state.RegisterVendor[`${fieldName}`] = fieldValue;
+      }),
+    setProductFieldValidity: (fieldName, fieldValue) =>
+      set((state) => {
+        state.Product[`${fieldName}`] = fieldValue;
       }),
   }))
 );

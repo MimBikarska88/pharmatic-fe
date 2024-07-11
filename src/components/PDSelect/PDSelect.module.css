@@ -1,7 +1,10 @@
 select {
-  padding: 0.3rem;
+  padding: 0.4rem;
   display: block;
-  border: 2px solid rgba(176, 175, 175, 0.945);
+  border: 2px solid rgba(176, 175, 175, 0.93);
   border-radius: 6px;
   transition: 0.1s linear;
+  border-radius: 7px;
+  outline: 7px solid transparent;
+  margin-bottom: 2rem;
 }

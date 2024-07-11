@@ -4,6 +4,8 @@ import { roleType } from "../../utils/roleTypes";
 import Register from "../../pages/Register/Register";
 import BaseLogin from "../../pages/Login/BaseLogin";
 import styles from "./PharmaDirectives.module.css";
+import Stock from "../../pages/Stock/Stock";
+import CreateProduct from "../../pages/CreateProduct/CreateProduct";
 const PharmaDirectives = () => {
   return (
     <>
@@ -22,6 +24,7 @@ const PharmaDirectives = () => {
             path="/register/vendor"
             element={<Register roleType={roleType.vendor}></Register>}
           ></Route>
+          <Route path="/login" element={<BaseLogin />}></Route>
           <Route
             path="/login/customer"
             element={<BaseLogin roleType={roleType.customer} />}
@@ -30,6 +33,10 @@ const PharmaDirectives = () => {
             path="/login/vendor"
             element={<BaseLogin roleType={roleType.vendor} />}
           ></Route>
+          <Route path="/stock">
+            <Route path="" element={<Stock />}></Route>
+            <Route path="create" element={<CreateProduct />}></Route>
+          </Route>
         </Routes>
       </div>
     </>

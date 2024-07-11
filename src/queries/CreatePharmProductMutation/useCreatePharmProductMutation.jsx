@@ -1,16 +1,16 @@
 import http from "../http";
 import { useMutation } from "react-query";
 
-const useLoginMutation = (onError, onSuccess) => {
+const useCreatePharmProductMutation = (onError, onSuccess) => {
   return useMutation({
-    mutationFn: (email, password) =>
+    mutationFn: (productData) =>
       http.post(
-        "/Login",
-        { email, password },
+        "/products",
+        { productData },
         { withCredentials: true, xsrfCookieName: "token" }
       ),
     onError,
     onSuccess,
   });
 };
-export default useLoginMutation;
+export default useCreatePharmProductMutation;

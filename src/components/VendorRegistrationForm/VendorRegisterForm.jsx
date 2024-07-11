@@ -12,6 +12,7 @@ import { isEmptyString } from "../../utils/basicValidation.util";
 import { useValidationStore } from "../../stores/validationStore";
 import { useErrorStore } from "../../stores/errorStore";
 import { useModalStore } from "../../stores/modalStore";
+import { useNavigate } from "react-router";
 
 const VendorRegisterForm = () => {
   const Vendor = useUserStore((state) => state.Vendor);
@@ -81,10 +82,9 @@ const VendorRegisterForm = () => {
       showModal();
     }
   };
+  const navigate = useNavigate();
   const onSuccess = (res) => {
-    /*window.localStorage.setItem("role", JSON.stringify(roleType.customer));
-    setRole(roleType.customer);
-    navigate("/");*/
+    navigate("/register/vendor");
     console.log(res.data);
   };
   const registerVendorMutation = useRegisterVendorMutation(onError, onSuccess);
