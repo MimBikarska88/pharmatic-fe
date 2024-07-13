@@ -17,14 +17,14 @@ const Navigation = () => {
     ],
     [roleType.vendor]: [
       { title: "Home", link: "/" },
-      { title: "Stock", link: "/products" },
+      { title: "Stock", link: "/stock" },
       { title: "Orders", link: "/orders/" },
-      { title: "Edit Account", link: "/account/" },
+      { title: "Edit Account", link: "/account" },
       { title: "Logout" },
     ],
     [roleType.soleProprietor]: [
       { title: "Home", link: "/" },
-      { title: "Stock", link: "/products" },
+      { title: "Stock", link: "/stock" },
       { title: "Orders", link: "/orders/" },
       { title: "Edit Account", link: "/account/" },
       { title: "Logout" },
@@ -69,8 +69,12 @@ const Navigation = () => {
             ) : (
               <li className="link-dark m-3">
                 <a
-                  style={{ textDecoration: "none", color: "black" }}
-                  href={navItem.link}
+                  style={{
+                    textDecoration: "none",
+                    color: "black",
+                    cursor: "pointer",
+                  }}
+                  onClick={(e) => navigate(navItem.link)}
                 >
                   {navItem.title}
                 </a>

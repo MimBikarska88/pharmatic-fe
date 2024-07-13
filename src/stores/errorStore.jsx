@@ -43,6 +43,7 @@ const ProductErrorStore = {
   currencyNonEu: "",
   currencyEu: "",
   pil: "",
+  photo: "",
 };
 export const useErrorStore = create(
   immer((set) => ({

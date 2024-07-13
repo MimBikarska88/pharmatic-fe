@@ -6,8 +6,14 @@ const useCreatePharmProductMutation = (onError, onSuccess) => {
     mutationFn: (productData) =>
       http.post(
         "/products",
-        { productData },
-        { withCredentials: true, xsrfCookieName: "token" }
+        { ...productData },
+        {
+          withCredentials: true,
+          xsrfCookieName: "token",
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       ),
     onError,
     onSuccess,

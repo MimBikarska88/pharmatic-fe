@@ -12,7 +12,6 @@ const BaseLogin = ({ roleType }) => {
     resetCustomerState();
     resetVendorState();
   }, []);
-  console.log(roleType);
   return (
     <>
       {!roleType && (
@@ -20,13 +19,13 @@ const BaseLogin = ({ roleType }) => {
           <PDButton
             color="purple"
             value="Login as Customer"
-            className={"m-5 pt-5"}
+            className={"m-5 p-3"}
             onClick={() => navigate("/login/customer")}
           ></PDButton>
           <PDButton
             color="green"
             value="Login as Vendor"
-            className={"m-5 pt-5"}
+            className={"m-5 p-3"}
             onClick={() => navigate("/login/vendor")}
           ></PDButton>{" "}
         </div>

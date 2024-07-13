@@ -6,12 +6,13 @@ import BaseLogin from "../../pages/Login/BaseLogin";
 import styles from "./PharmaDirectives.module.css";
 import Stock from "../../pages/Stock/Stock";
 import CreateProduct from "../../pages/CreateProduct/CreateProduct";
+import Home from "../../pages/Home/Home";
 const PharmaDirectives = () => {
   return (
     <>
       <div className={`container ${styles.directive}`}>
         <Routes>
-          <Route path="/" element={<h3>Home</h3>}></Route>
+          <Route path="/" element={<Home />}></Route>
           <Route
             path="/register/customer"
             element={<Register roleType={roleType.customer}></Register>}

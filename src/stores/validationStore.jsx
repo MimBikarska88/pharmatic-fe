@@ -47,6 +47,7 @@ const productCreateStore = {
   currencyNonEu: true,
   currencyEu: true,
   pil: true,
+  photo: true,
 };
 export const useValidationStore = create(
   immer((set) => ({

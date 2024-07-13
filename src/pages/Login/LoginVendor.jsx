@@ -31,7 +31,11 @@ const LoginVendor = () => {
 
   const onSuccess = (res) => {
     window.localStorage.setItem("role", JSON.stringify(roleType.vendor));
+    window.localStorage.setItem("residence", JSON.stringify(Vendor.residence));
+    setVendorField("password", "");
+    setVendorField("EORI", "");
     setRole(roleType.vendor);
+    setVendorField("residence", Vendor.residence);
     navigate("/");
   };
   const onCloseModal = () => {

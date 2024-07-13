@@ -89,7 +89,7 @@ export const validateProductFields = (fieldName, fieldValue) => {
   }
   if (fieldName === "sideEffects") {
     if (!fieldValue || fieldName.trim() === "") {
-      setProductError(`${fieldName}`, "Side Effects info is required field.");
+      setProductError(`${fieldName}`, "Side Effects information is required.");
       setProductFieldValidity(`${fieldName}`, false);
     } else {
       setProductError(`${fieldName}`, "");
@@ -99,7 +99,7 @@ export const validateProductFields = (fieldName, fieldValue) => {
 
   if (fieldName === "indications") {
     if (!fieldValue || fieldName.trim() === "") {
-      setProductError(`${fieldName}`, "Side Effects info is required field.");
+      setProductError(`${fieldName}`, "Indications for usage are required.");
       setProductFieldValidity(`${fieldName}`, false);
     } else {
       setProductError(`${fieldName}`, "");

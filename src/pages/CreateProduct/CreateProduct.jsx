@@ -14,17 +14,31 @@ import {
 import { useState } from "react";
 import { useErrorStore } from "../../stores/errorStore";
 import { useValidationStore } from "../../stores/validationStore";
+import { isEmptyString } from "../../utils/basicValidation.util";
 import useCreatePharmProductMutation from "../../queries/CreatePharmProductMutation/useCreatePharmProductMutation";
+import { useUserStore } from "../../stores/userStore";
+import { ResidenceType } from "../../utils/residenceTypes";
 
 const CreateProduct = (props) => {
-  const ProductErrors = useErrorStore((state) => state.ProductErrors);
-  const Product = useValidationStore((state) => state.Product);
-
+  const { ProductErrors, setProductError } = useErrorStore();
+  const { Product, setProductFieldValidity } = useValidationStore();
+  const Vendor = useUserStore((state) => state.Vendor);
+  console.log(Vendor);
   const onSuccess = (res) => {
     console.log(res.data);
   };
   const onError = (err) => {
-    console.log(err);
+    const { Errors } = err.response?.data;
+    console.log(err.response.data);
+    if (Errors) {
+      console.log("here");
+      Object.entries(Errors).forEach((entry) => {
+        if (!isEmptyString(entry[1])) {
+          setProductError(entry[0], entry[1]);
+          setProductFieldValidity(entry[0], false);
+        }
+      });
+    }
   };
   const createPharmProductMutation = useCreatePharmProductMutation(
     onError,
@@ -43,6 +57,7 @@ const CreateProduct = (props) => {
     pil: null,
     classification: null,
     licenseType: null,
+    photo: null,
   });
   const {
     data: vendorLicenses,
@@ -69,14 +84,22 @@ const CreateProduct = (props) => {
     );
   }
 
-  const handleFileChange = (event) => {
+  const handleFileChange = (event, fieldName) => {
     if (event.target.files.length === 0) {
       return;
     }
     const file = event.target?.files[0];
     if (file) {
-      console.log(file);
-      setProduct((state) => ({ ...state, pil: file }));
+      if (fieldName === "pil") {
+        setProduct((state) => ({ ...state, pil: file }));
+        setProductFieldValidity("pil", true);
+        setProductError("pil", "");
+      }
+      if (fieldName === "photo") {
+        setProduct((state) => ({ ...state, photo: file }));
+        setProductFieldValidity("photo", true);
+        setProductError("photo", "");
+      }
     }
   };
 
@@ -146,7 +169,7 @@ const CreateProduct = (props) => {
             options={classifications}
             label="Classification"
             value={product.classification || ""}
-            onChangeFunc={(e) => {
+            onChange={(e) => {
               setProduct((state) => ({
                 ...state,
                 classification: e.value,
@@ -161,7 +184,8 @@ const CreateProduct = (props) => {
             options={vendorLicenses}
             label="Required License Type"
             value={product.licenseType}
-            onChangeFunc={(e) => {
+            onChange={(e) => {
+              console.log(e.value);
               setProduct((state) => ({
                 ...state,
                 licenseType: e.value,
@@ -179,7 +203,7 @@ const CreateProduct = (props) => {
             label="Price"
             step="0.01"
             placeholder={
-              1
+              Vendor.residence === ResidenceType.EU
                 ? productPlaceholders.currencyEu
                 : productPlaceholders.currencyNonEu
             }
@@ -195,7 +219,7 @@ const CreateProduct = (props) => {
             errorMessage={ProductErrors.routeOfAdministration}
             className={styles["input-field"]}
             label="Route of Administration"
-            placeholder={productPlaceholders.roa}
+            placeholder={productPlaceholders.routeOfAdministration}
             value={product.routeOfAdministration || ""}
             onChangeFunc={(e) => {
               productInputFieldChangeHandler(
@@ -211,9 +235,20 @@ const CreateProduct = (props) => {
             required={true}
             label={`Patient Information Leaflet (PIL).`}
             styles={{ height: "100px" }}
-            onChangeFunc={handleFileChange}
+            onChangeFunc={(e) => handleFileChange(e, "pil")}
           />
         </div>
+      </div>
+      <div className="d-flex flex-row">
+        <PDFileInput
+          ref={null}
+          isValid={Product.photo}
+          errorMessage={ProductErrors.photo}
+          required={true}
+          label={`Product Image`}
+          styles={{ width: "100%" }}
+          onChangeFunc={(e) => handleFileChange(e, "photo")}
+        />
       </div>
       <div className="d-flex flex-row">
         <PDTextArea
@@ -252,7 +287,10 @@ const CreateProduct = (props) => {
           color="purple"
           value="Add Pharmaceutical"
           onClick={() => {
-            createPharmProductMutation.mutate(product);
+            createPharmProductMutation.mutate({
+              ...product,
+              residence: Vendor.residence,
+            });
           }}
         />
       </div>

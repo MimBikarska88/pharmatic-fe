@@ -21,10 +21,15 @@ const client = new QueryClient({
 
 const App = () => {
   const setRole = useUserStore((state) => state.setRole);
+  const setVendorField = useUserStore.getState().setVendorField;
   useMemo(() => {
     const role = localStorage.getItem("role");
+    const residence = localStorage.getItem("residence");
     if (role) {
       setRole(JSON.parse(role));
+    }
+    if (residence) {
+      setVendorField("residence", JSON.parse(residence));
     }
   });
   return (
