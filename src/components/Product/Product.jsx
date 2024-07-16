@@ -1,10 +1,13 @@
+import { useNavigate } from "react-router";
 import { useUserStore } from "../../stores/userStore";
 import { roleType } from "../../utils/roleTypes";
 import PDButton from "../PDButton/PDButton";
 
 const Product = (props) => {
-  const { medicationName, id, indications, priceEu, priceNonEu, photo } = props;
+  const { medicationName, _id, indications, priceEu, priceNonEu, photo } =
+    props;
   const role = useUserStore((state) => state.role);
+  const navigate = useNavigate();
   return (
     <>
       <div className="card m-3" style={{ width: "18rem" }}>
@@ -19,6 +22,7 @@ const Product = (props) => {
               color="green"
               style={{ width: "6rem", margin: "0.4rem" }}
               value={"Details"}
+              onClick={() => navigate(`view/${_id}`)}
             />
             {role === roleType.customer && (
               <PDButton

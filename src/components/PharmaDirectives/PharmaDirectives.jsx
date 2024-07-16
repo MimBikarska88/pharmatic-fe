@@ -1,11 +1,12 @@
 import { Route, Routes } from "react-router";
 import { roleType } from "../../utils/roleTypes";
+import { Mode } from "../../utils/mode";
 
 import Register from "../../pages/Register/Register";
 import BaseLogin from "../../pages/Login/BaseLogin";
 import styles from "./PharmaDirectives.module.css";
 import Stock from "../../pages/Stock/Stock";
-import CreateProduct from "../../pages/CreateProduct/CreateProduct";
+import DetailedProduct from "../../pages/DetailedProduct/DetailedProduct";
 import Home from "../../pages/Home/Home";
 const PharmaDirectives = () => {
   return (
@@ -33,7 +34,18 @@ const PharmaDirectives = () => {
           ></Route>
           <Route path="/stock">
             <Route path="" element={<Stock />}></Route>
-            <Route path="create" element={<CreateProduct />}></Route>
+            <Route
+              path="create"
+              element={<DetailedProduct mode={Mode.Create} />}
+            ></Route>
+            <Route
+              path="view/:productId"
+              element={<DetailedProduct mode={Mode.View} />}
+            ></Route>
+            <Route
+              path="edit/:productId"
+              element={<DetailedProduct mode={Mode.Edit} />}
+            ></Route>
           </Route>
         </Routes>
       </div>

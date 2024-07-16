@@ -2,7 +2,7 @@ import PDInput from "../../components/PDInput/PDInput";
 import PDTextArea from "../../components/PDTextArea/PDTextArea";
 import PDSelect from "../../components/PDSelect/PDSelect";
 import PDButton from "../../components/PDButton/PDButton";
-import styles from "./CreateProduct.module.css";
+import styles from "./DetailedProduct.module.css";
 import PDFileInput from "../../components/PDFileInput/PDFileInput";
 
 import useGetClassificationQuery from "../../queries/GetClassificationQuery/useGetClassificationQuery";
@@ -10,30 +10,33 @@ import useGetVendorLicensesQuery from "../../queries/GetVendorLicensesQuery/useG
 import {
   productPlaceholders,
   validateProductFields,
-} from "./CreateProductUtils";
-import { useState } from "react";
+} from "./DetailedProductUtils";
+import { useEffect, useState } from "react";
 import { useErrorStore } from "../../stores/errorStore";
 import { useValidationStore } from "../../stores/validationStore";
 import { isEmptyString } from "../../utils/basicValidation.util";
+import { Mode } from "../../utils/mode";
 import useCreatePharmProductMutation from "../../queries/CreatePharmProductMutation/useCreatePharmProductMutation";
+import useGetProductByIdQuery from "../../queries/GetProductByIdQuery/useGetProductByIdQuery";
 import { useUserStore } from "../../stores/userStore";
 import { ResidenceType } from "../../utils/residenceTypes";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
-const CreateProduct = (props) => {
+const DetailedProduct = (props) => {
+  const { mode } = props;
   const { ProductErrors, setProductError } = useErrorStore();
   const { Product, setProductFieldValidity } = useValidationStore();
   const navigate = useNavigate();
+  const { productId } = useParams();
   const Vendor = useUserStore((state) => state.Vendor);
+
   const onSuccess = (res) => {
-    console.log(res.data);
     navigate("/stock");
   };
+
   const onError = (err) => {
-    const { Errors } = err.response?.data;
-    console.log(err.response.data);
+    const { Errors } = err.response.data;
     if (Errors) {
-      console.log("here");
       Object.entries(Errors).forEach((entry) => {
         if (!isEmptyString(entry[1])) {
           setProductError(entry[0], entry[1]);
@@ -65,23 +68,44 @@ const CreateProduct = (props) => {
     data: vendorLicenses,
     error: vendorLicensesError,
     isLoading: vendorLicensesLoading,
-  } = useGetVendorLicensesQuery();
-  console.log(vendorLicenses);
+  } = useGetVendorLicensesQuery({
+    enabled: mode !== Mode.View,
+  });
   const {
     data: classifications,
     error: classificationError,
     isLoading: classificationLoading,
-  } = useGetClassificationQuery();
+  } = useGetClassificationQuery({
+    enabled: mode !== Mode.View,
+  });
+  const {
+    data: productData,
+    error: productDataError,
+    isLoading: isProductDataLoading,
+  } = useGetProductByIdQuery({
+    productId: productId,
+    enabled: !!productId && mode !== Mode.Create,
+  });
+
+  useEffect(() => {
+    if (productData && !productDataError) {
+      setProduct({ ...productData.data });
+    }
+    console.log({ ...productData });
+  }, [productData, productDataError]);
 
   // Handle loading and error states
-  if (vendorLicensesLoading || classificationLoading) {
+  if (vendorLicensesLoading || classificationLoading || isProductDataLoading) {
     return <div>Loading...</div>;
   }
 
-  if (vendorLicensesError || classificationError) {
+  if (vendorLicensesError || classificationError || productDataError) {
     return (
       <div>
-        Error: {vendorLicensesError?.message || classificationError?.message}
+        Error:
+        {vendorLicensesError?.message ||
+          classificationError?.message ||
+          productDataError?.message}
       </div>
     );
   }
@@ -299,4 +323,4 @@ const CreateProduct = (props) => {
     </>
   );
 };
-export default CreateProduct;
+export default DetailedProduct;
