@@ -3,9 +3,16 @@ import styles from "./PDPagination.module.css";
 const PDPagination = (props) => {
   const { page, setPage, entriesPerPage, pages, show = true } = props;
 
+  console.log(props);
   if (!show) {
     return <></>;
   }
+  const setPageNextPrev = (newPage) => {
+    if (newPage > pages || newPage < 1) {
+      return;
+    }
+    setPage(newPage);
+  };
   return (
     <>
       <div className="d-flex flex-row align-items-baseline">
@@ -42,7 +49,7 @@ const PDPagination = (props) => {
               color={"purple"}
               className={styles["pagination-button"]}
               value={"<"}
-              onClick={() => setPage(page - 1)}
+              onClick={(e) => setPageNextPrev(page - 1)}
             ></PDButton>
           );
           pages.push(
@@ -57,7 +64,7 @@ const PDPagination = (props) => {
               color={"purple"}
               className={styles["pagination-button"]}
               value={">"}
-              onClick={() => setPage(page + 1)}
+              onClick={(e) => setPageNextPrev(page + 1)}
             ></PDButton>
           );
           pages.push(

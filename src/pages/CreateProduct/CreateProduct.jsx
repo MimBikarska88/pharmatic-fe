@@ -18,14 +18,16 @@ import { isEmptyString } from "../../utils/basicValidation.util";
 import useCreatePharmProductMutation from "../../queries/CreatePharmProductMutation/useCreatePharmProductMutation";
 import { useUserStore } from "../../stores/userStore";
 import { ResidenceType } from "../../utils/residenceTypes";
+import { useNavigate } from "react-router";
 
 const CreateProduct = (props) => {
   const { ProductErrors, setProductError } = useErrorStore();
   const { Product, setProductFieldValidity } = useValidationStore();
+  const navigate = useNavigate();
   const Vendor = useUserStore((state) => state.Vendor);
-  console.log(Vendor);
   const onSuccess = (res) => {
     console.log(res.data);
+    navigate("/stock");
   };
   const onError = (err) => {
     const { Errors } = err.response?.data;

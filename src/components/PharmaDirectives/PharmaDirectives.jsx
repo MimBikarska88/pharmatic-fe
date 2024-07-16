@@ -13,13 +13,10 @@ const PharmaDirectives = () => {
       <div className={`container ${styles.directive}`}>
         <Routes>
           <Route path="/" element={<Home />}></Route>
+          <Route path="/register" element={<Register></Register>}></Route>
           <Route
             path="/register/customer"
             element={<Register roleType={roleType.customer}></Register>}
-          ></Route>
-          <Route
-            path="/register/admin"
-            element={<Register roleType={roleType.soleProprietor}></Register>}
           ></Route>
           <Route
             path="/register/vendor"

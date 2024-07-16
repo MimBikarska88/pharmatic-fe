@@ -13,7 +13,7 @@ function useGetVendorProductsQuery(options = {}) {
       });
     },
     select: (data) => {
-      return data.data;
+      return data.data.products;
     },
   });
 }

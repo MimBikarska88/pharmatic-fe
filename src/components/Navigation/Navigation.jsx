@@ -2,9 +2,10 @@ import { useNavigate } from "react-router";
 import { useUserStore } from "../../stores/userStore";
 import { roleType } from "../../utils/roleTypes";
 import useLogoutMutation from "../../queries/LogoutMutation/useLogoutMutation";
+import eu from "../../static/img/icons/eu.png";
+import nonEu from "../../static/img/icons/nonEu.png";
 const Navigation = () => {
-  const role = useUserStore((state) => state.role);
-  const setRole = useUserStore((state) => state.setRole);
+  const { role, setRole, setCurrencyDollar, setCurrencyEuro } = useUserStore();
   const navigate = useNavigate();
 
   const navigationMap = {
@@ -80,6 +81,26 @@ const Navigation = () => {
                 </a>
               </li>
             )
+          )}
+          {role !== roleType.guest && (
+            <>
+              <li
+                style={{
+                  cursor: "pointer",
+                }}
+                className="link-dark m-3"
+              >
+                <img src={eu} onClick={setCurrencyEuro} />
+              </li>
+              <li
+                style={{
+                  cursor: "pointer",
+                }}
+                className="link-dark mt-3"
+              >
+                <img src={nonEu} onClick={setCurrencyDollar} />
+              </li>
+            </>
           )}
         </ul>
       </div>

@@ -75,6 +75,7 @@ const CustomerNavTab = ({ activeTab, setActiveTab }) => {
             </button>
           </li>
         ))}
+        <li></li>
       </ul>
       <PDButton value="submit" color={"green"} onClick={submitRegisterForm} />
     </>

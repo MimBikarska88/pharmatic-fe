@@ -5,6 +5,7 @@ import {
   areMedicationsTheSame,
   areMedicalRecordsTheSame,
 } from "../utils/basicValidation.util";
+import { ResidenceType } from "../utils/residenceTypes";
 
 const customerInitialStore = {
   firstName: "",
@@ -59,6 +60,7 @@ const vendorInitialStore = {
 export const useUserStore = create(
   immer((set) => ({
     role: roleType.guest,
+    currencyType: null,
     Admin: {},
     Customer: { ...customerInitialStore },
     SoleProprietor: {},
@@ -160,6 +162,14 @@ export const useUserStore = create(
         state.Vendor.city = city;
         state.Vendor.postcode = postcode;
         state.Vendor.detailedAddress = detailedAddress;
+      }),
+    setCurrencyEuro: () =>
+      set((state) => {
+        state.currencyType = ResidenceType.EU;
+      }),
+    setCurrencyDollar: () =>
+      set((state) => {
+        state.currencyType = ResidenceType.NON_EU;
       }),
   }))
 );

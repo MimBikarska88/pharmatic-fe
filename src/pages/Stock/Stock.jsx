@@ -8,14 +8,14 @@ import Product from "../../components/Product/Product";
 const Stock = (props) => {
   const navigate = useNavigate();
   const {
-    data,
+    data: products = [],
     error: productsError,
     isLoading: productsLoading,
   } = useGetVendorProductsQuery();
 
   const INITIAL_ENTRIES_PER_PAGE = 3;
   const { page, setPage, displayEntries, pages } = usePagination(
-    data?.products,
+    products,
     INITIAL_ENTRIES_PER_PAGE
   );
 
@@ -28,7 +28,7 @@ const Stock = (props) => {
 
   return (
     <>
-      {displayEntries && displayEntries.length === 0 ? (
+      {!products || !displayEntries || displayEntries?.length === 0 ? (
         <div className="d-flex flex-column align-items-center mt-5">
           <h3 style={{ color: "#74ab5d" }}>
             <strong>
@@ -38,13 +38,25 @@ const Stock = (props) => {
         </div>
       ) : (
         <div className="container mt-4">
-          <div className="row justify-content-around">
+          <div className="row justify-content-center">
             {displayEntries.map((p) => (
               <Product {...p} />
             ))}
           </div>
         </div>
       )}
+      <div className="d-block text-center m-1">
+        {products && products.length >= INITIAL_ENTRIES_PER_PAGE && (
+          <PDPagination
+            pages={pages}
+            setPage={setPage}
+            entries={products}
+            entriesPerPage={INITIAL_ENTRIES_PER_PAGE}
+            page={page}
+            displayEntries={INITIAL_ENTRIES_PER_PAGE}
+          />
+        )}
+      </div>
       <div className="d-block text-center m-5">
         <PDButton
           onClick={() => {
@@ -55,16 +67,6 @@ const Stock = (props) => {
           color={"purple"}
         />
       </div>
-      {data.products.length >= INITIAL_ENTRIES_PER_PAGE && (
-        <PDPagination
-          pages={pages}
-          setPage={setPage}
-          entries={data.productss}
-          entriesPerPage={INITIAL_ENTRIES_PER_PAGE}
-          page={page}
-          displayEntries={INITIAL_ENTRIES_PER_PAGE}
-        />
-      )}
     </>
   );
 };
