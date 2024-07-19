@@ -125,3 +125,4 @@ export const validateProductFields = (fieldName, fieldValue) => {
     }
   }
 };
+export const getCorrectCurrencyType = () => {};

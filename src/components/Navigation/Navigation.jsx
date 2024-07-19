@@ -8,26 +8,13 @@ const Navigation = () => {
   const { role, setRole, setCurrencyDollar, setCurrencyEuro } = useUserStore();
   const navigate = useNavigate();
 
+  console.log("role", role);
   const navigationMap = {
-    [roleType.admin]: [
-      { title: "Home", link: "/" },
-      { title: "Publish Newsletter", link: "publish-newsletter" },
-      { title: "Vendors", link: "/vendors/all" },
-      { title: "Customers", link: "/customers/all" },
-      { title: "Logout", link: "/logout" },
-    ],
     [roleType.vendor]: [
       { title: "Home", link: "/" },
       { title: "Stock", link: "/stock" },
       { title: "Orders", link: "/orders/" },
       { title: "Edit Account", link: "/account" },
-      { title: "Logout" },
-    ],
-    [roleType.soleProprietor]: [
-      { title: "Home", link: "/" },
-      { title: "Stock", link: "/stock" },
-      { title: "Orders", link: "/orders/" },
-      { title: "Edit Account", link: "/account/" },
       { title: "Logout" },
     ],
     [roleType.customer]: [
@@ -45,14 +32,20 @@ const Navigation = () => {
       { title: "Shop", link: "Shop" },
     ],
   };
-
-  const logoutMutation = useLogoutMutation();
-  const onLogoutClick = async (e) => {
-    e.preventDefault();
-    await logoutMutation.mutateAsync();
+  const onSuccess = () => {
+    console.log("here");
     localStorage.clear();
+    localStorage.setItem("role", roleType.guest);
     setRole(roleType.guest);
+
     navigate("/");
+  };
+  const logoutMutation = useLogoutMutation(role, onSuccess, () => {
+    navigate("/"); // navigate to error page
+  });
+  const onLogoutClick = (e) => {
+    e.preventDefault();
+    logoutMutation.mutate();
   };
   return (
     <>

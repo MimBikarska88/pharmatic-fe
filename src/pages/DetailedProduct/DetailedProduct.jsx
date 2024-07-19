@@ -19,8 +19,12 @@ import { Mode } from "../../utils/mode";
 import useCreatePharmProductMutation from "../../queries/CreatePharmProductMutation/useCreatePharmProductMutation";
 import useGetProductByIdQuery from "../../queries/GetProductByIdQuery/useGetProductByIdQuery";
 import { useUserStore } from "../../stores/userStore";
-import { ResidenceType } from "../../utils/residenceTypes";
+import {
+  ResidenceType,
+  getLicenseStaticInformation,
+} from "../../utils/residenceTypes";
 import { useNavigate, useParams } from "react-router";
+import { roleType } from "../../utils/roleTypes";
 
 const DetailedProduct = (props) => {
   const { mode } = props;
@@ -28,7 +32,7 @@ const DetailedProduct = (props) => {
   const { Product, setProductFieldValidity } = useValidationStore();
   const navigate = useNavigate();
   const { productId } = useParams();
-  const Vendor = useUserStore((state) => state.Vendor);
+  const { Vendor, role } = useUserStore();
 
   const onSuccess = (res) => {
     navigate("/stock");
@@ -68,30 +72,35 @@ const DetailedProduct = (props) => {
     data: vendorLicenses,
     error: vendorLicensesError,
     isLoading: vendorLicensesLoading,
-  } = useGetVendorLicensesQuery({
-    enabled: mode !== Mode.View,
-  });
+  } = useGetVendorLicensesQuery();
   const {
     data: classifications,
     error: classificationError,
     isLoading: classificationLoading,
-  } = useGetClassificationQuery({
-    enabled: mode !== Mode.View,
-  });
+  } = useGetClassificationQuery();
   const {
-    data: productData,
+    data: productData = null,
     error: productDataError,
     isLoading: isProductDataLoading,
-  } = useGetProductByIdQuery({
-    productId: productId,
+  } = useGetProductByIdQuery(productId, {
     enabled: !!productId && mode !== Mode.Create,
   });
 
   useEffect(() => {
+    // temp fix for side effects state
     if (productData && !productDataError) {
-      setProduct({ ...productData.data });
+      setProduct({
+        ...productData.data,
+        sideEffects: productData.data.sideEffect,
+        classification: {
+          value: productData.data.classification._id,
+          label: productData.data.classification.name,
+        },
+        licenseType: productData.data?.licenseType
+          ? getLicenseStaticInformation(productData.data.licenseType)
+          : null,
+      });
     }
-    console.log({ ...productData });
   }, [productData, productDataError]);
 
   // Handle loading and error states
@@ -111,22 +120,13 @@ const DetailedProduct = (props) => {
   }
 
   const handleFileChange = (event, fieldName) => {
-    if (event.target.files.length === 0) {
+    const file = event.target?.files[0];
+    if (!file || ["pil", "photo"].includes(fieldName)) {
       return;
     }
-    const file = event.target?.files[0];
-    if (file) {
-      if (fieldName === "pil") {
-        setProduct((state) => ({ ...state, pil: file }));
-        setProductFieldValidity("pil", true);
-        setProductError("pil", "");
-      }
-      if (fieldName === "photo") {
-        setProduct((state) => ({ ...state, photo: file }));
-        setProductFieldValidity("photo", true);
-        setProductError("photo", "");
-      }
-    }
+    setProduct((state) => ({ ...state, [`${fieldName}`]: file }));
+    setProductFieldValidity(fieldName, true);
+    setProductError(fieldName, "");
   };
 
   const productInputFieldChangeHandler = (fieldName, fieldValue) => {
@@ -138,10 +138,29 @@ const DetailedProduct = (props) => {
   };
   return (
     <>
+      {mode === Mode.Create && (
+        <h4 className="text-center mt-2">Create Product</h4>
+      )}
+      {mode === Mode.Edit && <h4 className="text-center mt-2">Edit Product</h4>}
+      {mode === Mode.View && (
+        <h4 className="text-center mt-2">Product Details</h4>
+      )}
+
+      {mode !== Mode.Create && (
+        <div className="d-flex flex-row justify-content-center">
+          <img
+            style={{ width: "400px", height: "400px" }}
+            src={`http://localhost:8080/uploads/vendor/drugs/images/${product.photo}`}
+            alt="img"
+            className="img-thumbnail"
+          />
+        </div>
+      )}
       <div className="d-flex flex-row">
         <div className="flex-column p-3">
           <PDInput
-            required
+            disabled={mode === Mode.View}
+            required={mode !== Mode.View}
             isValid={Product.medicationName}
             errorMessage={ProductErrors.medicationName}
             className={styles["input-field"]}
@@ -152,7 +171,8 @@ const DetailedProduct = (props) => {
             }}
           />
           <PDInput
-            required
+            disabled={mode === Mode.View}
+            required={mode !== Mode.View}
             isValid={Product.isoCertificate}
             errorMessage={ProductErrors.isoCertificate}
             className={styles["input-field"]}
@@ -164,7 +184,8 @@ const DetailedProduct = (props) => {
             }}
           />
           <PDInput
-            required
+            disabled={mode === Mode.View}
+            required={mode !== Mode.View}
             isValid={Product.chemicalFormula}
             errorMessage={ProductErrors.chemicalFormula}
             className={styles["input-field"]}
@@ -178,7 +199,8 @@ const DetailedProduct = (props) => {
         </div>
         <div className="flex-column p-3">
           <PDInput
-            required
+            disabled={mode === Mode.View}
+            required={mode !== Mode.View}
             isValid={Product.appearance}
             errorMessage={ProductErrors.appearance}
             className={styles["input-field"]}
@@ -190,12 +212,14 @@ const DetailedProduct = (props) => {
             }}
           />
           <PDSelect
-            required
+            disabled={mode === Mode.View}
+            required={mode !== Mode.View}
             className={styles["input-field"]}
             options={classifications}
             label="Classification"
-            value={product.classification || ""}
+            selectedOption={product.classification || ""}
             onChange={(e) => {
+              console.log(e.value);
               setProduct((state) => ({
                 ...state,
                 classification: e.value,
@@ -203,13 +227,14 @@ const DetailedProduct = (props) => {
             }}
           />
           <PDSelect
-            required
+            disabled={mode === Mode.View}
+            required={mode !== Mode.View}
             isValid={Product.licenseType}
             errorMessage={Product.licenseType}
             className={styles["input-field"]}
             options={vendorLicenses}
             label="Required License Type"
-            value={product.licenseType}
+            selectedOption={product.licenseType || ""}
             onChange={(e) => {
               console.log(e.value);
               setProduct((state) => ({
@@ -221,7 +246,8 @@ const DetailedProduct = (props) => {
         </div>
         <div className="flex-column p-3">
           <PDInput
-            required
+            disabled={mode === Mode.View}
+            required={mode !== Mode.View}
             isValid={Product.price}
             errorMessage={ProductErrors.price}
             type="number"
@@ -233,14 +259,15 @@ const DetailedProduct = (props) => {
                 ? productPlaceholders.currencyEu
                 : productPlaceholders.currencyNonEu
             }
-            value={product.price}
+            value={mode !== Mode.Create ? product.price : }
             onChangeFunc={(e) => {
               productInputFieldChangeHandler("price", e.target.value);
             }}
           />
           <PDInput
             type="text"
-            required
+            disabled={mode === Mode.View}
+            required={mode !== Mode.View}
             isValid={Product.routeOfAdministration}
             errorMessage={ProductErrors.routeOfAdministration}
             className={styles["input-field"]}
@@ -254,28 +281,37 @@ const DetailedProduct = (props) => {
               );
             }}
           />
-          <PDFileInput
-            ref={null}
-            isValid={Product.pil}
-            errorMessage={ProductErrors.pil}
-            required={true}
-            label={`Patient Information Leaflet (PIL).`}
-            styles={{ height: "100px" }}
-            onChangeFunc={(e) => handleFileChange(e, "pil")}
-          />
+          {mode !== Mode.View && (
+            <PDFileInput
+              ref={null}
+              isValid={Product.pil}
+              errorMessage={ProductErrors.pil}
+              required={true}
+              label={`Patient Information Leaflet (PIL).`}
+              styles={{ height: "100px" }}
+              onChangeFunc={(e) => handleFileChange(e, "pil")}
+            />
+          )}
         </div>
       </div>
-      <div className="d-flex flex-row">
-        <PDFileInput
-          ref={null}
-          isValid={Product.photo}
-          errorMessage={ProductErrors.photo}
-          required={true}
-          label={`Product Image`}
-          styles={{ width: "100%" }}
-          onChangeFunc={(e) => handleFileChange(e, "photo")}
-        />
-      </div>
+      {mode !== Mode.View ? (
+        <div className="d-flex flex-row">
+          <PDFileInput
+            ref={null}
+            isValid={Product.photo}
+            errorMessage={ProductErrors.photo}
+            required={true}
+            label={`Product Image`}
+            styles={{ width: "100%" }}
+            onChangeFunc={(e) => handleFileChange(e, "photo")}
+          />
+        </div>
+      ) : (
+        <a className={`${styles["link"]}`} href="#">
+          Patient Information Leaflet (PIL).
+        </a>
+      )}
+
       <div className="d-flex flex-row">
         <PDTextArea
           cols={150}
@@ -309,16 +345,43 @@ const DetailedProduct = (props) => {
         />
       </div>
       <div className="d-flex flex-row-reverse m-4 p-4">
-        <PDButton
-          color="purple"
-          value="Add Pharmaceutical"
-          onClick={() => {
-            createPharmProductMutation.mutate({
-              ...product,
-              residence: Vendor.residence,
-            });
-          }}
-        />
+        {mode === Mode.Create && role === roleType.vendor && (
+          <PDButton
+            color="purple"
+            value="Add Pharmaceutical"
+            onClick={() => {
+              createPharmProductMutation.mutate({
+                ...product,
+                residence: Vendor.residence,
+              });
+            }}
+          />
+        )}
+        {mode === Mode.Edit && role === roleType.vendor && (
+          <PDButton
+            color="green"
+            value="Edit Pharmaceutical"
+            onClick={() => {
+              console.log("edit ");
+            }}
+          />
+        )}
+        {mode === Mode.View && role === roleType.vendor && (
+          <PDButton
+            color="green"
+            value="Click to Edit Pharmaceutical"
+            onClick={() => navigate(`/stock/edit/${product._id}`)}
+          />
+        )}
+        {mode === Mode.View && role === roleType.customer && (
+          <PDButton
+            color="purple"
+            value="Add to cart"
+            onClick={() => {
+              console.log("add to cart");
+            }}
+          />
+        )}
       </div>
     </>
   );

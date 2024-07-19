@@ -13,7 +13,6 @@ function useGetVendorLicensesQuery(options = {}) {
       });
     },
     select: (data) => {
-      console.log(data.data);
       const filtered = Object.values(data?.data?.licenses).map((item) => {
         return {
           value: item.code,

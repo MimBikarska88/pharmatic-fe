@@ -8,12 +8,14 @@ import styles from "./PharmaDirectives.module.css";
 import Stock from "../../pages/Stock/Stock";
 import DetailedProduct from "../../pages/DetailedProduct/DetailedProduct";
 import Home from "../../pages/Home/Home";
+import ErrorPage from "../../pages/ErrorPage/ErrorPage";
 const PharmaDirectives = () => {
   return (
     <>
       <div className={`container ${styles.directive}`}>
         <Routes>
           <Route path="/" element={<Home />}></Route>
+          <Route path="/error" element={<ErrorPage />}></Route>
           <Route path="/register" element={<Register></Register>}></Route>
           <Route
             path="/register/customer"

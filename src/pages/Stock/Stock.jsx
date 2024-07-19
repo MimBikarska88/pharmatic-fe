@@ -11,7 +11,12 @@ const Stock = (props) => {
     data: products = [],
     error: productsError,
     isLoading: productsLoading,
-  } = useGetVendorProductsQuery();
+  } = useGetVendorProductsQuery({
+    onError: () => {
+      navigate("/"); // must create error page
+    },
+    gcTime: 0,
+  });
 
   const INITIAL_ENTRIES_PER_PAGE = 3;
   const { page, setPage, displayEntries, pages } = usePagination(

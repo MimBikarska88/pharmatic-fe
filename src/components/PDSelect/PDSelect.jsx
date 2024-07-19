@@ -1,14 +1,19 @@
 import styles from "./PDSelect.module.css";
 import Select from "react-select";
 
-const PDSelect = ({
-  options = [],
-  label,
-  className,
-  onChange,
-  required,
-  isValid = true,
-}) => {
+const PDSelect = (props) => {
+  const {
+    options = [],
+    label,
+    selectedOption,
+    className,
+    onChange,
+    required,
+    disabled,
+    isValid = true,
+    ...rest
+  } = props;
+
   return (
     <div className={className}>
       <label>
@@ -16,6 +21,9 @@ const PDSelect = ({
         {required && <span>*</span>}
       </label>
       <Select
+        {...rest}
+        value={options.find((option) => option.value === selectedOption.value)}
+        isDisabled={disabled}
         onChange={onChange}
         styles={{
           control: (baseStyles, state) => {
