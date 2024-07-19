@@ -50,7 +50,7 @@ const Stock = (props) => {
           </div>
         </div>
       )}
-      <div className="d-block text-center m-1">
+      <div className="d-flex justify-content-center flex-row  mt-3">
         {products && products.length >= INITIAL_ENTRIES_PER_PAGE && (
           <PDPagination
             pages={pages}
