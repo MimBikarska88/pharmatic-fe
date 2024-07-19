@@ -30,6 +30,7 @@ const VendorLicenses = () => {
     manufactoringLicense,
   } = useErrorStore((state) => state.VendorRegisterErrors);
   const RegisterVendor = useValidationStore((state) => state.RegisterVendor);
+  // MUST REFACTOR
   const refManufactoringLicense = useCallback((node) => {
     if (!node || !Vendor.manufactoringLicense) {
       return;

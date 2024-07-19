@@ -259,7 +259,7 @@ const DetailedProduct = (props) => {
                 ? productPlaceholders.currencyEu
                 : productPlaceholders.currencyNonEu
             }
-            value={mode !== Mode.Create ? product.price : }
+            value={product.price}
             onChangeFunc={(e) => {
               productInputFieldChangeHandler("price", e.target.value);
             }}

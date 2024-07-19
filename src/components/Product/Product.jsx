@@ -2,12 +2,16 @@ import { useNavigate } from "react-router";
 import { useUserStore } from "../../stores/userStore";
 import { roleType } from "../../utils/roleTypes";
 import PDButton from "../PDButton/PDButton";
+import useCurrency from "../hooks/useCurrency";
+import { CurrencyType } from "../../utils/residenceTypes";
 
 const Product = (props) => {
-  const { medicationName, _id, indications, priceEu, priceNonEu, photo } =
-    props;
+  const { medicationName, _id, price, photo, currency } = props;
   const role = useUserStore((state) => state.role);
+  const currencyType = useUserStore((state) => state.currencyType);
   const navigate = useNavigate();
+  const { calcualtedPrice } = useCurrency(price, currencyType, currency);
+
   return (
     <>
       <div className="card m-3" style={{ width: "18rem" }}>
@@ -16,7 +20,11 @@ const Product = (props) => {
           src={`http://localhost:8080/uploads/vendor/drugs/images/${photo}`}
         />
         <div className="card-body">
-          <h5 className="card-title">{medicationName}</h5>
+          <h5 className="card-title">
+            {medicationName} - {currencyType === CurrencyType.NON_EU ? "$" : ""}
+            {calcualtedPrice.toFixed(2)}
+            {currencyType === CurrencyType.EU ? "€" : ""}
+          </h5>
           <div className="text-center">
             <PDButton
               color="green"

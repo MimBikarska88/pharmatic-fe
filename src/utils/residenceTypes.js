@@ -2,6 +2,11 @@ export const ResidenceType = {
   EU: 1,
   NON_EU: 2,
 };
+export const CurrencyType = {
+  EU: 1,
+  NON_EU: 2,
+};
+
 export const getLicenseStaticInformation = (code) => {
   switch (code) {
     case 1:

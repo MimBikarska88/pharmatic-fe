@@ -31,11 +31,13 @@ const LoginVendor = () => {
 
   const onSuccess = (res) => {
     window.localStorage.setItem("role", JSON.stringify(roleType.vendor));
-    window.localStorage.setItem("residence", JSON.stringify(Vendor.residence));
+
     setVendorField("password", "");
     setVendorField("EORI", "");
     setRole(roleType.vendor);
-    setVendorField("residence", Vendor.residence);
+    if (Vendor.residence === ResidenceType.EU) {
+      window.localStorage.setItem("currencyType", JSON.stringify);
+    }
     navigate("/");
   };
   const onCloseModal = () => {
