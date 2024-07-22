@@ -3,9 +3,9 @@ import { useMutation } from "react-query";
 
 const useLoginMutation = (onError, onSuccess) => {
   return useMutation({
-    mutationFn: (email, password) =>
+    mutationFn: ({ email, password }) =>
       http.post(
-        "/Login",
+        "/customer/login",
         { email, password },
         { withCredentials: true, xsrfCookieName: "token" }
       ),

@@ -50,7 +50,6 @@ const VendorRegisterForm = () => {
       modalText: "",
     });
   };
-  const showModalIfNoResidenceIsSelected = () => {};
   const onError = (error) => {
     const { Errors, tabName, Existing } = error.response?.data;
     if (Errors) {
@@ -80,11 +79,14 @@ const VendorRegisterForm = () => {
         onClose: onCloseModal,
       });
       showModal();
+    } else {
+      navigate("/error");
     }
   };
   const navigate = useNavigate();
   const onSuccess = (res) => {
-    navigate("/register/vendor");
+    console.log("here");
+    navigate("/login/vendor");
     console.log(res.data);
   };
   const registerVendorMutation = useRegisterVendorMutation(onError, onSuccess);

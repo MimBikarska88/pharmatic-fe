@@ -5,12 +5,10 @@ import { useUserStore } from "../../../stores/userStore";
 import { useErrorStore } from "../../../stores/errorStore";
 import { useValidationStore } from "../../../stores/validationStore";
 import { isEmptyString } from "../../../utils/basicValidation.util";
-import { roleType } from "../../../utils/roleTypes";
-import { json, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 const CustomerNavTab = ({ activeTab, setActiveTab }) => {
   const Customer = useUserStore((state) => state.Customer);
   const setRegisterError = useErrorStore((state) => state.setRegisterError);
-  const setRole = useUserStore((state) => state.setRole);
   const setRegisterFieldValidity = useValidationStore(
     (state) => state.setRegisterFieldValidity
   );
@@ -19,20 +17,22 @@ const CustomerNavTab = ({ activeTab, setActiveTab }) => {
   const onError = (error) => {
     const { errors, tabIndex } = error.response?.data;
     setActiveTab(tabIndex);
-    Object.entries(errors).forEach((entry) => {
-      if (!isEmptyString(entry[1])) {
-        setRegisterError(entry[0], entry[1]);
-        setRegisterFieldValidity(entry[0], false);
-        if (entry[0] === "password") {
-          setRegisterFieldValidity("confirmPassword", false);
+    if (errors) {
+      Object.entries(errors).forEach((entry) => {
+        if (!isEmptyString(entry[1])) {
+          setRegisterError(entry[0], entry[1]);
+          setRegisterFieldValidity(entry[0], false);
+          if (entry[0] === "password") {
+            setRegisterFieldValidity("confirmPassword", false);
+          }
         }
-      }
-    });
+      });
+    } else {
+      navigate("/error");
+    }
   };
   const onSuccess = (res) => {
-    window.localStorage.setItem("role", JSON.stringify(roleType.customer));
-    setRole(roleType.customer);
-    navigate("/");
+    navigate("/login/customer");
   };
   const registerCustomerMutation = useRegisterCustomerMutation(
     onError,
@@ -40,9 +40,6 @@ const CustomerNavTab = ({ activeTab, setActiveTab }) => {
   );
   const submitRegisterForm = (e) => {
     const json = JSON.stringify(Customer);
-    const blob = new Blob([json], {
-      type: "application/json",
-    });
     const formData = new FormData();
     formData.append("latestMedicalCheckup", Customer.latestMedicalCheckup);
     formData.append("customer", json);

@@ -6,10 +6,12 @@ import healthy from "../../static/img/icons/healthy.png";
 import useLoginMutation from "../../queries/LoginMutation/useLoginMutation";
 import { useNavigate } from "react-router";
 import { useUserStore } from "../../stores/userStore";
+import { useModalStore } from "../../stores/modalStore";
 import { roleType } from "../../utils/roleTypes";
+import { CurrencyType } from "../../utils/residenceTypes";
 const Login = () => {
   const navigate = useNavigate();
-  const setRole = useUserStore((state) => state.setRole);
+  const { setRole, setCurrencyEuro } = useUserStore.getState();
   const [credentials, setCredentials] = useState({
     password: "",
     email: "",
@@ -17,17 +19,33 @@ const Login = () => {
   // must add validation and link for sign up and forgotten password
   // forgotten password requires email sender service implementation
 
+  const { setModal, showModal, hideModal } = useModalStore();
+  const onCloseModal = () => {
+    hideModal();
+    setModal({
+      modalTitle: "",
+      modalText: "",
+    });
+  };
+
   const onSuccess = (res) => {
     setRole(roleType.customer);
+    setCurrencyEuro();
+    window.localStorage.setItem("role", JSON.stringify(roleType.customer));
     navigate("/");
   };
-  const onError = (res) => {
-    console.log(res);
+  const onError = (err) => {
+    setModal({
+      modalTitle: "Error",
+      modalText: err.response.data?.message || "Login went wrong!",
+      showCancel: false,
+      onClose: onCloseModal,
+    });
+    showModal();
   };
-  const loginMutation = useLoginMutation(onSuccess, onError);
+  const loginMutation = useLoginMutation(onError, onSuccess);
   const onLoginClick = (e) => {
-    e.preventDefault();
-    loginMutation.mutate(credentials.email, credentials.password);
+    loginMutation.mutate(credentials);
   };
   return (
     <div className="d-flex flex-collumn justify-content-center">

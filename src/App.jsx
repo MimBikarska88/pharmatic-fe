@@ -26,7 +26,8 @@ const App = () => {
     const role = localStorage.getItem("role");
     const residence = localStorage.getItem("residence");
     if (role) {
-      setRole(JSON.parse(role));
+      console.log(role);
+      setRole(role);
     }
     if (residence) {
       setVendorField("residence", JSON.parse(residence));

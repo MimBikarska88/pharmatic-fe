@@ -17,6 +17,7 @@ import { useValidationStore } from "../../stores/validationStore";
 import { isEmptyString } from "../../utils/basicValidation.util";
 import { Mode } from "../../utils/mode";
 import useCreatePharmProductMutation from "../../queries/CreatePharmProductMutation/useCreatePharmProductMutation";
+import useUpdatePharmProductMutation from "../../queries/UpdatePharmProductMutation/useUpdatePharmProductMutation";
 import useGetProductByIdQuery from "../../queries/GetProductByIdQuery/useGetProductByIdQuery";
 import { useUserStore } from "../../stores/userStore";
 import {
@@ -38,6 +39,9 @@ const DetailedProduct = (props) => {
     navigate("/stock");
   };
 
+  const onUpdateSuccess = (res) => {
+    navigate(`/stock/view/${product._id}`);
+  };
   const onError = (err) => {
     const { Errors } = err.response.data;
     if (Errors) {
@@ -53,6 +57,10 @@ const DetailedProduct = (props) => {
     onError,
     onSuccess
   );
+  const updatePharmProductMutation = useUpdatePharmProductMutation(
+    onError,
+    onUpdateSuccess
+  );
   const [product, setProduct] = useState({
     isoCertificate: "",
     chemicalFormula: "",
@@ -67,6 +75,7 @@ const DetailedProduct = (props) => {
     classification: null,
     licenseType: null,
     photo: null,
+    imageSrc: null,
   });
   const {
     data: vendorLicenses,
@@ -99,6 +108,7 @@ const DetailedProduct = (props) => {
         licenseType: productData.data?.licenseType
           ? getLicenseStaticInformation(productData.data.licenseType)
           : null,
+        imageSrc: productData.data?.photo,
       });
     }
   }, [productData, productDataError]);
@@ -121,7 +131,7 @@ const DetailedProduct = (props) => {
 
   const handleFileChange = (event, fieldName) => {
     const file = event.target?.files[0];
-    if (!file || ["pil", "photo"].includes(fieldName)) {
+    if (!file || !["pil", "photo"].includes(fieldName)) {
       return;
     }
     setProduct((state) => ({ ...state, [`${fieldName}`]: file }));
@@ -150,7 +160,7 @@ const DetailedProduct = (props) => {
         <div className="d-flex flex-row justify-content-center">
           <img
             style={{ width: "400px", height: "400px" }}
-            src={`http://localhost:8080/uploads/vendor/drugs/images/${product.photo}`}
+            src={`http://localhost:8080/uploads/vendor/drugs/images/${product.imageSrc}`}
             alt="img"
             className="img-thumbnail"
           />
@@ -216,6 +226,7 @@ const DetailedProduct = (props) => {
             required={mode !== Mode.View}
             className={styles["input-field"]}
             options={classifications}
+            isValid={Product.classification}
             label="Classification"
             selectedOption={product.classification || ""}
             onChange={(e) => {
@@ -307,7 +318,12 @@ const DetailedProduct = (props) => {
           />
         </div>
       ) : (
-        <a className={`${styles["link"]}`} href="#">
+        <a
+          rel="noreferrer"
+          className={`${styles["link"]}`}
+          target={"_blank"}
+          href={`http://localhost:8080/uploads/vendor/drugs/pils/${product.pil}`}
+        >
           Patient Information Leaflet (PIL).
         </a>
       )}
@@ -362,7 +378,8 @@ const DetailedProduct = (props) => {
             color="green"
             value="Edit Pharmaceutical"
             onClick={() => {
-              console.log("edit ");
+              console.log(product);
+              updatePharmProductMutation.mutate({ ...product });
             }}
           />
         )}

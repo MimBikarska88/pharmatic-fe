@@ -36,7 +36,16 @@ const LoginVendor = () => {
     setVendorField("EORI", "");
     setRole(roleType.vendor);
     if (Vendor.residence === ResidenceType.EU) {
-      window.localStorage.setItem("currencyType", JSON.stringify);
+      window.localStorage.setItem(
+        "currencyType",
+        JSON.stringify(ResidenceType.EU)
+      );
+    }
+    if (Vendor.residence === ResidenceType.NON_EU) {
+      window.localStorage.setItem(
+        "currencyType",
+        JSON.stringify(ResidenceType.NON_EU)
+      );
     }
     navigate("/");
   };
