@@ -30,23 +30,29 @@ const LoginVendor = () => {
   const navigate = useNavigate();
 
   const onSuccess = (res) => {
-    window.localStorage.setItem("role", JSON.stringify(roleType.vendor));
-
     setVendorField("password", "");
     setVendorField("EORI", "");
     setRole(roleType.vendor);
+    window.localStorage.setItem(
+      "role",
+      JSON.stringify({ type: roleType.vendor })
+    );
     if (Vendor.residence === ResidenceType.EU) {
       window.localStorage.setItem(
         "currencyType",
-        JSON.stringify(ResidenceType.EU)
+        JSON.stringify({ type: ResidenceType.EU })
       );
     }
     if (Vendor.residence === ResidenceType.NON_EU) {
       window.localStorage.setItem(
         "currencyType",
-        JSON.stringify(ResidenceType.NON_EU)
+        JSON.stringify({ type: ResidenceType.NON_EU })
       );
     }
+    window.localStorage.setItem(
+      "residence",
+      JSON.stringify({ type: Vendor.residence })
+    );
     navigate("/");
   };
   const onCloseModal = () => {

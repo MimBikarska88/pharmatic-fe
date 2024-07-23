@@ -5,7 +5,7 @@ import {
   areMedicationsTheSame,
   areMedicalRecordsTheSame,
 } from "../utils/basicValidation.util";
-import { ResidenceType } from "../utils/residenceTypes";
+import { CurrencyType, ResidenceType } from "../utils/residenceTypes";
 
 const customerInitialStore = {
   firstName: "",
@@ -57,14 +57,20 @@ const vendorInitialStore = {
   city: "",
   postcode: "",
 };
+const initialSearch = {
+  classification: "",
+  vendor: "",
+  searchText: "",
+};
 export const useUserStore = create(
   immer((set) => ({
     role: roleType.guest,
-    currencyType: null,
+    currencyType: CurrencyType.EU,
     Admin: {},
     Customer: { ...customerInitialStore },
     SoleProprietor: {},
     Vendor: { ...vendorInitialStore },
+    SearchParams: { ...initialSearch },
     resetCustomerState: () =>
       set((state) => {
         state.Customer = { ...customerInitialStore };

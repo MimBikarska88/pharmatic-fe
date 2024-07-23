@@ -17,6 +17,7 @@ const Product = (props) => {
       <div className="card m-3" style={{ width: "18rem" }}>
         <img
           className="card-img-top"
+          style={{ height: "263px", width: "263px" }}
           src={`http://localhost:8080/uploads/vendor/drugs/images/${photo}`}
         />
         <div className="card-body">

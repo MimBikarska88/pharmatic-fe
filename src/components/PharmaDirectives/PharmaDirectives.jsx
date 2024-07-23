@@ -9,6 +9,7 @@ import Stock from "../../pages/Stock/Stock";
 import DetailedProduct from "../../pages/DetailedProduct/DetailedProduct";
 import Home from "../../pages/Home/Home";
 import ErrorPage from "../../pages/ErrorPage/ErrorPage";
+import Products from "../../pages/Products.jsx/Products";
 const PharmaDirectives = () => {
   return (
     <>
@@ -49,6 +50,7 @@ const PharmaDirectives = () => {
               element={<DetailedProduct mode={Mode.Edit} />}
             ></Route>
           </Route>
+          <Route path="/products" element={<Products />}></Route>
         </Routes>
       </div>
     </>

@@ -31,7 +31,10 @@ const Login = () => {
   const onSuccess = (res) => {
     setRole(roleType.customer);
     setCurrencyEuro();
-    window.localStorage.setItem("role", JSON.stringify(roleType.customer));
+    window.localStorage.setItem(
+      "role",
+      JSON.stringify({ type: roleType.customer })
+    );
     navigate("/");
   };
   const onError = (err) => {

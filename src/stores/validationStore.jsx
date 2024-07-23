@@ -81,5 +81,9 @@ export const useValidationStore = create(
       set((state) => {
         state.Product[`${fieldName}`] = fieldValue;
       }),
+    resetProductFieldValidity: () =>
+      set((state) => {
+        state.Product = { ...productCreateStore };
+      }),
   }))
 );

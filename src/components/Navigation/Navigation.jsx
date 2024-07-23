@@ -19,9 +19,9 @@ const Navigation = () => {
     ],
     [roleType.customer]: [
       { title: "Home", link: "/" },
-      { title: "Orders", link: "/orders/" },
+      { title: "Orders", link: "/orders" },
       { title: "Products", link: "/products" },
-      { title: "Edit Account", link: "/account/" },
+      { title: "Edit Account", link: "/account" },
       { title: "Logout" },
     ],
     [roleType.guest]: [
@@ -33,11 +33,9 @@ const Navigation = () => {
     ],
   };
   const onSuccess = () => {
-    console.log("here");
     localStorage.clear();
-    localStorage.setItem("role", roleType.guest);
+    localStorage.setItem("role", JSON.stringify({ type: roleType.guest }));
     setRole(roleType.guest);
-
     navigate("/");
   };
   const logoutMutation = useLogoutMutation(role, onSuccess, () => {

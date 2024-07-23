@@ -62,5 +62,6 @@ export const useErrorStore = create(
       set((state) => {
         state.ProductErrors[`${fieldName}`] = fieldValue;
       }),
+    resetProductErrors: () => {},
   }))
 );

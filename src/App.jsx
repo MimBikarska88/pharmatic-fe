@@ -8,11 +8,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { useMemo } from "react";
 import { useUserStore } from "./stores/userStore";
+import { roleType } from "./utils/roleTypes";
+import { ResidenceType } from "./utils/residenceTypes";
 
 const client = new QueryClient({
   defaultOptions: {
     queries: {
-      useErrorBoundary: true,
+      useErrorBoundary: false,
       refetchOnWindowFocus: false,
       retry: false,
     },
@@ -20,19 +22,31 @@ const client = new QueryClient({
 });
 
 const App = () => {
-  const setRole = useUserStore((state) => state.setRole);
-  const setVendorField = useUserStore.getState().setVendorField;
+  const {
+    setRole,
+    setVendorField,
+    role,
+    Vendor,
+    setCurrencyEuro,
+    setCurrencyDollar,
+  } = useUserStore();
   useMemo(() => {
-    const role = localStorage.getItem("role");
+    const currentRole = localStorage.getItem("role");
     const residence = localStorage.getItem("residence");
-    if (role) {
-      console.log(role);
-      setRole(role);
+    if (currentRole) {
+      setRole(JSON.parse(currentRole).type);
     }
     if (residence) {
-      setVendorField("residence", JSON.parse(residence));
+      const residenceType = JSON.parse(residence).type;
+      setVendorField("residence", residenceType);
+      if (residenceType === ResidenceType.EU) {
+        setCurrencyEuro();
+      }
+      if (residence === ResidenceType.NON_EU) {
+        setCurrencyDollar();
+      }
     }
-  });
+  }, [role, Vendor.residence]);
   return (
     <>
       <QueryClientProvider client={client}>

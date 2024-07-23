@@ -35,32 +35,6 @@ const DetailedProduct = (props) => {
   const { productId } = useParams();
   const { Vendor, role } = useUserStore();
 
-  const onSuccess = (res) => {
-    navigate("/stock");
-  };
-
-  const onUpdateSuccess = (res) => {
-    navigate(`/stock/view/${product._id}`);
-  };
-  const onError = (err) => {
-    const { Errors } = err.response.data;
-    if (Errors) {
-      Object.entries(Errors).forEach((entry) => {
-        if (!isEmptyString(entry[1])) {
-          setProductError(entry[0], entry[1]);
-          setProductFieldValidity(entry[0], false);
-        }
-      });
-    }
-  };
-  const createPharmProductMutation = useCreatePharmProductMutation(
-    onError,
-    onSuccess
-  );
-  const updatePharmProductMutation = useUpdatePharmProductMutation(
-    onError,
-    onUpdateSuccess
-  );
   const [product, setProduct] = useState({
     isoCertificate: "",
     chemicalFormula: "",
@@ -91,12 +65,40 @@ const DetailedProduct = (props) => {
     data: productData = null,
     error: productDataError,
     isLoading: isProductDataLoading,
+    refetch: refetchProduct,
   } = useGetProductByIdQuery(productId, {
     enabled: !!productId && mode !== Mode.Create,
   });
+  const onSuccess = (res) => {
+    navigate("/stock");
+  };
 
+  const onUpdateSuccess = (res) => {
+    navigate(`/stock/view/${product._id}`);
+    refetchProduct();
+  };
+  const onError = (err) => {
+    const { Errors } = err.response.data;
+    if (Errors) {
+      Object.entries(Errors).forEach((entry) => {
+        if (!isEmptyString(entry[1])) {
+          setProductError(entry[0], entry[1]);
+          setProductFieldValidity(entry[0], false);
+        }
+      });
+    }
+  };
+  const createPharmProductMutation = useCreatePharmProductMutation(
+    onError,
+    onSuccess
+  );
+  const updatePharmProductMutation = useUpdatePharmProductMutation(
+    onError,
+    onUpdateSuccess
+  );
   useEffect(() => {
     // temp fix for side effects state
+
     if (productData && !productDataError) {
       setProduct({
         ...productData.data,
@@ -378,8 +380,10 @@ const DetailedProduct = (props) => {
             color="green"
             value="Edit Pharmaceutical"
             onClick={() => {
-              console.log(product);
-              updatePharmProductMutation.mutate({ ...product });
+              updatePharmProductMutation.mutate({
+                ...product,
+                residence: Vendor.residence,
+              });
             }}
           />
         )}
