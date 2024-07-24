@@ -63,7 +63,7 @@ const initialSearch = {
   searchText: "",
 };
 export const useUserStore = create(
-  immer((set) => ({
+  immer((set, get) => ({
     role: roleType.guest,
     currencyType: CurrencyType.EU,
     Admin: {},
@@ -71,6 +71,7 @@ export const useUserStore = create(
     SoleProprietor: {},
     Vendor: { ...vendorInitialStore },
     SearchParams: { ...initialSearch },
+    Cart: [],
     resetCustomerState: () =>
       set((state) => {
         state.Customer = { ...customerInitialStore };
@@ -176,6 +177,40 @@ export const useUserStore = create(
     setCurrencyDollar: () =>
       set((state) => {
         state.currencyType = ResidenceType.NON_EU;
+      }),
+    setSearchParams: (fieldName, fieldValue) =>
+      set((state) => {
+        state.SearchParams[fieldName] = fieldValue;
+      }),
+    addItemToCart: (item) =>
+      set((state) => {
+        state.Cart.push(item);
+      }),
+
+    removeItemFromCart: (id) =>
+      set((state) => {
+        state.Cart = state.Cart.filter((item) => item._id !== id);
+      }),
+    getItemFromCart: (id) => {
+      const item = get().Cart.find((item) => item._id === id);
+      return item;
+    },
+    increaseItemQuantity: (id) =>
+      set((state) => {
+        const item = state.Cart.find((item) => id === item._id);
+        if (item) {
+          item.quantity = item.quantity + 1;
+        }
+      }),
+    decreaseItemQuantity: (id) =>
+      set((state) => {
+        const item = state.Cart.find((item) => id === item._id);
+        if (item) {
+          item.quantity = item.quantity - 1;
+          if (item.quantity === 0) {
+            state.Cart = state.Cart.filter((item) => item._id !== id);
+          }
+        }
       }),
   }))
 );

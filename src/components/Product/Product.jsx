@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router";
 import { useUserStore } from "../../stores/userStore";
 import { roleType } from "../../utils/roleTypes";
+import { CurrencyType } from "../../utils/residenceTypes";
+import { addProductToCart } from "../../utils/addToCartUtils";
+
 import PDButton from "../PDButton/PDButton";
 import useCurrency from "../hooks/useCurrency";
-import { CurrencyType } from "../../utils/residenceTypes";
 
 const Product = (props) => {
   const { medicationName, _id, price, photo, currency } = props;
@@ -36,14 +38,22 @@ const Product = (props) => {
             {role === roleType.customer && (
               <PDButton
                 color="purple"
-                style={{ width: "6rem", margin: "0.4rem" }}
-                value={"Add to Cart"}
+                style={{
+                  width: "6rem",
+                  margin: "0.4rem",
+                  whiteSpace: "nowrap",
+                }}
+                onClick={() => addProductToCart(props)}
+                value={"To Cart"}
               />
             )}
             {role === roleType.vendor && (
               <PDButton
                 color="purple"
-                style={{ width: "6rem", margin: "0.4rem" }}
+                style={{
+                  width: "6rem",
+                  margin: "0.4rem",
+                }}
                 value={"Edit"}
               />
             )}

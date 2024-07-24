@@ -1,7 +1,7 @@
 import { CurrencyType } from "../../utils/residenceTypes";
 
 const useCurrency = (price, currency, productCurrency) => {
-  let calcualtedPrice = 0;
+  calcualtedPrice = 0;
 
   const exchangeRate = 0.85;
 

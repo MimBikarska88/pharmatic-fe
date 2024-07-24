@@ -1,0 +1,12 @@
+.input-field {
+  height: 120px;
+  width: 360px;
+}
+.input-field select {
+  width: 350px;
+  margin: 0.5rem;
+}
+.input-field input {
+  width: 350px;
+  margin: 0.5rem;
+}

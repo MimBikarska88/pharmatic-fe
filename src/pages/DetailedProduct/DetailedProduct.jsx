@@ -52,10 +52,12 @@ const DetailedProduct = (props) => {
     imageSrc: null,
   });
   const {
-    data: vendorLicenses,
+    data: vendorLicenses = [],
     error: vendorLicensesError,
     isLoading: vendorLicensesLoading,
-  } = useGetVendorLicensesQuery();
+  } = useGetVendorLicensesQuery({
+    enabled: role === roleType.vendor,
+  });
   const {
     data: classifications,
     error: classificationError,
@@ -249,7 +251,6 @@ const DetailedProduct = (props) => {
             label="Required License Type"
             selectedOption={product.licenseType || ""}
             onChange={(e) => {
-              console.log(e.value);
               setProduct((state) => ({
                 ...state,
                 licenseType: e.value,

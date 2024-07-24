@@ -20,8 +20,9 @@ const Navigation = () => {
     [roleType.customer]: [
       { title: "Home", link: "/" },
       { title: "Orders", link: "/orders" },
-      { title: "Products", link: "/products" },
+      { title: "Products", link: "/stock" },
       { title: "Edit Account", link: "/account" },
+      { title: "Cart", link: "/cart" },
       { title: "Logout" },
     ],
     [roleType.guest]: [
