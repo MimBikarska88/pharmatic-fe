@@ -12,7 +12,7 @@ const Product = (props) => {
   const role = useUserStore((state) => state.role);
   const currencyType = useUserStore((state) => state.currencyType);
   const navigate = useNavigate();
-  const { calcualtedPrice } = useCurrency(price, currencyType, currency);
+  const { calculatePrice } = useCurrency(currencyType);
 
   return (
     <>
@@ -25,7 +25,7 @@ const Product = (props) => {
         <div className="card-body">
           <h5 className="card-title">
             {medicationName} - {currencyType === CurrencyType.NON_EU ? "$" : ""}
-            {calcualtedPrice.toFixed(2)}
+            {calculatePrice(price, currency).toFixed(2)}
             {currencyType === CurrencyType.EU ? "€" : ""}
           </h5>
           <div className="text-center">

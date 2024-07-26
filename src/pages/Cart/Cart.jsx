@@ -1,11 +1,31 @@
+import { useEffect, useState } from "react";
+import useCurrency from "../../components/hooks/useCurrency";
 import PDButton from "../../components/PDButton/PDButton";
 import PDTable from "../../components/PDEditableTable/PDTable";
 import { useUserStore } from "../../stores/userStore";
+import { CurrencyType } from "../../utils/residenceTypes";
+import {
+  calculateTotalPriceEu,
+  calculateTotalPriceNonEu,
+} from "../../utils/addToCartUtils";
 const Cart = (props) => {
-  const { Cart, increaseItemQuantity, decreaseItemQuantity } = useUserStore(
-    (state) => state
-  );
+  const [totalPrice, setTotalPrice] = useState(0);
+  const { Cart, increaseItemQuantity, decreaseItemQuantity, currencyType } =
+    useUserStore((state) => state);
+  const { calculatePrice } = useCurrency(currencyType);
 
+  useEffect(() => {
+    let priceEu = calculateTotalPriceEu();
+    let priceNonEu = calculateTotalPriceNonEu();
+    if (currencyType === CurrencyType.EU) {
+      priceEu += priceNonEu * 0.85;
+      setTotalPrice(priceEu);
+    }
+    if (currencyType === CurrencyType.NON_EU) {
+      priceNonEu += priceEu / 0.85;
+      setTotalPrice(priceNonEu);
+    }
+  }, [Cart, currencyType]);
   return (
     <>
       {Cart.length === 0 ? (
@@ -37,12 +57,19 @@ const Cart = (props) => {
                       className="img-thumbnail"
                     />
                   </PDTable.Cell>
-                  <PDTable.Cell colspan={2}>{item.medicationName}</PDTable.Cell>
                   <PDTable.Cell colspan={2}>
-                    {item.price.toFixed(2)}
+                    <strong>{item.medicationName}</strong>
+                  </PDTable.Cell>
+                  <PDTable.Cell colspan={2}>
+                    <strong>
+                      {" "}
+                      {currencyType === CurrencyType.NON_EU ? " $ " : ""}
+                      {calculatePrice(item.price, item.currency).toFixed(2)}
+                      {currencyType === CurrencyType.EU ? " € " : ""}
+                    </strong>
                   </PDTable.Cell>
                   <PDTable.Cell style={{ align: "right" }} colspan={2}>
-                    {item.quantity}
+                    <strong>{item.quantity}</strong>
                   </PDTable.Cell>
                   <PDTable.Cell style={{ align: "right" }} colspan={1}>
                     <PDButton
@@ -73,6 +100,18 @@ const Cart = (props) => {
               );
             })}
           </PDTable.Body>
+          <PDTable.Footer style={{ fontSize: "20px", fontWeight: "700" }}>
+            <PDTable.Row>
+              <PDTable.Cell style={{ align: "center" }} colspan={2}>
+                Total Price
+              </PDTable.Cell>
+              <PDTable.Cell style={{ align: "center" }} colspan={2}>
+                {currencyType === CurrencyType.NON_EU ? "$ " : ""}
+                {totalPrice.toFixed(2)}
+                {currencyType === CurrencyType.EU ? " € " : ""}
+              </PDTable.Cell>
+            </PDTable.Row>
+          </PDTable.Footer>
         </PDTable>
       )}
     </>

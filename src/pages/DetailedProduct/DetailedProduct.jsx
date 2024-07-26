@@ -23,9 +23,11 @@ import { useUserStore } from "../../stores/userStore";
 import {
   ResidenceType,
   getLicenseStaticInformation,
+  CurrencyType,
 } from "../../utils/residenceTypes";
 import { useNavigate, useParams } from "react-router";
 import { roleType } from "../../utils/roleTypes";
+import useCurrency from "../../components/hooks/useCurrency";
 
 const DetailedProduct = (props) => {
   const { mode } = props;
@@ -33,7 +35,8 @@ const DetailedProduct = (props) => {
   const { Product, setProductFieldValidity } = useValidationStore();
   const navigate = useNavigate();
   const { productId } = useParams();
-  const { Vendor, role } = useUserStore();
+  const { Vendor, role, currencyType } = useUserStore();
+  const { calculatePrice } = useCurrency(currencyType);
 
   const [product, setProduct] = useState({
     isoCertificate: "",
@@ -42,8 +45,7 @@ const DetailedProduct = (props) => {
     routeOfAdministration: "",
     indications: "",
     sideEffects: "",
-    currencyNonEu: "",
-    currencyEu: "",
+    currency: null,
     price: "",
     pil: null,
     classification: null,
@@ -114,6 +116,7 @@ const DetailedProduct = (props) => {
           : null,
         imageSrc: productData.data?.photo,
       });
+      console.log(productData.data);
     }
   }, [productData, productDataError]);
 
@@ -259,25 +262,42 @@ const DetailedProduct = (props) => {
           />
         </div>
         <div className="flex-column p-3">
-          <PDInput
-            disabled={mode === Mode.View}
-            required={mode !== Mode.View}
-            isValid={Product.price}
-            errorMessage={ProductErrors.price}
-            type="number"
-            className={styles["input-field"]}
-            label="Price"
-            step="0.01"
-            placeholder={
-              Vendor.residence === ResidenceType.EU
-                ? productPlaceholders.currencyEu
-                : productPlaceholders.currencyNonEu
-            }
-            value={product.price}
-            onChangeFunc={(e) => {
-              productInputFieldChangeHandler("price", e.target.value);
-            }}
-          />
+          {role === roleType.vendor && (
+            <PDInput
+              disabled={mode === Mode.View}
+              required={mode !== Mode.View}
+              isValid={Product.price}
+              errorMessage={ProductErrors.price}
+              type="number"
+              className={styles["input-field"]}
+              label="Price"
+              step="0.01"
+              placeholder={
+                Vendor.residence === ResidenceType.EU
+                  ? productPlaceholders.currencyEu
+                  : productPlaceholders.currencyNonEu
+              }
+              value={product.price}
+              onChangeFunc={(e) => {
+                productInputFieldChangeHandler("price", e.target.value);
+              }}
+            />
+          )}
+          {role === roleType.customer && (
+            <PDInput
+              disabled={true}
+              type="text"
+              className={styles["input-field"]}
+              label="Price"
+              value={`${
+                currencyType === CurrencyType.NON_EU ? " $ " : ""
+              } ${calculatePrice(product.price, product?.currency)
+                .toFixed(2)
+                .trim()} ${
+                currencyType === CurrencyType.EU ? " € " : ""
+              }`.trim()}
+            />
+          )}
           <PDInput
             type="text"
             disabled={mode === Mode.View}
