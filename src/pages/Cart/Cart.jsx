@@ -18,11 +18,15 @@ const Cart = (props) => {
     let priceEu = calculateTotalPriceEu();
     let priceNonEu = calculateTotalPriceNonEu();
     if (currencyType === CurrencyType.EU) {
-      priceEu += priceNonEu * 0.85;
+      if (priceNonEu > 0) {
+        priceEu = priceEu + priceNonEu * 0.85;
+      }
       setTotalPrice(priceEu);
     }
     if (currencyType === CurrencyType.NON_EU) {
-      priceNonEu += priceEu / 0.85;
+      if (priceEu > 0) {
+        priceNonEu = priceNonEu + priceEu / 0.85;
+      }
       setTotalPrice(priceNonEu);
     }
   }, [Cart, currencyType]);
@@ -48,7 +52,7 @@ const Cart = (props) => {
           <PDTable.Body>
             {Cart.map((item) => {
               return (
-                <PDTable.Row>
+                <PDTable.Row key={item._id}>
                   <PDTable.Cell colspan={5}>
                     <img
                       style={{ width: "150px", height: "150px" }}
@@ -109,6 +113,9 @@ const Cart = (props) => {
                 {currencyType === CurrencyType.NON_EU ? "$ " : ""}
                 {totalPrice.toFixed(2)}
                 {currencyType === CurrencyType.EU ? " € " : ""}
+              </PDTable.Cell>
+              <PDTable.Cell colspan={2}>
+                <PDButton color={"purple"} value={"Order now"} />
               </PDTable.Cell>
             </PDTable.Row>
           </PDTable.Footer>

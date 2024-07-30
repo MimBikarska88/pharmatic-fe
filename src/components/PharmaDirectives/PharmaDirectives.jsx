@@ -1,7 +1,8 @@
 import { Route, Routes } from "react-router";
+import { Navigate } from "react-router-dom";
 import { roleType } from "../../utils/roleTypes";
 import { Mode } from "../../utils/mode";
-
+import AuthorizedRoute from "./AuthorizedRoute";
 import Register from "../../pages/Register/Register";
 import BaseLogin from "../../pages/Login/BaseLogin";
 import styles from "./PharmaDirectives.module.css";
@@ -10,19 +11,183 @@ import DetailedProduct from "../../pages/DetailedProduct/DetailedProduct";
 import Home from "../../pages/Home/Home";
 import ErrorPage from "../../pages/ErrorPage/ErrorPage";
 import Products from "../../pages/Products.jsx/Products";
+
 import { useUserStore } from "../../stores/userStore";
 import Cart from "../../pages/Cart/Cart";
 const PharmaDirectives = () => {
   const role = useUserStore((state) => state.role);
-  const authorizedRoles = [roleType.customer, roleType.vendor];
+  const StockRenderer = () => {
+    if (role === roleType.customer)
+      return (
+        <Routes>
+          <Route
+            path=""
+            element={
+              <AuthorizedRoute
+                component={<Products />}
+                role={role}
+                navigate={"/"}
+                allowedRoles={[roleType.customer]}
+              />
+            }
+          ></Route>
+        </Routes>
+      );
+    if (role === roleType.vendor) {
+      return (
+        <Routes>
+          <Route
+            path=""
+            element={
+              <AuthorizedRoute
+                component={<Stock />}
+                role={role}
+                allowedRoles={[roleType.vendor]}
+                navigate={"/"}
+              ></AuthorizedRoute>
+            }
+          ></Route>
+        </Routes>
+      );
+    }
+  };
   return (
     <>
       <div className={`container ${styles.directive}`}>
         <Routes>
           <Route path="/" element={<Home />}></Route>
-          {role === roleType.guest && (
+          <Route path="/error" element={<ErrorPage />}></Route>
+          <Route
+            path="/unauthorized"
+            element={
+              <ErrorPage
+                statusCode={401}
+                message={"You are not authorized to visit this page"}
+              />
+            }
+          ></Route>
+          <Route
+            path="/register"
+            element={
+              <AuthorizedRoute
+                component={<Register />}
+                role={role}
+                allowedRoles={[roleType.guest]}
+                navigate={"/"}
+              ></AuthorizedRoute>
+            }
+          ></Route>
+          <Route
+            path="/register/vendor"
+            element={
+              <AuthorizedRoute
+                component={<Register roleType={roleType.vendor} />}
+                role={role}
+                allowedRoles={[roleType.guest]}
+                navigate={"/"}
+              ></AuthorizedRoute>
+            }
+          ></Route>
+          <Route
+            path="/register/customer"
+            element={
+              <AuthorizedRoute
+                component={<Register roleType={roleType.customer} />}
+                role={role}
+                allowedRoles={[roleType.guest]}
+                navigate={"/"}
+              ></AuthorizedRoute>
+            }
+          ></Route>
+          <Route
+            path="/login"
+            element={
+              <AuthorizedRoute
+                component={<BaseLogin />}
+                role={role}
+                allowedRoles={[roleType.guest]}
+              ></AuthorizedRoute>
+            }
+          ></Route>
+          <Route
+            path="/login/vendor"
+            element={
+              <AuthorizedRoute
+                component={<BaseLogin roleType={roleType.vendor} />}
+                role={role}
+                allowedRoles={[roleType.guest]}
+              ></AuthorizedRoute>
+            }
+          ></Route>
+          <Route
+            path="/login/customer"
+            element={
+              <AuthorizedRoute
+                component={<BaseLogin roleType={roleType.customer} />}
+                role={role}
+                allowedRoles={[roleType.guest]}
+              ></AuthorizedRoute>
+            }
+          ></Route>
+          <Route path="/stock">
+            <Route path="" element={<StockRenderer />}></Route>
+            <Route
+              path="create"
+              element={
+                <AuthorizedRoute
+                  role={role}
+                  navigate={"/"}
+                  allowedRoles={[roleType.vendor]}
+                  component={<DetailedProduct mode={Mode.Create} />}
+                />
+              }
+            />
+            <Route
+              path="edit/:productId"
+              element={
+                <AuthorizedRoute
+                  role={role}
+                  allowedRoles={[roleType.vendor]}
+                  navigate={"/products"}
+                  component={<DetailedProduct mode={Mode.Edit} />}
+                />
+              }
+            ></Route>
+            <Route
+              path="view/:productId"
+              element={
+                <AuthorizedRoute
+                  role={role}
+                  allowedRoles={[roleType.customer, roleType.vendor]}
+                  navigate={"/"}
+                  component={<DetailedProduct mode={Mode.View} />}
+                />
+              }
+            ></Route>
+          </Route>
+          <Route
+            path="/cart"
+            element={
+              <AuthorizedRoute
+                role={role}
+                allowedRoles={roleType.customer}
+                component={<Cart />}
+              />
+            }
+          ></Route>
+        </Routes>
+      </div>
+    </>
+  );
+  /*
+  return (
+    <>
+      <div className={`container ${styles.directive}`}>
+        <Routes>
+          <Route path="/" element={<Home />}></Route>
+          <Route path="/error" element={<ErrorPage />}></Route>
+          {role === roleType.guest ? (
             <>
-              <Route path="/error" element={<ErrorPage />}></Route>
               <Route path="/register" element={<Register></Register>}></Route>
               <Route
                 path="/register/customer"
@@ -42,8 +207,10 @@ const PharmaDirectives = () => {
                 element={<BaseLogin roleType={roleType.vendor} />}
               ></Route>
             </>
+          ) : (
+            <Navigate to={"/unauthorized"} />
           )}
-          {authorizedRoles.includes(role) && (
+          {authorizedRoles.includes(role) ? (
             <>
               <Route path="/stock">
                 {role === roleType.customer && (
@@ -71,10 +238,21 @@ const PharmaDirectives = () => {
                 <Route path="/cart" element={<Cart />}></Route>
               )}
             </>
+          ) : (
+            <Navigate to="/" />
           )}
+          <Route
+            path="/unauthorized"
+            element={
+              <ErrorPage
+                statusCode={401}
+                message={"You are not authorized to visit this page"}
+              />
+            }
+          ></Route>
         </Routes>
       </div>
     </>
-  );
+  );*/
 };
 export default PharmaDirectives;

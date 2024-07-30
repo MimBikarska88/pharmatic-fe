@@ -13,7 +13,8 @@ export const addProductToCart = (product) => {
 
 export const calculateTotalPriceEu = () => {
   const { Cart } = useUserStore.getState();
-  const itemsEU = Cart.filter((item) => item.currency !== CurrencyType.EU);
+  const itemsEU = Cart.filter((item) => item.currency === CurrencyType.EU);
+  console.log(itemsEU);
   return itemsEU.reduce((sum, item) => {
     return sum + item.price * item.quantity;
   }, 0.0);
@@ -21,8 +22,10 @@ export const calculateTotalPriceEu = () => {
 export const calculateTotalPriceNonEu = () => {
   const { Cart } = useUserStore.getState();
   const itemsNonEu = Cart.filter(
-    (item) => item.currency !== CurrencyType.NON_EU
+    (item) => item.currency === CurrencyType.NON_EU
   );
+  console.log(itemsNonEu);
+
   return itemsNonEu.reduce((sum, item) => {
     return sum + item.price * item.quantity;
   }, 0.0);
