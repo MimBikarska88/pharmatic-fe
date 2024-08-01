@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useUserStore } from "../../stores/userStore";
 import { usePagination } from "../../components/hooks/usePagination";
 import useGetClassificationQuery from "../../queries/GetClassificationQuery/useGetClassificationQuery";
@@ -9,17 +8,13 @@ import Product from "../../components/Product/Product";
 import styles from "./Products.module.css";
 import useGetFilteredProductsQuery from "../../queries/GetFilteredProductsQuery/useGetFilteredProductsQuery";
 import PDButton from "../../components/PDButton/PDButton";
-
+import { useEffect } from "react";
 const Products = () => {
-  const { SearchParams, setSearchParams } = useUserStore((state) => ({
-    SearchParams: state.SearchParams,
-    setSearchParams: state.setSearchParams,
-  }));
-  const [tempClassification, setTempClassification] = useState(
-    SearchParams.classification
-  );
-  const [tempVendor, setTempVendor] = useState(SearchParams.vendor);
-  const [tempSearchText, setTempSearchText] = useState(SearchParams.searchText);
+  const SearchParams = useUserStore((state) => state.SearchParams);
+  const Cart = useUserStore((state) => state.Cart);
+  const setSearchParams = useUserStore.getState().setSearchParams;
+
+  const { classification, vendor, searchText } = SearchParams;
 
   const {
     data: classifications = [],
@@ -32,40 +27,30 @@ const Products = () => {
     error: productsError,
     isLoading: productsLoading,
     refetch: refetchProducts,
-  } = useGetFilteredProductsQuery(
-    SearchParams.classification,
-    SearchParams.vendor,
-    SearchParams.searchText,
-    {
-      enabled: false,
-    }
-  );
-  useEffect(() => {
-    refetchProducts();
-  }, []);
-
+  } = useGetFilteredProductsQuery(classification, vendor, searchText, {
+    enabled: false,
+  });
   const INITIAL_ENTRIES_PER_PAGE = 3;
   const { page, setPage, displayEntries, pages } = usePagination(
     products,
     INITIAL_ENTRIES_PER_PAGE
   );
 
+  useEffect(() => {
+    refetchProducts();
+  }, []);
+
   if (classificationLoading || productsLoading) {
     return <h4>Loading...</h4>;
   }
   if (classificationError || productsError) {
     return (
-      <div>Error: {classificationError?.message || productsError?.message}</div>
+      <div>
+        Error:
+        {classificationError?.message || productsError?.message}
+      </div>
     );
   }
-
-  // Handle button click to apply filters
-  const handleApplyFilters = () => {
-    setSearchParams("classification", tempClassification);
-    setSearchParams("vendor", tempVendor);
-    setSearchParams("searchText", tempSearchText);
-    refetchProducts();
-  };
 
   return (
     <>
@@ -74,19 +59,19 @@ const Products = () => {
           className={styles["input-field"]}
           options={classifications}
           label="Classification"
-          selectedOption={tempClassification}
-          onChange={(e) => setTempClassification(e.value)}
+          selectedOption={classification}
+          onChange={(e) => setSearchParams("classification", e.value)}
         />
         <PDInput
           label="Vendor"
-          value={tempVendor}
-          onChange={(e) => setTempVendor(e.target.value)}
+          value={SearchParams.vendor}
+          onChange={(e) => setSearchParams("vendor", e.target.value)}
           className={styles["input-field"]}
         />
         <PDInput
           label="Search"
-          value={tempSearchText}
-          onChange={(e) => setTempSearchText(e.target.value)}
+          value={SearchParams.searchText}
+          onChange={(e) => setSearchParams("searchText", e.target.value)}
           className={styles["input-field"]}
         />
         <PDButton
@@ -97,7 +82,7 @@ const Products = () => {
             alignSelf: "center",
             marginLeft: "1rem",
           }}
-          onClick={handleApplyFilters}
+          onClick={() => refetchProducts()}
         />
       </div>
       <>
@@ -134,5 +119,4 @@ const Products = () => {
     </>
   );
 };
-
 export default Products;

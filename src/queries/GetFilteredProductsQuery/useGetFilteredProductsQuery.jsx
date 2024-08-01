@@ -10,7 +10,7 @@ const useGetFilteredProductsQuery = (
 ) => {
   return useQuery({
     ...options,
-    queryKey: ["customer/products", classification, vendor, searchText],
+    queryKey: ["customer/products"],
     queryFn: () => {
       const params = new URLSearchParams();
       if (classification) params.append("classification", classification);
