@@ -8,6 +8,9 @@
 .input-field input {
   width: 350px;
 }
+.stock input {
+  width: 310px;
+}
 .link {
   color: #74ab5d;
   font-size: large;

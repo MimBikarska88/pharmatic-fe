@@ -130,7 +130,12 @@ const PharmaDirectives = () => {
             }
           ></Route>
           <Route path="/stock">
-            <Route path="" element={<StockRenderer />}></Route>
+            {role === roleType.customer && (
+              <Route path="" element={<Products />}></Route>
+            )}
+            {role === roleType.vendor && (
+              <Route path="" element={<Stock />}></Route>
+            )}
             <Route
               path="create"
               element={

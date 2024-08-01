@@ -19,6 +19,7 @@ function useGetClassificationQuery(options = {}) {
           label: item.name,
         };
       });
+      filtered.unshift({ value: "", label: "none" });
       return filtered;
     },
   });

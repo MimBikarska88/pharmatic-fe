@@ -2,15 +2,15 @@ import { useQuery } from "react-query";
 import http from "../http";
 
 //  have to filter data
-function useGetFilteredProductsQuery(
+const useGetFilteredProductsQuery = (
   classification,
   vendor,
   searchText,
   options = {}
-) {
+) => {
   return useQuery({
     ...options,
-    queryKey: ["customer/products"],
+    queryKey: ["customer/products", classification, vendor, searchText],
     queryFn: () => {
       const params = new URLSearchParams();
       if (classification) params.append("classification", classification);
@@ -25,6 +25,6 @@ function useGetFilteredProductsQuery(
       return data.data;
     },
   });
-}
+};
 
 export default useGetFilteredProductsQuery;

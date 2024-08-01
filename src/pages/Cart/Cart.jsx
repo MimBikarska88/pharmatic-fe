@@ -8,12 +8,22 @@ import {
   calculateTotalPriceEu,
   calculateTotalPriceNonEu,
 } from "../../utils/addToCartUtils";
+import useCreateOrderMutation from "../../queries/CreateOrderMutation/useCreateOrderMutation";
 const Cart = (props) => {
   const [totalPrice, setTotalPrice] = useState(0);
+
   const { Cart, increaseItemQuantity, decreaseItemQuantity, currencyType } =
     useUserStore((state) => state);
+
   const { calculatePrice } = useCurrency(currencyType);
 
+  const onSuccess = (res) => {
+    console.log(res);
+  };
+  const onError = (res) => {
+    console.log(res);
+  };
+  const createOrderMutation = useCreateOrderMutation(onSuccess, onError);
   useEffect(() => {
     let priceEu = calculateTotalPriceEu();
     let priceNonEu = calculateTotalPriceNonEu();
@@ -66,7 +76,6 @@ const Cart = (props) => {
                   </PDTable.Cell>
                   <PDTable.Cell colspan={2}>
                     <strong>
-                      {" "}
                       {currencyType === CurrencyType.NON_EU ? " $ " : ""}
                       {calculatePrice(item.price, item.currency).toFixed(2)}
                       {currencyType === CurrencyType.EU ? " € " : ""}
@@ -115,7 +124,20 @@ const Cart = (props) => {
                 {currencyType === CurrencyType.EU ? " € " : ""}
               </PDTable.Cell>
               <PDTable.Cell colspan={2}>
-                <PDButton color={"purple"} value={"Order now"} />
+                <PDButton
+                  color={"purple"}
+                  value={"Order now"}
+                  onClick={() => {
+                    createOrderMutation.mutate({
+                      Cart: Cart.map((item) => {
+                        return {
+                          quantity: item.quantity,
+                          _id: item._id,
+                        };
+                      }),
+                    });
+                  }}
+                />
               </PDTable.Cell>
             </PDTable.Row>
           </PDTable.Footer>

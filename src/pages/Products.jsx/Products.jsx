@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useUserStore } from "../../stores/userStore";
 import { usePagination } from "../../components/hooks/usePagination";
 import useGetClassificationQuery from "../../queries/GetClassificationQuery/useGetClassificationQuery";
@@ -8,17 +9,20 @@ import Product from "../../components/Product/Product";
 import styles from "./Products.module.css";
 import useGetFilteredProductsQuery from "../../queries/GetFilteredProductsQuery/useGetFilteredProductsQuery";
 import PDButton from "../../components/PDButton/PDButton";
-import { useEffect } from "react";
-const Products = () => {
-  const { role, SearchParams, setSearchParams, Cart } = useUserStore();
-  const { classification, vendor, searchText } = SearchParams;
 
-  useEffect(() => {
-    console.log(Cart);
-  }, [Cart]);
+const Products = () => {
+  const { SearchParams, setSearchParams } = useUserStore((state) => ({
+    SearchParams: state.SearchParams,
+    setSearchParams: state.setSearchParams,
+  }));
+  const [tempClassification, setTempClassification] = useState(
+    SearchParams.classification
+  );
+  const [tempVendor, setTempVendor] = useState(SearchParams.vendor);
+  const [tempSearchText, setTempSearchText] = useState(SearchParams.searchText);
 
   const {
-    data: classifications,
+    data: classifications = [],
     error: classificationError,
     isLoading: classificationLoading,
   } = useGetClassificationQuery();
@@ -28,9 +32,18 @@ const Products = () => {
     error: productsError,
     isLoading: productsLoading,
     refetch: refetchProducts,
-  } = useGetFilteredProductsQuery(classification, vendor, searchText, {
-    enabled: !!classifications,
-  });
+  } = useGetFilteredProductsQuery(
+    SearchParams.classification,
+    SearchParams.vendor,
+    SearchParams.searchText,
+    {
+      enabled: false,
+    }
+  );
+  useEffect(() => {
+    refetchProducts();
+  }, []);
+
   const INITIAL_ENTRIES_PER_PAGE = 3;
   const { page, setPage, displayEntries, pages } = usePagination(
     products,
@@ -42,35 +55,38 @@ const Products = () => {
   }
   if (classificationError || productsError) {
     return (
-      <div>
-        Error:
-        {classificationError?.message || productsError?.message}
-      </div>
+      <div>Error: {classificationError?.message || productsError?.message}</div>
     );
   }
+
+  // Handle button click to apply filters
+  const handleApplyFilters = () => {
+    setSearchParams("classification", tempClassification);
+    setSearchParams("vendor", tempVendor);
+    setSearchParams("searchText", tempSearchText);
+    refetchProducts();
+  };
 
   return (
     <>
       <div className="d-flex flex-row justify-content-center">
         <PDSelect
           className={styles["input-field"]}
-          options={[{ label: "none", value: "" }, ...classifications]}
+          options={classifications}
           label="Classification"
-          selectedOption={classification || ""}
-          onChange={(e) => {
-            setSearchParams("classification", e.value);
-          }}
+          selectedOption={tempClassification}
+          onChange={(e) => setTempClassification(e.value)}
         />
         <PDInput
           label="Vendor"
-          value={SearchParams.vendor}
-          onChange={(e) => setSearchParams("vendor", e.target.value)}
+          value={tempVendor}
+          onChange={(e) => setTempVendor(e.target.value)}
           className={styles["input-field"]}
         />
         <PDInput
           label="Search"
-          value={SearchParams.searchText}
-          onChange={(e) => setSearchParams("searchText", e.target.value)}
+          value={tempSearchText}
+          onChange={(e) => setTempSearchText(e.target.value)}
           className={styles["input-field"]}
         />
         <PDButton
@@ -81,7 +97,7 @@ const Products = () => {
             alignSelf: "center",
             marginLeft: "1rem",
           }}
-          onClick={refetchProducts}
+          onClick={handleApplyFilters}
         />
       </div>
       <>
@@ -118,4 +134,5 @@ const Products = () => {
     </>
   );
 };
+
 export default Products;

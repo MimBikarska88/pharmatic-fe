@@ -52,6 +52,7 @@ const DetailedProduct = (props) => {
     licenseType: null,
     photo: null,
     imageSrc: null,
+    stock: 0,
   });
   const {
     data: vendorLicenses = [],
@@ -350,7 +351,21 @@ const DetailedProduct = (props) => {
           Patient Information Leaflet (PIL).
         </a>
       )}
-
+      {mode === Mode.Edit && role === roleType.vendor && (
+        <PDInput
+          type="number"
+          minValue={0}
+          disabled={mode === Mode.View}
+          required={mode !== Mode.View}
+          isValid={true}
+          className={styles["stock"]}
+          label="In Stock"
+          value={product.stock || 0}
+          onChangeFunc={(e) => {
+            productInputFieldChangeHandler("stock", e.target.value);
+          }}
+        />
+      )}
       <div className="d-flex flex-row">
         <PDTextArea
           cols={150}
