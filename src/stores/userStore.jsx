@@ -212,5 +212,9 @@ export const useUserStore = create(
           }
         }
       }),
+    emptyCart: () =>
+      set((state) => {
+        state.Cart = [];
+      }),
   }))
 );

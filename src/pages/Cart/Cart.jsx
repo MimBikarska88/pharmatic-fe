@@ -3,27 +3,48 @@ import useCurrency from "../../components/hooks/useCurrency";
 import PDButton from "../../components/PDButton/PDButton";
 import PDTable from "../../components/PDEditableTable/PDTable";
 import { useUserStore } from "../../stores/userStore";
+import { useModalStore } from "../../stores/modalStore";
 import { CurrencyType } from "../../utils/residenceTypes";
 import {
   calculateTotalPriceEu,
   calculateTotalPriceNonEu,
 } from "../../utils/addToCartUtils";
 import useCreateOrderMutation from "../../queries/CreateOrderMutation/useCreateOrderMutation";
+import { useNavigate } from "react-router";
 const Cart = (props) => {
   const [totalPrice, setTotalPrice] = useState(0);
-
-  const { Cart, increaseItemQuantity, decreaseItemQuantity, currencyType } =
-    useUserStore((state) => state);
+  const { showModal, hideModal, setModal } = useModalStore();
+  const {
+    Cart,
+    increaseItemQuantity,
+    decreaseItemQuantity,
+    currencyType,
+    emptyCart,
+  } = useUserStore((state) => state);
 
   const { calculatePrice } = useCurrency(currencyType);
-
+  const navigate = useNavigate();
+  const onCloseModal = () => {
+    hideModal();
+    setModal({
+      modalTitle: "",
+      modalText: "",
+    });
+  };
   const onSuccess = (res) => {
-    console.log(res);
+    emptyCart();
+    navigate("/orders/customer");
   };
-  const onError = (res) => {
-    console.log(res);
+  const onError = (error) => {
+    setModal({
+      modalTitle: "Error",
+      modalText: error.response.data?.Message || "Order processing went wrong!",
+      showCancel: false,
+      onClose: onCloseModal,
+    });
+    showModal();
   };
-  const createOrderMutation = useCreateOrderMutation(onSuccess, onError);
+  const createOrderMutation = useCreateOrderMutation(onError, onSuccess);
   useEffect(() => {
     let priceEu = calculateTotalPriceEu();
     let priceNonEu = calculateTotalPriceNonEu();

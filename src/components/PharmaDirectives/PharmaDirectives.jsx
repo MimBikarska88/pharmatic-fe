@@ -14,43 +14,10 @@ import Products from "../../pages/Products.jsx/Products";
 
 import { useUserStore } from "../../stores/userStore";
 import Cart from "../../pages/Cart/Cart";
+import CustomerOrders from "../../pages/CustomerOrders/CustomerOrders";
 const PharmaDirectives = () => {
   const role = useUserStore((state) => state.role);
-  const StockRenderer = () => {
-    if (role === roleType.customer)
-      return (
-        <Routes>
-          <Route
-            path=""
-            element={
-              <AuthorizedRoute
-                component={<Products />}
-                role={role}
-                navigate={"/"}
-                allowedRoles={[roleType.customer]}
-              />
-            }
-          ></Route>
-        </Routes>
-      );
-    if (role === roleType.vendor) {
-      return (
-        <Routes>
-          <Route
-            path=""
-            element={
-              <AuthorizedRoute
-                component={<Stock />}
-                role={role}
-                allowedRoles={[roleType.vendor]}
-                navigate={"/"}
-              ></AuthorizedRoute>
-            }
-          ></Route>
-        </Routes>
-      );
-    }
-  };
+
   return (
     <>
       <div className={`container ${styles.directive}`}>
@@ -167,6 +134,18 @@ const PharmaDirectives = () => {
                   navigate={"/"}
                   component={<DetailedProduct mode={Mode.View} />}
                 />
+              }
+            ></Route>
+          </Route>
+          <Route path="/orders">
+            <Route
+              path="customer"
+              element={
+                <AuthorizedRoute
+                  component={<CustomerOrders />}
+                  role={role}
+                  allowedRoles={[roleType.customer]}
+                ></AuthorizedRoute>
               }
             ></Route>
           </Route>
