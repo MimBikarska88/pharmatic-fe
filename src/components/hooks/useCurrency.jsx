@@ -2,7 +2,7 @@ import { CurrencyType } from "../../utils/residenceTypes";
 
 const useCurrency = (currency) => {
   function calculatePrice(price, productCurrency) {
-    console.log(price);
+    console.log(price, productCurrency);
     let calcualtedPrice = 0;
 
     const exchangeRate = 0.85;
@@ -11,12 +11,13 @@ const useCurrency = (currency) => {
       return price;
     } else if (currency === CurrencyType.EU) {
       calcualtedPrice = price * exchangeRate;
-      console.log(calcualtedPrice / 0.85);
     } else if (currency === CurrencyType.NON_EU) {
-      console.log(price * 0.85);
       calcualtedPrice = price / exchangeRate;
     }
 
+    console.log(currency, CurrencyType.EU);
+    console.log(currency, CurrencyType.NON_EU);
+    console.log(calcualtedPrice);
     return calcualtedPrice;
   }
 

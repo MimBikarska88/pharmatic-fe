@@ -3,6 +3,7 @@ import { usePagination } from "../../components/hooks/usePagination";
 import useGetCustomerOrdersQuery from "../../queries/GetCustomerOrders/useGetCustomerOrdersQuery";
 import PDTable from "../../components/PDEditableTable/PDTable";
 import PDPagination from "../../components/Pagination/PDpagination";
+import { OrderStatus } from "../../utils/addToCartUtils";
 const HEADER_COLS = [
   "#Order",
   "Created",
@@ -11,9 +12,7 @@ const HEADER_COLS = [
   "Completed",
   "Status",
 ];
-const OrderStatus = {
-  1: "Created",
-};
+
 const INITIAL_ENTRIES_PER_PAGE = 6;
 const CustomerOrders = () => {
   const navigate = useNavigate();
@@ -45,14 +44,13 @@ const CustomerOrders = () => {
       </h4>
     );
   }
-  console.log(customerOrders);
   return (
     <>
       <PDTable style={{ marginTop: "2rem" }}>
         <PDTable.Header>
           <PDTable.Row>
             {HEADER_COLS.map((col) => (
-              <PDTable.HeaderCell>{col}</PDTable.HeaderCell>
+              <PDTable.HeaderCell key={col}>{col}</PDTable.HeaderCell>
             ))}
             {
               <PDTable.HeaderCell
@@ -64,8 +62,10 @@ const CustomerOrders = () => {
         <PDTable.Body>
           {displayEntries.map((order) => {
             return (
-              <PDTable.Row style={{ fontWeight: "500" }}>
-                <PDTable.Cell>{order.number}</PDTable.Cell>
+              <PDTable.Row key={order._id} style={{ fontWeight: "500" }}>
+                <PDTable.Cell>
+                  <a href={`/orders/${order.number}`}>{order.number}</a>
+                </PDTable.Cell>
                 <PDTable.Cell>{order.createdOn}</PDTable.Cell>
                 <PDTable.Cell>
                   {order.confirmedOn ? order.confirmedOn : " - "}

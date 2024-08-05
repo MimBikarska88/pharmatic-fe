@@ -1,6 +1,5 @@
 import { useUserStore } from "../../stores/userStore";
 import { roleType } from "../../utils/roleTypes";
-import Nav from "react-bootstrap/Nav";
 
 export const GuestUserNavigation = [
   { title: "Home", link: "/" },

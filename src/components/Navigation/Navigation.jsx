@@ -8,7 +8,6 @@ const Navigation = () => {
   const { role, setRole, setCurrencyDollar, setCurrencyEuro } = useUserStore();
   const navigate = useNavigate();
 
-  console.log("role", role);
   const navigationMap = {
     [roleType.vendor]: [
       { title: "Home", link: "/" },
@@ -49,10 +48,11 @@ const Navigation = () => {
   return (
     <>
       <div className="container">
-        <ul class="navbar-nav flex-row justify-content-end  link-dark">
-          {navigationMap[role].map((navItem) =>
+        <ul className="navbar-nav flex-row justify-content-end  link-dark">
+          {navigationMap[role].map((navItem, _index) =>
             navItem.title.toLowerCase() === "logout" ? (
               <li
+                key={_index}
                 className="link-dark m-3"
                 style={{ cursor: "pointer" }}
                 onClick={onLogoutClick}
@@ -60,7 +60,7 @@ const Navigation = () => {
                 {navItem.title}
               </li>
             ) : (
-              <li className="link-dark m-3">
+              <li key={_index} className="link-dark m-3">
                 <a
                   style={{
                     textDecoration: "none",

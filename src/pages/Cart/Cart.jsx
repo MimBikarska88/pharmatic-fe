@@ -46,8 +46,8 @@ const Cart = (props) => {
   };
   const createOrderMutation = useCreateOrderMutation(onError, onSuccess);
   useEffect(() => {
-    let priceEu = calculateTotalPriceEu();
-    let priceNonEu = calculateTotalPriceNonEu();
+    let priceEu = calculateTotalPriceEu(Cart);
+    let priceNonEu = calculateTotalPriceNonEu(Cart);
     if (currencyType === CurrencyType.EU) {
       if (priceNonEu > 0) {
         priceEu = priceEu + priceNonEu * 0.85;
