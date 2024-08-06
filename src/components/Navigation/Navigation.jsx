@@ -12,7 +12,7 @@ const Navigation = () => {
     [roleType.vendor]: [
       { title: "Home", link: "/" },
       { title: "Stock", link: "/stock" },
-      { title: "Orders", link: "/orders/" },
+      { title: "Orders", link: "/orders/vendor" },
       { title: "Edit Account", link: "/account" },
       { title: "Logout" },
     ],

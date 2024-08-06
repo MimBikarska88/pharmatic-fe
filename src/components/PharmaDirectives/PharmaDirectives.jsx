@@ -15,6 +15,7 @@ import { useUserStore } from "../../stores/userStore";
 import Cart from "../../pages/Cart/Cart";
 import CustomerOrders from "../../pages/CustomerOrders/CustomerOrders";
 import DetailedOrder from "../../pages/DetailedOrder/DetailedOrder";
+import VendorOrders from "../../pages/VendorOrders/VendorOrders";
 const PharmaDirectives = () => {
   const role = useUserStore((state) => state.role);
 
@@ -145,6 +146,16 @@ const PharmaDirectives = () => {
                   component={<CustomerOrders />}
                   role={role}
                   allowedRoles={[roleType.customer]}
+                ></AuthorizedRoute>
+              }
+            ></Route>
+            <Route
+              path="vendor"
+              element={
+                <AuthorizedRoute
+                  component={<VendorOrders />}
+                  role={role}
+                  allowedRoles={[roleType.vendor]}
                 ></AuthorizedRoute>
               }
             ></Route>
