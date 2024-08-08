@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useUserStore } from "../../stores/userStore";
 import { useModalStore } from "../../stores/modalStore";
 import useCurrency from "../../components/hooks/useCurrency";
-import useGetCustomerOrderDetailsQuery from "../../queries/GetCustomerOrderDetailsQuery/useGetCustomerOrderDetailsQuery";
+import useGetOrderDetailsQuery from "../../queries/GetOrderDetailsQuery/useGetOrderDetailsQuery";
 import useUpdateOrderStatusMutation from "../../queries/UpdateOrderStatusMutation/UpdateOrderStatusMutation";
 
 import { CurrencyType } from "../../utils/residenceTypes";
@@ -15,11 +15,16 @@ import {
   calculateTotalPriceEu,
   calculateTotalPriceNonEu,
 } from "../../utils/addToCartUtils";
+import { roleType } from "../../utils/roleTypes";
+import PDSelect from "../../components/PDSelect/PDSelect";
 
 const DetailedOrder = () => {
   const { orderId } = useParams();
   const navigate = useNavigate();
-  const currencyType = useUserStore((state) => state.currencyType);
+  const { currencyType, role } = useUserStore((state) => ({
+    currencyType: state.currencyType,
+    role: state.role,
+  }));
   const { calculatePrice } = useCurrency(currencyType);
   const { showModal, hideModal, setModal } = useModalStore();
   const [totalPrice, setTotalPrice] = useState(0);
@@ -51,7 +56,7 @@ const DetailedOrder = () => {
     error: orderError,
     isLoading: isOrderLoading,
     refetch: refetchOrder,
-  } = useGetCustomerOrderDetailsQuery(orderId, { onError });
+  } = useGetOrderDetailsQuery(role, orderId, { onError });
 
   const updateOrderStatusMutation = useUpdateOrderStatusMutation(
     onUpdateStatusError,
@@ -59,6 +64,7 @@ const DetailedOrder = () => {
   );
 
   useEffect(() => {
+    console.log(order);
     if (order && Object.keys(order).length > 0) {
       let priceEu = calculateTotalPriceEu(order.items);
       let priceNonEu = calculateTotalPriceNonEu(order.items);
@@ -93,7 +99,12 @@ const DetailedOrder = () => {
             <PDTable.HeaderCell colSpan={2}>Name</PDTable.HeaderCell>
             <PDTable.HeaderCell colSpan={2}>Price</PDTable.HeaderCell>
             <PDTable.HeaderCell colSpan={2}>Quantity</PDTable.HeaderCell>
-            <PDTable.HeaderCell colSpan={3}>Vendor</PDTable.HeaderCell>
+            {role === roleType.customer && (
+              <PDTable.HeaderCell colSpan={3}>Vendor</PDTable.HeaderCell>
+            )}
+            {role === roleType.vendor && (
+              <PDTable.HeaderCell colSpan={3}>Status</PDTable.HeaderCell>
+            )}
           </PDTable.Row>
         </PDTable.Header>
         <PDTable.Body>
@@ -121,9 +132,19 @@ const DetailedOrder = () => {
                 <PDTable.Cell style={{ align: "right" }} colSpan={2}>
                   <strong>{item.quantity}</strong>
                 </PDTable.Cell>
-                <PDTable.Cell>
-                  <strong>{item.vendor.companyName}</strong>
-                </PDTable.Cell>
+                {role === roleType.customer && (
+                  <PDTable.Cell>
+                    <strong>{item.vendor.companyName}</strong>
+                  </PDTable.Cell>
+                )}
+                {role === roleType.vendor && (
+                  <PDTable.Cell colSpan={3}>
+                    <PDSelect
+                      label="Item Status"
+                      style={{ width: "max-content" }}
+                    />
+                  </PDTable.Cell>
+                )}
               </PDTable.Row>
             );
           })}

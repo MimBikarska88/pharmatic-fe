@@ -2,12 +2,12 @@ import { useQuery } from "react-query";
 import http from "../http";
 
 //  have to filter data
-function useGetCustomerOrderDetailsQuery(orderId, options = {}) {
+function useGetOrderDetailsQuery(role, orderId, options = {}) {
   return useQuery({
     ...options,
-    queryKey: ["order/customer/details", orderId],
+    queryKey: ["order/details", role, orderId],
     queryFn: () => {
-      return http.get(`/orders/${orderId}`, {
+      return http.get(`/orders/${role}/${orderId}`, {
         withCredentials: true,
         xsrfCookieName: "token",
       });
@@ -16,4 +16,4 @@ function useGetCustomerOrderDetailsQuery(orderId, options = {}) {
   });
 }
 
-export default useGetCustomerOrderDetailsQuery;
+export default useGetOrderDetailsQuery;

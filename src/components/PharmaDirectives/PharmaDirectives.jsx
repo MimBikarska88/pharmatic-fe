@@ -165,7 +165,8 @@ const PharmaDirectives = () => {
                 <AuthorizedRoute
                   component={<DetailedOrder />}
                   role={role}
-                  allowedRoles={[roleType.customer]}
+                  allowedRoles={[roleType.customer, roleType.vendor]}
+                  navigate={""}
                 ></AuthorizedRoute>
               }
             ></Route>

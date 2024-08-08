@@ -35,7 +35,7 @@ const VendorOrders = () => {
   if (error || orderList.length === 0)
     return (
       <>
-        <h4>Something happened...Try later.</h4>
+        <h4>An error ocurred.</h4>
       </>
     );
 
