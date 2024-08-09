@@ -5,6 +5,7 @@ import {
   checkAllSecondTabFields,
 } from "./CustomerRegistrationUtils";
 import CustomerTabForm from "./CustomerTabForm/CustomerTabForm";
+import { Mode } from "../../utils/mode";
 const CustomerRegistrationForm = ({}) => {
   const [activeTab, setActiveTab] = useState("0");
   const selectTab = (index) => {
@@ -22,7 +23,11 @@ const CustomerRegistrationForm = ({}) => {
   };
   return (
     <>
-      <CustomerNavTab activeTab={activeTab} setActiveTab={selectTab} />
+      <CustomerNavTab
+        activeTab={activeTab}
+        setActiveTab={selectTab}
+        mode={Mode.Create}
+      />
       <CustomerTabForm activeTab={activeTab} />
     </>
   );

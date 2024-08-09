@@ -238,11 +238,17 @@ const DetailedProduct = (props) => {
             label="Classification"
             selectedOption={product.classification || ""}
             onChange={(e) => {
-              console.log(e.value);
               setProduct((state) => ({
                 ...state,
                 classification: e.value,
               }));
+              e.value === ""
+                ? setProductError(
+                    "classification",
+                    "Classification is required"
+                  )
+                : setProductError("classification", "");
+              setProductFieldValidity("classification", e.value !== "");
             }}
           />
           <PDSelect
@@ -259,6 +265,10 @@ const DetailedProduct = (props) => {
                 ...state,
                 licenseType: e.value,
               }));
+              e.value === ""
+                ? setProductError("licenseType", "License type is required")
+                : setProductError("licenseType", "");
+              setProductFieldValidity("licenseType", e.value !== "");
             }}
           />
         </div>
@@ -388,7 +398,7 @@ const DetailedProduct = (props) => {
           required
           rows={6}
           isValid={Product.sideEffects}
-          errorMessage={ProductErrors.sideEffect}
+          errorMessage={ProductErrors.sideEffects}
           className="mb-2 p-1"
           label="Side Effects"
           value={product.sideEffects}

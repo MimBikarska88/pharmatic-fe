@@ -45,7 +45,6 @@ const Navigation = () => {
     setRole(roleType.guest);
     resetCustomerState();
     resetVendorState();
-    navigate("/", { replace: true });
   };
 
   const logoutMutation = useLogoutMutation(role, onSuccess, () => {

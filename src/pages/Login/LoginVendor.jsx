@@ -53,7 +53,6 @@ const LoginVendor = () => {
       "residence",
       JSON.stringify({ type: Vendor.residence })
     );
-    navigate("/");
   };
   const onCloseModal = () => {
     hideModal();

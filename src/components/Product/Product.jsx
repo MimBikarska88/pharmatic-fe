@@ -38,15 +38,15 @@ const Product = (props) => {
             ${currencyType === CurrencyType.EU ? "€" : ""}`}
           </h5>
           <div className="text-center">
-            {role === roleType.vendor ||
-              (role === roleType.customer && stock > 0 && (
+            {(role === roleType.vendor || role === roleType.customer) &&
+              stock > 0 && (
                 <PDButton
                   color="green"
                   style={{ width: "6rem", margin: "0.4rem" }}
                   value={"Details"}
                   onClick={() => navigate(`view/${_id}`)}
                 />
-              ))}
+              )}
 
             {role === roleType.customer && stock > 0 && (
               <PDButton
@@ -67,6 +67,7 @@ const Product = (props) => {
                   width: "6rem",
                   margin: "0.4rem",
                 }}
+                onClick={() => navigate(`edit/${_id}`)}
                 value={"Edit"}
               />
             )}

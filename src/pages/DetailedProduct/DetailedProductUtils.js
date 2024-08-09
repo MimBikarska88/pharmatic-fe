@@ -96,7 +96,15 @@ export const validateProductFields = (fieldName, fieldValue) => {
       setProductFieldValidity(`${fieldName}`, true);
     }
   }
-
+  if (fieldName === "price") {
+    if (!fieldValue || fieldValue === 0) {
+      setProductError(`${fieldName}`, "Price is required.");
+      setProductFieldValidity(`${fieldName}`, false);
+    } else {
+      setProductError(`${fieldName}`, "");
+      setProductFieldValidity(`${fieldName}`, true);
+    }
+  }
   if (fieldName === "indications") {
     if (!fieldValue || fieldName.trim() === "") {
       setProductError(`${fieldName}`, "Indications for usage are required.");

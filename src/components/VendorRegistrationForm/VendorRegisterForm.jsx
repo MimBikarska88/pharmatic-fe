@@ -79,8 +79,6 @@ const VendorRegisterForm = () => {
         onClose: onCloseModal,
       });
       showModal();
-    } else {
-      navigate("/error");
     }
   };
   const navigate = useNavigate();
