@@ -4,14 +4,13 @@ import styles from "../Login/Login.module.css";
 import PDButton from "../../components/PDButton/PDButton";
 import healthy from "../../static/img/icons/healthy.png";
 import useLoginMutation from "../../queries/LoginMutation/useLoginMutation";
-import { useNavigate } from "react-router";
+import { useNavigate, redirect } from "react-router";
 import { useUserStore } from "../../stores/userStore";
 import { useModalStore } from "../../stores/modalStore";
 import { roleType } from "../../utils/roleTypes";
-import { CurrencyType } from "../../utils/residenceTypes";
 const Login = () => {
   const navigate = useNavigate();
-  const { setRole, setCurrencyEuro } = useUserStore.getState();
+  const { setRole, setCurrencyEuro, setCustomer } = useUserStore.getState();
   const [credentials, setCredentials] = useState({
     password: "",
     email: "",
@@ -27,7 +26,6 @@ const Login = () => {
       modalText: "",
     });
   };
-
   const onSuccess = (res) => {
     setRole(roleType.customer);
     setCurrencyEuro();
@@ -35,8 +33,9 @@ const Login = () => {
       "role",
       JSON.stringify({ type: roleType.customer })
     );
-    navigate("/");
+    setCustomer(res.data.user);
   };
+
   const onError = (err) => {
     setModal({
       modalTitle: "Error",

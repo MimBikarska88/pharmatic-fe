@@ -16,6 +16,7 @@ import Cart from "../../pages/Cart/Cart";
 import CustomerOrders from "../../pages/CustomerOrders/CustomerOrders";
 import DetailedOrder from "../../pages/DetailedOrder/DetailedOrder";
 import VendorOrders from "../../pages/VendorOrders/VendorOrders";
+import CustomerAccount from "../../pages/CustomerAccount/CustomerAccount";
 const PharmaDirectives = () => {
   const role = useUserStore((state) => state.role);
 
@@ -74,6 +75,7 @@ const PharmaDirectives = () => {
                 component={<BaseLogin />}
                 role={role}
                 allowedRoles={[roleType.guest]}
+                navigate={"/"}
               ></AuthorizedRoute>
             }
           ></Route>
@@ -83,6 +85,7 @@ const PharmaDirectives = () => {
               <AuthorizedRoute
                 component={<BaseLogin roleType={roleType.vendor} />}
                 role={role}
+                navigate={"/"}
                 allowedRoles={[roleType.guest]}
               ></AuthorizedRoute>
             }
@@ -94,6 +97,7 @@ const PharmaDirectives = () => {
                 component={<BaseLogin roleType={roleType.customer} />}
                 role={role}
                 allowedRoles={[roleType.guest]}
+                navigate={"/"}
               ></AuthorizedRoute>
             }
           ></Route>
@@ -178,6 +182,16 @@ const PharmaDirectives = () => {
                 role={role}
                 allowedRoles={roleType.customer}
                 component={<Cart />}
+              />
+            }
+          ></Route>
+          <Route
+            path="/account/customer"
+            element={
+              <AuthorizedRoute
+                role={role}
+                allowedRoles={roleType.customer}
+                component={<CustomerAccount />}
               />
             }
           ></Route>

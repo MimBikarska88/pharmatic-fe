@@ -5,7 +5,14 @@ import useLogoutMutation from "../../queries/LogoutMutation/useLogoutMutation";
 import eu from "../../static/img/icons/eu.png";
 import nonEu from "../../static/img/icons/nonEu.png";
 const Navigation = () => {
-  const { role, setRole, setCurrencyDollar, setCurrencyEuro } = useUserStore();
+  const {
+    role,
+    setRole,
+    setCurrencyDollar,
+    setCurrencyEuro,
+    resetCustomerState,
+    resetVendorState,
+  } = useUserStore();
   const navigate = useNavigate();
 
   const navigationMap = {
@@ -20,7 +27,7 @@ const Navigation = () => {
       { title: "Home", link: "/" },
       { title: "Orders", link: "/orders/customer" },
       { title: "Products", link: "/stock" },
-      { title: "Edit Account", link: "/account" },
+      { title: "Edit Account", link: "/account/customer" },
       { title: "Cart", link: "/cart" },
       { title: "Logout" },
     ],
@@ -36,13 +43,15 @@ const Navigation = () => {
     localStorage.clear();
     localStorage.setItem("role", JSON.stringify({ type: roleType.guest }));
     setRole(roleType.guest);
-    navigate("/");
+    resetCustomerState();
+    resetVendorState();
+    navigate("/", { replace: true });
   };
+
   const logoutMutation = useLogoutMutation(role, onSuccess, () => {
     navigate("/"); // navigate to error page
   });
   const onLogoutClick = (e) => {
-    e.preventDefault();
     logoutMutation.mutate();
   };
   return (

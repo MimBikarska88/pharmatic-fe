@@ -15,6 +15,7 @@ const customerInitialStore = {
   phoneNumber: "",
   password: "",
   confirmPassword: "",
+  email: "",
   detailedAddress: "",
   country: "",
   city: "",
@@ -90,8 +91,6 @@ export const useUserStore = create(
       }),
     setCustomerUserField: (fieldName, fieldValue) =>
       set((state) => {
-        console.log(fieldName);
-        console.log(fieldValue);
         state.Customer[`${fieldName}`] = fieldValue;
       }),
 
@@ -215,6 +214,14 @@ export const useUserStore = create(
     emptyCart: () =>
       set((state) => {
         state.Cart = [];
+      }),
+    setCustomer: (customer) =>
+      set((state) => {
+        for (const key in customer) {
+          if (Object.hasOwnProperty.call(state.Customer, key)) {
+            state.Customer[key] = customer[key];
+          }
+        }
       }),
   }))
 );

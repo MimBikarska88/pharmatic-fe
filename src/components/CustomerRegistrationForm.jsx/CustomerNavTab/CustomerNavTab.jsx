@@ -6,7 +6,8 @@ import { useErrorStore } from "../../../stores/errorStore";
 import { useValidationStore } from "../../../stores/validationStore";
 import { isEmptyString } from "../../../utils/basicValidation.util";
 import { useNavigate } from "react-router";
-const CustomerNavTab = ({ activeTab, setActiveTab }) => {
+import { Mode } from "../../../utils/mode";
+const CustomerNavTab = ({ activeTab, setActiveTab, mode }) => {
   const Customer = useUserStore((state) => state.Customer);
   const setRegisterError = useErrorStore((state) => state.setRegisterError);
   const setRegisterFieldValidity = useValidationStore(
@@ -74,7 +75,10 @@ const CustomerNavTab = ({ activeTab, setActiveTab }) => {
         ))}
         <li></li>
       </ul>
-      <PDButton value="submit" color={"green"} onClick={submitRegisterForm} />
+      {mode === Mode.Create && (
+        <PDButton value="submit" color={"green"} onClick={submitRegisterForm} />
+      )}
+      {mode === Mode.Edit && <PDButton value="edit" color={"purple"} />}
     </>
   );
 };

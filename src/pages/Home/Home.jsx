@@ -4,6 +4,7 @@ import second from "../../static/img/backgrounds/second.jpg";
 import first from "../../static/img/backgrounds/first.jpeg";
 const Home = (props) => {
   const Vendor = useUserStore((state) => state.Vendor);
+  console.log("home component rendered");
   return (
     <>
       <div className={styles["grid-container"]}>
